@@ -4,6 +4,7 @@ import TextField from "../components/TextField";
 import SwitchSelector from "../components/SwitchSelector";
 import colors from "../colors";
 import DatePicker from "@react-native-community/datetimepicker";
+import { SimpleLineIcons } from '@expo/vector-icons';
 import moment from "moment";
 
 const necessary = ["yes", " no", "maybe"];
@@ -20,11 +21,20 @@ const Body02 = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text
+
+    <View style={styles.rowContain}>
+      <View style={styles.background}>
+         <Text
       style={{fontSize:20}}
        onPress={() => setShow(true)}>
         {moment.utc(date).format("DD/MM/YYYY")}
       </Text>
+      </View>
+      <View style={styles.background} >
+      <SimpleLineIcons name="picture" size={24} color="black" />
+      </View>
+    </View>
+     
 
       {show && (
         <DatePicker
@@ -61,5 +71,23 @@ const styles = StyleSheet.create({
   height:"10%",
     elevation: 6,
   },
+  background:{
+   
+    elevation: 5,
+    borderRadius: 10,
+    borderBottomColor: "black",
+    borderTopColor: "white",
+    borderWidth: 0.5,
+    backgroundColor: colors.textBack,
+  height:"30%",
+  width:"40%",
+  alignItems:"center",
+  justifyContent:"center"
+  },
+  rowContain:{
+    flexDirection:"row"
+  , width:"100%"
+  , alignItems:"center"
+  , justifyContent:"space-around"}
 });
 export default Body02;

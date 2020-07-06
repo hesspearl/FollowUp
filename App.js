@@ -17,8 +17,8 @@ export default function App() {
   }else
  { return (
     <View style={{flex:1,   backgroundColor: colors.background,}}>
-      {/* <ScreenNav/> */}
-      <ListScreen/>
+      <ScreenNav/>
+    
       <StatusBar 
       backgroundColor={colors.stateBar}
       style="auto" />

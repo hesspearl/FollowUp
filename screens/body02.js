@@ -53,7 +53,7 @@ const Body02 = (props) => {
     <View style={styles.button}>
       <Button color={colors.buttons} 
 
-      title="press" />
+      title="FINISHED" />
       </View>
     </View>
   );

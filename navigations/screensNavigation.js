@@ -5,12 +5,14 @@ import body01 from "../screens/body01";
 import body02 from "../screens/body02";
 import list from "../screens/listScreen";
 import details from "../screens/deatilsScreen";
+import start from "../screens/startScreen"
 
 const screenNavigator = (props) => {
   const BodyStack = createStackNavigator();
   return (
     <NavigationContainer>
       <BodyStack.Navigator screenOptions={{ header: () => null }}>
+      <BodyStack.Screen name="start" component={start}/>
         <BodyStack.Screen name="list" component={list} />
         <BodyStack.Screen name="details" component={details} />
         <BodyStack.Screen name="body01" component={body01} />

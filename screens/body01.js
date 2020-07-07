@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useReducer} from "react";
 import { View, Text, StyleSheet } from "react-native";
 import TextField from "../components/TextField";
 import SwitchSelector from "../components/SwitchSelector";
@@ -7,12 +7,17 @@ import SwipeButton from "rn-swipe-button";
 import { AntDesign } from "@expo/vector-icons";
 import DropDown from "../components/DropDown"
 
+const inputReducer=(state , action)=>{
+
+  return state
+}
+
 
 const important=["low", " average" , "high"]
 
 const Body01 = (props) => {
  
-
+const [state, dispatch] = useReducer(reducer, initialState, init)
  
 
   const triangle = () => {
@@ -32,7 +37,7 @@ const Body01 = (props) => {
       >
           is it important?
       </SwitchSelector>
-      <SwipeButton
+       <SwipeButton
         railFillBackgroundColor="white" //(Optional)npm install redux
         thumbIconComponent={triangle}
         thumbIconBackgroundColor="#FFFFFF"
@@ -41,7 +46,7 @@ const Body01 = (props) => {
         title="Slide to Next"
         onSwipeSuccess={()=>props.navigation.navigate('body02')}
        shouldResetAfterSuccess={true}
-      />
+      /> 
     </View>
   );
 };

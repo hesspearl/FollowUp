@@ -15,7 +15,7 @@ const TextField = (props) => {
       <TextInput style={{padding:5, fontSize:30}} 
         onChangeText={props.onChangeText}
         value={props.value }
-        {...props}
+        
         
       />
     </View>

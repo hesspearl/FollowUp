@@ -6,7 +6,7 @@ import colors from "../colors";
 import SwipeButton from "rn-swipe-button";
 import { AntDesign } from "@expo/vector-icons";
 import DropDown from "../components/DropDown";
-import { TextInput } from "react-native-gesture-handler";
+
 
 const INPUTS_VALUES = "INPUTS_VALUES";
 const CHOICE = "CHOICE";

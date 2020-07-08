@@ -12,7 +12,12 @@ const TextField = (props) => {
 {props.children}
     </Text>
     <View style={styles.inputs}>
-      <TextInput style={{padding:5, fontSize:20}} />
+      <TextInput style={{padding:5, fontSize:30}} 
+        onChangeText={props.onChangeText}
+        value={props.value }
+        {...props}
+        
+      />
     </View>
      
 </View>

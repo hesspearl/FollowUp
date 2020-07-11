@@ -6,6 +6,8 @@ import colors from "../colors";
 import SwipeButton from "rn-swipe-button";
 import { AntDesign } from "@expo/vector-icons";
 import DropDown from "../components/DropDown";
+import {useDispatch} from "react-redux"
+import * as actions from "../store/actions/format"
 
 
 const INPUTS_VALUES = "INPUTS_VALUES";
@@ -65,7 +67,20 @@ const Body01 = (props) => {
     },
   });
 
-  console.log(stateInput);
+  const dispatch = useDispatch()
+  
+  const swiping=() =>{
+
+    dispatch(actions.inputsPage1(
+      stateInput.inputValues.productName,
+      stateInput.inputValues.application,
+      stateInput.inputValues.spend,
+      stateInput.inputValues.important,
+
+
+    ))
+     props.navigation.navigate("body02")
+  }
 
   const inputTextHolder = (inputIdentifier, text) => {
     dispatchInput({
@@ -98,7 +113,9 @@ const Body01 = (props) => {
         }
       />
       <TextField
+      style={{marginTop:100}}
         onChangeText={inputTextHolder.bind(this, "spend")}
+        keyboardType="number-pad"
         //  value={stateInput.inputValues.spend}
       >
         Amounts spend
@@ -121,8 +138,9 @@ const Body01 = (props) => {
         thumbIconBackgroundColor="#FFFFFF"
         railBackgroundColor={colors.buttons} //(Optional)
         width={"90%"}
+        titleFontSize={30}
         title="Slide to Next"
-        onSwipeSuccess={() => props.navigation.navigate("body02")}
+        onSwipeSuccess={ swiping }
         shouldResetAfterSuccess={true}
       />
     </View>
@@ -131,7 +149,7 @@ const Body01 = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
+    marginTop: 20,
     justifyContent: "space-around",
     alignItems: "center",
     flex: 1,

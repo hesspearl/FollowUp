@@ -4,7 +4,7 @@ import ScreenNav from "./navigations/screensNavigation"
 import colors from './colors';
 import{View} from "react-native"
 import{AppLoading} from 'expo'
-import ListScreen from "./screens/listScreen"
+import {store} from "./store/rootReducer"
 import {Provider} from "react-redux"
 import {Piedra_400Regular ,useFonts} from '@expo-google-fonts/piedra'
 export default function App() {
@@ -16,6 +16,7 @@ export default function App() {
     return <AppLoading />;
   }else
  { return (
+   <Provider store={store}>
     <View style={{flex:1,   backgroundColor: colors.background,}}>
       <ScreenNav/>
     
@@ -23,5 +24,6 @@ export default function App() {
       backgroundColor={colors.stateBar}
       style="auto" />
     </View>
+    </Provider>
   );}
 }

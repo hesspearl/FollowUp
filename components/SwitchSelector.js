@@ -12,9 +12,10 @@ const switchSelector = (props) => {
 
   return (
     <View>
-      <Text style={{ fontSize: 20, margin: 10 }}>{props.children}</Text>
+      <Text style={{ fontSize: 30, margin: 10 ,marginTop:20, fontFamily:'Piedra'}}>{props.children}</Text>
       <SwitchSelector
         textColor={"black"}
+        fontSize={25}
         selectedColor={"white"}
         buttonColor={colors.buttons}
         borderColor={"purple"}

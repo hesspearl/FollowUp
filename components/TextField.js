@@ -11,11 +11,11 @@ const TextField = (props) => {
     <Text    style={styles.text}>
 {props.children}
     </Text>
-    <View style={styles.inputs}>
+    <View style={{...styles.inputs,...props.inputStyle}}>
       <TextInput style={{padding:5, fontSize:30}} 
         onChangeText={props.onChangeText}
         value={props.value }
-        
+        keyboardType={props.keyboardType}
         
       />
     </View>
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   fontFamily:'Piedra' }
    ,
   inputs: {
+    padding:10,
    margin:15,
     elevation: 5,
     borderRadius: 10,
@@ -45,7 +46,8 @@ const styles = StyleSheet.create({
     borderTopColor: "white",
     borderWidth: 0.5,
     backgroundColor: colors.textBack,
-  height:"100%"
+  height:"100%",
+  justifyContent:"center"
   },
 });
 export default TextField;

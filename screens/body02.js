@@ -1,40 +1,146 @@
-import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState, useReducer } from "react";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableHighlight,
+} from "react-native";
 import TextField from "../components/TextField";
 import SwitchSelector from "../components/SwitchSelector";
+import FinishButton from "../components/finishButton";
 import colors from "../colors";
 import DatePicker from "@react-native-community/datetimepicker";
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { SimpleLineIcons } from "@expo/vector-icons";
 import moment from "moment";
+import * as ImagePicker from "expo-image-picker";
+import { useDispatch } from "react-redux";
+import * as actions from "../store/actions/format";
+
+const INPUTS_VALUES = "INPUTS_VALUES";
+const CHOICE = "CHOICE";
+const PICTURE = "PICTURE";
+const DATE = "DATE";
+
+const inputReducer = (state, action) => {
+  switch (action.type) {
+    case INPUTS_VALUES:
+      const updateValues = {
+        ...state.inputValues,
+        observation: action.value,
+      };
+      return {
+        inputValues: updateValues,
+      };
+
+    case DATE:
+      const updateDate = {
+        ...state.inputValues,
+        date: action.value,
+      };
+      return {
+        inputValues: updateDate,
+      };
+    case CHOICE:
+      const updateChoice = {
+        ...state.inputValues,
+        necessary: {
+          value: action.value,
+          color: action.color,
+        },
+      };
+      return {
+        inputValues: updateChoice,
+      };
+    case PICTURE:
+      const updatePic = {
+        ...state.inputValues,
+        picture: action.value,
+      };
+      return {
+        inputValues: updatePic,
+      };
+  }
+  return state;
+};
 
 const necessary = ["yes", " no", "maybe"];
 
 const Body02 = (props) => {
-  const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
+  const [stateInputs, dispatchInputs] = useReducer(inputReducer, {
+    inputValues: {
+      date: new Date(),
+      picture: "",
+      observation: "",
+      necessary: {
+        value: "",
+        color: "",
+      },
+    },
+  });
+
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || stateInputs.inputValues.date;
     setShow(false);
-    setDate(currentDate);
+    //setDate(currentDate);
+
+    dispatchInputs({
+      type: DATE,
+      value: currentDate,
+    });
+  };
+
+  const choosePic = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        dispatchInputs({
+          type: PICTURE,
+          value: result.uri,
+        });
+      }
+
+      console.log(result);
+    } catch (E) {
+      console.log(E);
+    }
+  };
+
+  const dispatch = useDispatch();
+
+  const finishHandler = () => {
+    dispatch(
+      actions.inputsPage2(
+        stateInputs.inputValues.date,
+        stateInputs.inputValues.picture,
+        stateInputs.inputValues.observation,
+        stateInputs.inputValues.necessary
+      )
+    );
+    props.navigation.navigate("start")
   };
 
   return (
     <View style={styles.container}>
-
-    <View style={styles.rowContain}>
-      <View style={styles.background}>
-         <Text
-      style={{fontSize:20}}
-       onPress={() => setShow(true)}>
-        {moment.utc(date).format("DD/MM/YYYY")}
-      </Text>
+      <View style={styles.rowContain}>
+        <View style={styles.background}>
+          <Text style={{ fontSize: 30 }} onPress={() => setShow(true)}>
+            {moment.utc(stateInputs.inputValues.date).format("DD/MM/YYYY")}
+          </Text>
+        </View>
+        <TouchableHighlight style={styles.background} onPress={choosePic}>
+          <View>
+            <SimpleLineIcons name="picture" size={30} color="black" />
+          </View>
+        </TouchableHighlight>
       </View>
-      <View style={styles.background} >
-      <SimpleLineIcons name="picture" size={24} color="black" />
-      </View>
-    </View>
-     
 
       {show && (
         <DatePicker
@@ -47,47 +153,64 @@ const Body02 = (props) => {
           onChange={onChange}
         />
       )}
-      <TextField style={{ height: "30%" }}>observation</TextField>
+      <TextField
+        style={{
+          height: "30%",
+          marginBottom: 40,
+        }}
+        inputStyle={{ justifyContent: "flex-start" }}
+        onChangeText={(text) =>
+          dispatchInputs({
+            type: INPUTS_VALUES,
+            value: text,
+          })
+        }
+      >
+        observation
+      </TextField>
 
-      <SwitchSelector option={necessary}>is it necessary?</SwitchSelector>
-    <View style={styles.button}>
-      <Button color={colors.buttons} 
+      <SwitchSelector
+        option={necessary}
+        onPress={(value) =>
+          dispatchInput({
+            type: CHOICE,
+            value: value.value,
+            color: value.color,
+          })
+        }
+      >
+        is it necessary?
+      </SwitchSelector>
 
-      title="FINISHED" />
-      </View>
+      <FinishButton onPress={finishHandler} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
     justifyContent: "space-around",
     alignItems: "center",
     flex: 1,
   },
-  button: {
-    width: "80%",
-  height:"10%",
-    elevation: 6,
-  },
-  background:{
-   
+
+  background: {
     elevation: 5,
     borderRadius: 10,
     borderBottomColor: "black",
     borderTopColor: "white",
     borderWidth: 0.5,
     backgroundColor: colors.textBack,
-  height:"30%",
-  width:"40%",
-  alignItems:"center",
-  justifyContent:"center"
+    height: "30%",
+    width: "40%",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  rowContain:{
-    flexDirection:"row"
-  , width:"100%"
-  , alignItems:"center"
-  , justifyContent:"space-around"}
+  rowContain: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
 });
 export default Body02;

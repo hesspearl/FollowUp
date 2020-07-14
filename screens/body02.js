@@ -14,8 +14,9 @@ import DatePicker from "@react-native-community/datetimepicker";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import moment from "moment";
 import * as ImagePicker from "expo-image-picker";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import * as actions from "../store/actions/format";
+
 
 const INPUTS_VALUES = "INPUTS_VALUES";
 const CHOICE = "CHOICE";
@@ -67,6 +68,9 @@ const inputReducer = (state, action) => {
 const necessary = ["yes", " no", "maybe"];
 
 const Body02 = (props) => {
+  const data = useSelector(state=>state.format)
+  console.log(data)
+
   const [show, setShow] = useState(false);
 
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, {
@@ -124,7 +128,8 @@ const Body02 = (props) => {
         stateInputs.inputValues.necessary
       )
     );
-    props.navigation.navigate("start")
+   props.navigation.navigate("loading")
+
   };
 
   return (
@@ -172,7 +177,7 @@ const Body02 = (props) => {
       <SwitchSelector
         option={necessary}
         onPress={(value) =>
-          dispatchInput({
+          dispatchInputs({
             type: CHOICE,
             value: value.value,
             color: value.color,

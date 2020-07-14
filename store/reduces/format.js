@@ -10,17 +10,20 @@ export default format=(state=initialState, action)=>{
 
         case POST_FROM_PAGE_01:
             const page01=action.value
-
+       
             return{
-                format:{...state,page01}
+               ...page01
             }
 
             case POST_FROM_PAGE_02:
                 const page02=action.value
 
                 return{
-                    format:{...state,page02}
+                   format:{ ...state,
+                    ...page02}
                 }
         
     }
+
+    return state
 }

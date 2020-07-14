@@ -6,8 +6,10 @@ import body02 from "../screens/body02";
 import list from "../screens/listScreen";
 import details from "../screens/deatilsScreen";
 import start from "../screens/startScreen"
+import loadScreen from "../screens/loadingScreen"
 
 const screenNavigator = (props) => {
+  
   const BodyStack = createStackNavigator();
   return (
     <NavigationContainer>
@@ -17,6 +19,8 @@ const screenNavigator = (props) => {
         <BodyStack.Screen name="details" component={details} />
         <BodyStack.Screen name="body01" component={body01} />
         <BodyStack.Screen name="body02" component={body02} />
+        <BodyStack.Screen name="loading" component={loadScreen} />
+
       </BodyStack.Navigator>
     </NavigationContainer>
   );

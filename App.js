@@ -4,9 +4,18 @@ import ScreenNav from "./navigations/screensNavigation"
 import colors from './colors';
 import{View} from "react-native"
 import{AppLoading} from 'expo'
-import {store} from "./store/rootReducer"
+import {store ,rrfProps} from "./store/rootReducer"
 import {Provider} from "react-redux"
 import {Piedra_400Regular ,useFonts} from '@expo-google-fonts/piedra'
+import {
+  ReactReduxFirebaseProvider,
+  
+} from 'react-redux-firebase'
+
+import {decode, encode} from 'base-64'
+if (!global.btoa) {  global.btoa = encode }
+if (!global.atob) { global.atob = decode }
+
 export default function App() {
 
   let [fontLoad]=useFonts({
@@ -17,6 +26,9 @@ export default function App() {
   }else
  { return (
    <Provider store={store}>
+     <ReactReduxFirebaseProvider
+     dispatch={store.dispatch}
+      {...rrfProps}>
     <View style={{flex:1,   backgroundColor: colors.background,}}>
       <ScreenNav/>
     
@@ -24,6 +36,7 @@ export default function App() {
       backgroundColor={colors.stateBar}
       style="auto" />
     </View>
+    </ReactReduxFirebaseProvider>
     </Provider>
   );}
 }

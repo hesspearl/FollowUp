@@ -17,6 +17,7 @@ const DropDown = (props) => {
         items={[
           { label: "beauty", value: "beauty" },
           { label: "clothes", value: "clothes" },
+          { label: "food", value: "food" },
           { label: "work", value: "work"},
           { label: "alimentations", value: "alimentations"},
           { label: "with friends", value: "with friends" },

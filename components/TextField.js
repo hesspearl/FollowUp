@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput, StyleSheet, View, Text } from "react-native";
 import colors from "../colors";
-import styled from "styled-components";
+
 
 const TextField = (props) => {
   

@@ -86,7 +86,7 @@ const Body02 = (props) => {
   });
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || stateInputs.inputValues.date;
+    const currentDate = selectedDate  || stateInputs.inputValues.date;
     setShow(false);
     //setDate(currentDate);
 
@@ -137,7 +137,7 @@ const Body02 = (props) => {
       <View style={styles.rowContain}>
         <View style={styles.background}>
           <Text style={{ fontSize: 30 }} onPress={() => setShow(true)}>
-            {moment.utc(stateInputs.inputValues.date).format("DD/MM/YYYY")}
+            {moment(stateInputs.inputValues.date).format("DD/MM/YYYY")}
           </Text>
         </View>
         <TouchableHighlight style={styles.background} onPress={choosePic}>
@@ -151,7 +151,7 @@ const Body02 = (props) => {
         <DatePicker
           testID="dateTimePicker"
           timeZoneOffsetInMinutes={0}
-          value={date}
+          value={stateInputs.inputValues.date}
           mode="date"
           is24Hour={true}
           display="default"

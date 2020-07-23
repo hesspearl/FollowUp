@@ -4,7 +4,7 @@ import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 const circleButton = (props) => {
   return (
     <TouchableOpacity onPress={props.onPress}>
-      <View style={{ ...styles.container, backgroundColor: props.color }}>
+      <View style={{ ...styles.container, backgroundColor: props.color, ...props.style }}>
         <Image style={styles.img} source={props.src} />
       </View>
     </TouchableOpacity>

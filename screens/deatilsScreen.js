@@ -9,16 +9,16 @@ const DetailsScreen= props =>{
 return (
     <View style={styles.container}>
     
-    <Text style={{...styles.title,fontSize:60}}>  {data.product}</Text>
+    <Text style={{...styles.title,fontSize:60}}>  {data.productName}</Text>
     
         
           <View style={styles.imageContainer}>
               <Image style={styles.image}
-               source={{ uri: data.picture }} />
+               source={{ uri: data.application.avatar }} />
             </View> 
-            <Text style={styles.title}>  {data.type}</Text>
+            <Text style={styles.title}>  {data.application.value}</Text>
             <Text style={styles.title}>  {data.date}</Text>
-            <Text style={styles.title}>  {data.price}</Text>
+            <Text style={styles.title}>  {data.spend}</Text>
 
             <View style={styles.rowContain}>
       <View style={styles.background}>
@@ -27,7 +27,7 @@ return (
          <Text
           style={styles.textInside}
       >
-      {data.important.type}
+      {data.important.value}
       </Text>
      
       </View>
@@ -35,7 +35,7 @@ return (
       <Text
       style={styles.textInside}
       >
-      {data.necessary.type}
+      {data.necessary.value}
       </Text>
       <View style={{...styles.colorCircle,
       backgroundColor:data.necessary.color}}/>
@@ -69,12 +69,12 @@ const styles= StyleSheet.create({
           imageContainer: {
             width: "80%",
             height: "24%",
-            
+            alignItems:"center"
             
           },
           image: {
-            width: '100%',
-            height: '100%',
+            width: 200,
+            height: 200,
            
           },
           rowContain:{

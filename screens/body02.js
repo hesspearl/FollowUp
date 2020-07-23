@@ -14,9 +14,9 @@ import DatePicker from "@react-native-community/datetimepicker";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import moment from "moment";
 import * as ImagePicker from "expo-image-picker";
-import { useDispatch , useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/format";
-
+import ObservationField from "../components/observitionField";
 
 const INPUTS_VALUES = "INPUTS_VALUES";
 const CHOICE = "CHOICE";
@@ -68,14 +68,14 @@ const inputReducer = (state, action) => {
 const necessary = ["yes", " no", "maybe"];
 
 const Body02 = (props) => {
-  const data = useSelector(state=>state.format)
-  console.log(data)
+  const data = useSelector((state) => state.format);
+  console.log(data);
 
   const [show, setShow] = useState(false);
 
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, {
     inputValues: {
-      date: new Date(),
+      date: moment().format("DD/MM/YYYY"),
       picture: "",
       observation: "",
       necessary: {
@@ -86,13 +86,14 @@ const Body02 = (props) => {
   });
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate  || stateInputs.inputValues.date;
+    const currentDate = selectedDate || stateInputs.inputValues.date;
     setShow(false);
-    //setDate(currentDate);
+
+    const newDate = moment(currentDate).format("DD/MM/YYYY");
 
     dispatchInputs({
       type: DATE,
-      value: currentDate,
+      value: newDate,
     });
   };
 
@@ -128,8 +129,7 @@ const Body02 = (props) => {
         stateInputs.inputValues.necessary
       )
     );
-   props.navigation.navigate("loading")
-
+    props.navigation.navigate("loading");
   };
 
   return (
@@ -137,7 +137,7 @@ const Body02 = (props) => {
       <View style={styles.rowContain}>
         <View style={styles.background}>
           <Text style={{ fontSize: 30 }} onPress={() => setShow(true)}>
-            {moment(stateInputs.inputValues.date).format("DD/MM/YYYY")}
+            {stateInputs.inputValues.date}
           </Text>
         </View>
         <TouchableHighlight style={styles.background} onPress={choosePic}>
@@ -151,28 +151,32 @@ const Body02 = (props) => {
         <DatePicker
           testID="dateTimePicker"
           timeZoneOffsetInMinutes={0}
-          value={stateInputs.inputValues.date}
+          value={new Date()}
           mode="date"
           is24Hour={true}
           display="default"
           onChange={onChange}
         />
       )}
-      <TextField
-        style={{
-          height: "30%",
-          marginBottom: 40,
-        }}
-        inputStyle={{ justifyContent: "flex-start" }}
+
+      <ObservationField
         onChangeText={(text) =>
           dispatchInputs({
             type: INPUTS_VALUES,
             value: text,
           })
         }
+      />
+      {/* <TextField
+        style={{
+          height: "30%",
+          marginBottom: 40,
+        }}
+        inputStyle={{ justifyContent: "flex-start" }}
+      
       >
-        observation
-      </TextField>
+      
+      </TextField> */}
 
       <SwitchSelector
         option={necessary}

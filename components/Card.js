@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   Image,
+  
 } from "react-native";
 import colors from "../colors"
 
@@ -12,7 +13,7 @@ const Cards = props => {
     <View style={styles.product}>
      
 
-          <View style={{flexDirection:"row",}}>
+          <View style={{flex:1, flexDirection:"row"}}>
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={{ uri: props.picture }} />
             </View>
@@ -21,9 +22,7 @@ const Cards = props => {
             
                 <Text style={styles.title}>  {props.product}</Text>
             
-              
-              <Text style={styles.report}>
-              - {props.type}-</Text>
+             
             </View>
 
           </View>
@@ -41,7 +40,9 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     borderBottomColor:"black",
     borderBottomWidth:2,
-    backgroundColor: colors.textBack
+    backgroundColor: colors.textBack,
+    elevation:10,
+    
 
   },
   touchable: {
@@ -49,14 +50,17 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   imageContainer: {
-    width: 100,
-    height: 100,
-flex:1,
-    margin:20
+    width: 80,
+    height: 80,
+   
+
+    margin:10
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width:80,
+    height: 80,
+  
+    borderRadius:50
    
   },
   details: {

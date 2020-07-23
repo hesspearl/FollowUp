@@ -8,8 +8,21 @@ import {
 } from "react-native";
 import Card from "../components/Card";
 import colors from "../colors";
+import{useSelector}from "react-redux"
+import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 
+
+const todosQuery = {
+  collection: 'Cards',
+  queryParams: [ 'orderByChild=createdAt' ]
+}
 const ListScreen = (props) => {
+  useFirestoreConnect(() => [todosQuery])
+
+  const cards =  useSelector(({ fireStore: { ordered } }) => ordered.Cards)
+
+console.log(cards)
+
   const data = [
     {
       product: "burger",
@@ -38,20 +51,21 @@ const ListScreen = (props) => {
   ];
   return (
     <View style={styles.container}>
+    
       <FlatList
         style={{ flex: 1 }}
-        data={data}
-        keyExtractor={(item, index) => index.toString()}
+        data={cards}
+        keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (
+          
           <TouchableOpacity
             onPress={() =>
-              props.navigation.navigate("details", { data: itemData.item })
+              props.navigation.navigate("details", { data: itemData.item.format })
             }
           >
             <Card
-              product={itemData.item.product}
-              type={itemData.item.type}
-              picture={itemData.item.picture}
+              product={itemData.item.format.productName}
+              picture={itemData.item.format.application.avatar}
             />
           </TouchableOpacity>
         )}

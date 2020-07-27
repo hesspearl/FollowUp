@@ -23,6 +23,7 @@
     "moment": "^2.27.0",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
+    "react-hook-form": "^6.0.8",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.0.tar.gz",
     "react-native-date-picker": "^2.7.12",
     "react-native-dropdown-picker": "^3.0.5",

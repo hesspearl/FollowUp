@@ -162,7 +162,7 @@ useEffect(() => {
 const styles = StyleSheet.create({
   container: { width: "80%", height: "5%" },
   title: {
-    fontSize: 30,
+    fontSize: 40,
     margin: 10,
     marginTop: 20,
     marginBottom: 15,

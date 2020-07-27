@@ -159,6 +159,19 @@ const Body02 = (props) => {
         />
       )}
 
+      <SwitchSelector
+        option={necessary}
+        onPress={(value) =>
+          dispatchInputs({
+            type: CHOICE,
+            value: value.value,
+            color: value.color,
+          })
+        }
+      >
+        is it necessary?
+      </SwitchSelector>
+
       <ObservationField
         onChangeText={(text) =>
           dispatchInputs({
@@ -178,18 +191,7 @@ const Body02 = (props) => {
       
       </TextField> */}
 
-      <SwitchSelector
-        option={necessary}
-        onPress={(value) =>
-          dispatchInputs({
-            type: CHOICE,
-            value: value.value,
-            color: value.color,
-          })
-        }
-      >
-        is it necessary?
-      </SwitchSelector>
+     
 
       <FinishButton onPress={finishHandler} />
     </View>

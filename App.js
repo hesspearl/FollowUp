@@ -11,6 +11,7 @@ import {
   ReactReduxFirebaseProvider,
   
 } from 'react-redux-firebase'
+import{Provider as ProviderPaper} from "react-native-paper"
 
 import {decode, encode} from 'base-64'
 if (!global.btoa) {  global.btoa = encode }
@@ -29,6 +30,7 @@ export default function App() {
      <ReactReduxFirebaseProvider
      dispatch={store.dispatch}
       {...rrfProps}>
+      <ProviderPaper>
     <View style={{flex:1,   backgroundColor: colors.background,}}>
       <ScreenNav/>
     
@@ -36,6 +38,7 @@ export default function App() {
       backgroundColor={colors.stateBar}
       style="auto" />
     </View>
+    </ProviderPaper>
     </ReactReduxFirebaseProvider>
     </Provider>
   );}

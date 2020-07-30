@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import TextField from "../components/TextField";
 import SwitchSelector from "../components/SwitchSelector";
 import colors from "../colors";
@@ -8,7 +8,8 @@ import { AntDesign } from "@expo/vector-icons";
 import DropDown from "../components/DropDown";
 import {useDispatch} from "react-redux"
 import * as actions from "../store/actions/format"
-
+import { useForm, Controller } from "react-hook-form";
+import { onChange } from "react-native-reanimated";
 
 const INPUTS_VALUES = "INPUTS_VALUES";
 const CHOICE = "CHOICE";
@@ -24,8 +25,14 @@ const inputReducer = (state, action) => {
         ...state.inputValues,
         [action.input]: action.value,
       };
+      const updateValidity = {
+        ...state.inputValidation,
+        [action.input]: action.isValid,
+      };
       return {
+        ...state,
         inputValues: updateValues,
+        inputValidation:updateValidity
       };
 
     case DROP:
@@ -34,6 +41,7 @@ const inputReducer = (state, action) => {
         application: action.value,
       };
       return {
+        ...state,
         inputValues: updateDrop,
       };
     case CHOICE:
@@ -45,6 +53,7 @@ const inputReducer = (state, action) => {
         },
       };
       return {
+        ...state,
         inputValues: updateChoice,
       };
   }
@@ -58,16 +67,29 @@ const Body01 = (props) => {
   const [stateInput, dispatchInput] = useReducer(inputReducer, {
     inputValues: {
       productName: "",
-      application: "",
+      application: "other",
       spend: "",
       important: {
-        value: "",
-        color: "",
+        value: "low",
+        color: "green",
       },
-    },
-  });
+    }
+  ,
+    inputValidation:{
+      productName: false,
+      application: true,
+      spend: false,
+      important: {
+        value:true,
+        color: true,
+      },
+    
+  }});
 
+  
   const dispatch = useDispatch()
+
+ 
   
   const swiping=() =>{
 
@@ -82,11 +104,16 @@ const Body01 = (props) => {
      props.navigation.navigate("body02")
   }
 
+  
   const inputTextHolder = (inputIdentifier, text) => {
+    let isValid= false
+    if ( text.trim().length>0){
+      isValid=true
+    }
     dispatchInput({
       type: INPUTS_VALUES,
       value: text,
-
+isValid:isValid,
       input: inputIdentifier,
     });
   };
@@ -98,13 +125,15 @@ const Body01 = (props) => {
 
   return (
     <View style={styles.container}>
+      
       <TextField
         onChangeText={inputTextHolder.bind(this, "productName")}
         // value={stateInput.inputValues.productName}
       >
         Product Name
       </TextField>
-
+      {/* { !stateInput.inputValidation.productName && <Text
+      style={{marginTop:60, fontSize:30}}>please add product name</Text>} */}
       
       <DropDown
         onChangeItem={(item) =>
@@ -142,7 +171,8 @@ const Body01 = (props) => {
         width={"90%"}
         titleFontSize={30}
         title="Slide to Next"
-        onSwipeSuccess={ swiping }
+        onSwipeSuccess={ swiping  }
+       
         shouldResetAfterSuccess={true}
       />
     </View>

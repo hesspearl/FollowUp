@@ -16,7 +16,8 @@ const TextField = (props) => {
         onChangeText={props.onChangeText}
         value={props.value }
         keyboardType={props.keyboardType}
-        
+        onBlur={props.onBlur}
+        ref={props.ref}
       />
     </View>
      

@@ -5,7 +5,7 @@ const circleButton = (props) => {
   return (
     <TouchableOpacity onPress={props.onPress}>
       <View style={{ ...styles.container, backgroundColor: props.color, ...props.style }}>
-        <Image style={styles.img} source={props.src} />
+        <Image style={{...styles.img,...props.img}} source={props.src} />
       </View>
     </TouchableOpacity>
   );

@@ -1,11 +1,11 @@
 import React, { useReducer } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import TextField from "../components/TextField";
-import SwitchSelector from "../components/SwitchSelector";
+import { View, StyleSheet, ScrollView , KeyboardAvoidingView, Image } from "react-native";
+import TextField from "../components/customComp/TextField";
+import SwitchSelector from "../components/screen Components/SwitchSelector";
 import colors from "../colors";
 import SwipeButton from "rn-swipe-button";
 import { AntDesign } from "@expo/vector-icons";
-import DropDown from "../components/DropDown";
+import DropDown from "../components/screen Components/DropDown";
 import {useDispatch} from "react-redux"
 import * as actions from "../store/actions/format"
 import { useForm, Controller } from "react-hook-form";
@@ -29,8 +29,12 @@ const inputReducer = (state, action) => {
         ...state.inputValidation,
         [action.input]: action.isValid,
       };
+
+      let updateFormIsValid=true
+       for(const key in updateValidity)
+       updateFormIsValid=updateFormIsValid && updateValidity[key]
       return {
-        ...state,
+        formIsValid:updateFormIsValid,
         inputValues: updateValues,
         inputValidation:updateValidity
       };
@@ -83,15 +87,20 @@ const Body01 = (props) => {
         value:true,
         color: true,
       },
-    
-  }});
+ 
+  }
+, formIsValid:false});
 
   
   const dispatch = useDispatch()
 
- 
+ console.log(stateInput)
   
   const swiping=() =>{
+    if(!stateInput.formIsValid){
+      alert("Don't leave field empty please")
+      return
+    }
 
     dispatch(actions.inputsPage1(
       stateInput.inputValues.productName,
@@ -119,11 +128,17 @@ isValid:isValid,
   };
 
   const triangle = () => {
-    return <AntDesign name="caretright" size={50} color={colors.buttons} />;
+    return <Image 
+     style={{width:40,height:40, transform:[{rotate:"28deg"}]}}
+    source={{uri:"https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/8c0825cdd6f63c6ab92534cd4077bf46/arrow_poiting_down_no_background.png"}}
+     />;
   };
 
 
   return (
+    <KeyboardAvoidingView behavior="height" style={{flex:1}}
+    >
+    <ScrollView>
     <View style={styles.container}>
       
       <TextField
@@ -166,7 +181,7 @@ isValid:isValid,
       <SwipeButton
         railFillBackgroundColor="white" //(Optional)npm install redux
         thumbIconComponent={triangle}
-        thumbIconBackgroundColor="#FFFFFF"
+        thumbIconBackgroundColor={colors.icons}
         railBackgroundColor={colors.buttons} //(Optional)
         width={"90%"}
         titleFontSize={30}
@@ -176,6 +191,8 @@ isValid:isValid,
         shouldResetAfterSuccess={true}
       />
     </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

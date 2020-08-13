@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import colors from "../colors";
+import colors from "../../colors";
 
 const finishButton = (props) => {
   return (

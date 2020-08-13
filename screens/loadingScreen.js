@@ -17,6 +17,7 @@ const LoadingScreen = (props) => {
     props.navigation.navigate("start");
   }, [data, firestore]);
 
+ return  <View/>
  
 };
 

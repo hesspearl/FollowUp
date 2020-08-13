@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import colors from "../colors";
-import WavyHeader from "../components/wavyHeader";
-import CircleButton from "../components/CircleButton";
+import WavyHeader from "../components/screen Components/wavyHeader";
+import CircleButton from "../components/customComp/CircleButton";
 
 const startScreen = (props) => {
   return (
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     bottom: 0,
 
     width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height/2
   },
 });
 export default startScreen;

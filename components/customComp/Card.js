@@ -6,7 +6,7 @@ import {
   Image,
   
 } from "react-native";
-import colors from "../colors"
+import colors from "../../colors"
 
 const Cards = props => {
    return (

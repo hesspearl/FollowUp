@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FAB, Portal, Provider } from "react-native-paper";
 import { View, Text, StyleSheet, Animated, Easing } from "react-native";
-import CircleButton from "../components/CircleButton";
-import colors from "../colors"
+import CircleButton from "../customComp/CircleButton";
+import colors from "../../colors"
 
 const fab = (props) => {
   
@@ -82,7 +82,9 @@ src={{uri:"https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/
             { translateY: positionDelete }],
         }}
     >
-       <CircleButton style={styles.container}
+       <CircleButton
+       onPress={props.nextPage}
+        style={styles.container}
        img={styles.img}
        src={{uri:"https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/1812944bc0f48c288cee3b58267b9fac/correcao.png"}}
      />
@@ -100,8 +102,8 @@ const styles = StyleSheet.create({
     height: 45,
   },
   img:{
-width:30,
-height:30
+width:25,
+height:25
   }
 });
 export default fab;

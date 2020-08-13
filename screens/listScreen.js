@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import Card from "../components/Card";
+import Card from "../components/customComp/Card";
 import colors from "../colors";
 import{useSelector}from "react-redux"
 import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
@@ -46,6 +46,7 @@ const ListScreen = (props) => {
           </TouchableOpacity>
         )}
       />
+  
       <View style={styles.fab}>
         <TouchableOpacity onPress={() => props.navigation.navigate("body01")}>
           <Text style={{ fontSize: 100, fontFamily: "Piedra" }}>+</Text>

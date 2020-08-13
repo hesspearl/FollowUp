@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import colors from "../colors";
+import colors from "../../colors";
 
 const wavyHeader = (props) => {
   return (
@@ -27,13 +27,12 @@ const wavyHeader = (props) => {
 
 const styles = StyleSheet.create({
   wave: {
-    width: "100%",
-    height: 500,
+    flex:1,
     backgroundColor: colors.textBack,
   },
   svg: {
     position: "absolute",
-    bottom: 400,
+    bottom:  Dimensions.get("window").height/2-75
   },
 });
 export default wavyHeader;

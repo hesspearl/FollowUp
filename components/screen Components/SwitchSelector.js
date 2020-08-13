@@ -1,5 +1,5 @@
 import React from "react";
-import colors from "../colors";
+import colors from "../../colors";
 import SwitchSelector from "react-native-switch-selector";
 import { Text, View } from "react-native";
 

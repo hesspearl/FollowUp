@@ -2,13 +2,14 @@ import React, { useState, useReducer } from "react";
 import {
   View,
   Text,
-  Button,
+  ScrollView,
+  KeyboardAvoidingView,
   StyleSheet,
   TouchableHighlight,
 } from "react-native";
-import TextField from "../components/TextField";
-import SwitchSelector from "../components/SwitchSelector";
-import FinishButton from "../components/finishButton";
+import TextField from "../components/customComp/TextField";
+import SwitchSelector from "../components/screen Components/SwitchSelector";
+import FinishButton from "../components/customComp/finishButton";
 import colors from "../colors";
 import DatePicker from "@react-native-community/datetimepicker";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -16,7 +17,8 @@ import moment from "moment";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/format";
-import ObservationField from "../components/observitionField";
+import ObservationField from "../components/screen Components/observitionField";
+import DateCalender from "../components/customComp/dateCalender"
 
 const INPUTS_VALUES = "INPUTS_VALUES";
 const CHOICE = "CHOICE";
@@ -79,23 +81,13 @@ const Body02 = (props) => {
       picture: "",
       observation: "",
       necessary: {
-        value: "",
-        color: "",
+        value: "yes",
+        color: "green",
       },
     },
   });
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || stateInputs.inputValues.date;
-    setShow(false);
 
-    const newDate = moment(currentDate).format("DD/MM/YYYY");
-
-    dispatchInputs({
-      type: DATE,
-      value: newDate,
-    });
-  };
 
   const choosePic = async () => {
     try {
@@ -133,6 +125,10 @@ const Body02 = (props) => {
   };
 
   return (
+    <KeyboardAvoidingView
+    behavior="height" style={{flex:1}}
+    >
+    
     <View style={styles.container}>
       <View style={styles.rowContain}>
         <View style={styles.background}>
@@ -148,15 +144,17 @@ const Body02 = (props) => {
       </View>
 
       {show && (
-        <DatePicker
-          testID="dateTimePicker"
-          timeZoneOffsetInMinutes={0}
-          value={new Date()}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-        />
+       
+
+< DateCalender
+             value={new Date()}
+             open={setShow}
+             newDate={value=>dispatchInputs({
+      type: DATE,
+      value: value,
+    })
+    }
+           />
       )}
 
       <SwitchSelector
@@ -195,6 +193,8 @@ const Body02 = (props) => {
 
       <FinishButton onPress={finishHandler} />
     </View>
+  
+    </KeyboardAvoidingView>
   );
 };
 

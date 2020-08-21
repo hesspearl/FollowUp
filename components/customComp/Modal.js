@@ -47,8 +47,8 @@ const ModalComp= props =>{
             "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f12220cda1b8281626dd2e5/413fe0062708bdd3cec55a6dd053e43a/alimentation_-_supermarket.PNG",
         },
         {
-          label: "eduction",
-          value: "eduction",
+          label: "education",
+          value: "education",
           avatar:
             "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f12220cda1b8281626dd2e5/2a3f1df4d53ac9c7950eb3d23434a2f7/Education.PNG",
         },

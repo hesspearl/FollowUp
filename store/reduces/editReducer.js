@@ -9,8 +9,6 @@ export const DATE = "DATE";
 export const init=(data)=>{
 
 const initial={
-
-
      inputValues: {
       date:data.date,
       picture:data.picture,
@@ -31,13 +29,13 @@ const initial={
       },
     },
     inputValidation:{
-      productName: false,
+      productName:data.productName? true: false,
       observation:true,
-      spend: false,
+      spend:data.spend? true: false,
       
   
   },
-  formIsValid:false
+  formIsValid:true
     }
 
 return initial}
@@ -94,6 +92,7 @@ export const  inputReducer = (state, action) => {
         date: action.value,
       };
       return {
+        ...state,
         inputValues: updateDate,
       };
     case CHOICE:
@@ -105,6 +104,7 @@ export const  inputReducer = (state, action) => {
         },
       };
       return {
+        ...state,
         inputValues: updateChoice,
       };
     case PICTURE:
@@ -113,6 +113,7 @@ export const  inputReducer = (state, action) => {
         picture: action.value,
       };
       return {
+        ...state,
         inputValues: updatePic,
       };
   }

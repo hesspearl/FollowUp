@@ -7,6 +7,7 @@ import{AppLoading} from 'expo'
 import {store ,rrfProps} from "./store/rootReducer"
 import {Provider} from "react-redux"
 import {Piedra_400Regular ,useFonts} from '@expo-google-fonts/piedra'
+import {Spartan_400Regular, Spartan_700Bold} from '@expo-google-fonts/spartan'
 import {
   ReactReduxFirebaseProvider,
   
@@ -20,7 +21,9 @@ if (!global.atob) { global.atob = decode }
 export default function App() {
 
   let [fontLoad]=useFonts({
-"Piedra":Piedra_400Regular
+"Piedra":Piedra_400Regular,
+"Spartan":Spartan_400Regular,
+"SpartanBold":Spartan_700Bold
   })
   if (!fontLoad) {
     return <AppLoading />;

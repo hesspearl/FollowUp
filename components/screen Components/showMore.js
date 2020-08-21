@@ -7,7 +7,7 @@ const ShowMore = (props) => {
     const [show, setShow] = useState(false)
   return (
     <>
-      <TouchableOpacity onPress={()=>setShow(!show)}>
+      {/* <TouchableOpacity onPress={()=>setShow(!show)}>
         <View style={styles.show}>
           <Text style={styles.txtDescribe}> Show more</Text>
           <AntDesign
@@ -17,10 +17,11 @@ const ShowMore = (props) => {
             style={{ marginLeft: 10 }}
           />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
-    {show&& <View style={styles.field}>
-        <View style={{ flexDirection: "row", marginVertical: 10 }}>
+     <View style={styles.field}>
+    <Text style={styles.text}> Observation</Text>
+        <View style={{ flexDirection: "row", }}>
           {props.observation.length > 0 ? (
             <Image
               style={styles.img}
@@ -38,15 +39,15 @@ const ShowMore = (props) => {
               }}
             />
           )}
-
-          <Text style={styles.text}> observation</Text>
+<View style={{}}>
+         
+            {props.children}
+          
         </View>
-        <View>
-          <Text style={{ ...styles.txtDescribe, marginVertical: 10 }}>
-            {props.observation}
-          </Text>
+           
         </View>
-      </View>}
+        
+      </View>
     </>
   );
 };
@@ -54,7 +55,7 @@ const ShowMore = (props) => {
 const styles = StyleSheet.create({
   show: {
     flexDirection: "row",
-    justifyContent: "center",
+   justifyContent: "center",
     alignItems: "center",
     paddingVertical: 20,
     borderBottomWidth: 1,
@@ -66,17 +67,19 @@ const styles = StyleSheet.create({
   field: {
     marginVertical: 20,
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+ //   justifyContent: "center",
+    //alignItems: "center",
+    paddingLeft:20
   },
   img: {
-    width: 43,
-    height: 43,
+    width:40,
+    height: 40,
     alignSelf: "flex-end",
+    marginBottom:10
   },
   text: {
-    fontSize: 40,
-    marginLeft: 15,
+    fontSize: 30,
+    //marginLeft: 15,
     fontFamily: "Piedra",
   },
 });

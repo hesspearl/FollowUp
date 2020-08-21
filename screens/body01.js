@@ -64,9 +64,11 @@ const inputReducer = (state, action) => {
   return state;
 };
 
-const important = ["low", " average", "high"];
+const important = ["high", " average","low"];
 
 const Body01 = (props) => {
+
+ 
 
   const [stateInput, dispatchInput] = useReducer(inputReducer, {
     inputValues: {
@@ -74,7 +76,7 @@ const Body01 = (props) => {
       application: "other",
       spend: "",
       important: {
-        value: "low",
+        value: "high",
         color: "green",
       },
     }
@@ -94,7 +96,7 @@ const Body01 = (props) => {
   
   const dispatch = useDispatch()
 
- console.log(stateInput)
+
   
   const swiping=() =>{
     if(!stateInput.formIsValid){

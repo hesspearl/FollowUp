@@ -20,7 +20,10 @@ const Cards = props => {
 
             <View style={styles.details} >
             
-                <Text style={styles.title}>  {props.product}</Text>
+                <Text 
+                numberOfLines={1}
+                 ellipsizeMode='tail'
+                style={styles.title}>  {props.product}</Text>
             
              
             </View>

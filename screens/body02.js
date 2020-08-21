@@ -67,7 +67,7 @@ const inputReducer = (state, action) => {
   return state;
 };
 
-const necessary = ["yes", " no", "maybe"];
+const necessary = ["yes", "maybe", " no"];
 
 const Body02 = (props) => {
   const data = useSelector((state) => state.format);
@@ -87,7 +87,7 @@ const Body02 = (props) => {
     },
   });
 
-
+  console.log(stateInputs.inputValues.necessary)
 
   const choosePic = async () => {
     try {

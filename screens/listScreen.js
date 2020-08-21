@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   FlatList,
@@ -8,35 +8,67 @@ import {
 } from "react-native";
 import Card from "../components/customComp/Card";
 import colors from "../colors";
-import{useSelector}from "react-redux"
-import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
-
+import { useSelector } from "react-redux";
+import { useFirestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
+import BottomSheet from "reanimated-bottom-sheet";
+import DetailsScreen from "./deatilsScreen";
 
 const todosQuery = {
-  collection: 'Cards',
-  queryParams: [ 'orderByChild=createdAt' ]
-}
+  collection: "Cards",
+  queryParams: ["orderByChild=createdAt"],
+};
 const ListScreen = (props) => {
-  useFirestoreConnect(() => [todosQuery])
+  const [cardsData, setData] = useState();
+  useFirestoreConnect(() => [todosQuery]);
 
-  const cards =  useSelector(({ fireStore: { ordered } }) =>
-   ordered.Cards)
+  const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
 
+  const ref = useRef();
 
+  const pressed = (item) => {
+    ref.current.snapTo(1);
 
+    setData({
+      data: item.format,
+      id: item.id,
+    });
+  };
 
+  const renderInner = () => {
+    {
+      if (cardsData)
+        return (
+          <DetailsScreen
+            data={cardsData.data}
+            id={cardsData.id}
+            refTo={ref}
+            navigation={props.navigation}
+          />
+        );
+    }
+
+    return <View />;
+  };
+
+  const renderHeader = () => (
+    <View style={styles.header}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  );
   return (
     <View style={styles.container}>
-    
       <FlatList
         style={{ flex: 1 }}
         data={cards}
         keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (
-          
           <TouchableOpacity
-            onPress={() =>
-              props.navigation.navigate("details", { data: itemData.item.format , id:itemData.item.id})
+            onPress={
+              () => pressed(itemData.item)
+
+              //props.navigation.navigate("details", { , })
             }
           >
             <Card
@@ -46,7 +78,13 @@ const ListScreen = (props) => {
           </TouchableOpacity>
         )}
       />
-  
+      <BottomSheet
+        ref={ref}
+        snapPoints={[500, 350, 0]}
+        renderContent={renderInner}
+        renderHeader={renderHeader}
+        initialSnap={2}
+      />
       <View style={styles.fab}>
         <TouchableOpacity onPress={() => props.navigation.navigate("body01")}>
           <Text style={{ fontSize: 100, fontFamily: "Piedra" }}>+</Text>
@@ -72,6 +110,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.fab,
+  },
+  header: {
+    backgroundColor: colors.bottomSheet,
+    shadowColor: "#000000",
+    paddingTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  panelHeader: {
+    alignItems: "center",
+  },
+  panelHandle: {
+    width: 40,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#00000040",
+    marginBottom: 10,
   },
 });
 export default ListScreen;

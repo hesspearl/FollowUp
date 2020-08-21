@@ -992,6 +992,11 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/piedra/-/piedra-0.1.0.tgz#e76ee30614e1e33546e3400f963a292037565b61"
   integrity sha512-HZ57uRbsOirLY04PB8PWp4q0V6xHoMzgUfVb0vpx1pW7TFupxAZfgzCp2M607mEkkYwxGpnpmrKYd5kGvIQ26g==
 
+"@expo-google-fonts/spartan@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/spartan/-/spartan-0.1.0.tgz#8cd0083cbbd2f689d3a695efa573f7bd0e518353"
+  integrity sha512-q1g9tzh6ht/+AxNeQyfxkq30O47sXbIgr//CLwhtck3eQ94yRBWguWHrJPzGEuuTlvZ2yBwCgE2H2njyqHs4Xw==
+
 "@expo/vector-icons@^10.0.0", "@expo/vector-icons@^10.0.2":
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-10.2.0.tgz#3c70656683a6a873e18efc00bc61fc160a80dc55"

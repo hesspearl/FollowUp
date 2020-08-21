@@ -1,147 +1,196 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
-import { useSelector } from "react-redux";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from "react-native";
 import { useFirestore, isLoaded } from "react-redux-firebase";
-import Fab from "../components/screen Components/FAB";
 import colors from "../colors";
-import ShowMore from "../components/screen Components/showMore";
-import Lights from "../components/customComp/lights";
+import TitleText from "../components/customComp/titleText";
+import CircleButton from "../components/customComp/CircleButton";
+
+import {
+  ImportantLabels,
+  NecessaryLabels,
+} from "../components/screen Components/Labels";
 
 const DetailsScreen = (props) => {
   const firestore = useFirestore();
-  const { data, id } = props.route.params;
+  const { data, id, refTo } = props;
 
-  const card = useSelector(
-    ({ fireStore: { data } }) => data.Cards && data.Cards[id]
-  );
+ 
+ console.log(data.productName)
+ 
 
-  //console.log(id);
-
-  function toggleDone() {
-    firestore.update(`Cards/${id}`, { done: card.one });
-  }
+  const edit = () => {
+    refTo.current.snapTo(2);
+    props.navigation.navigate("Edit", { dataId: data, id: id });
+  };
 
   const deleteCard = () => {
     firestore.delete(`Cards/${id}`);
-    props.navigation.goBack();
+    refTo.current.snapTo(2);
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Text style={{ ...styles.title, fontSize: 60 }}>
-          {data.productName}
-        </Text>
-
-        <Image style={styles.image} source={{ uri: data.application.avatar }} />
+  
+      <View style={{ ...styles.content, marginTop: 20 }}>
+        <CircleButton
+          onPress={deleteCard}
+          img={{ width: 40, height: 40 }}
+          style={styles.icons}
+          src={{
+            uri:
+              "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/827eaeb69a6d09069231ac25c8021a30/lixo.png",
+          }}
+        />
+        <View style={{elevation:10 }}>
+           <Image style={styles.image} source={{ uri: data.application.avatar }} />
+        </View>
+        
+        <CircleButton
+          onPress={edit}
+          img={{ width: 40, height: 40 }}
+          style={styles.icons}
+            
+          src={{
+            uri:
+              "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/1812944bc0f48c288cee3b58267b9fac/correcao.png",
+          }}
+        />
       </View>
 
-      <ScrollView style={{ width: "100%" }}>
-        <View style={styles.titlesContain}>
-          <View style={{ position: "absolute", top: 0, right: 20 }}>
-            <Fab
-              delete={deleteCard}
-              nextPage={() =>
-                props.navigation.navigate("Edit", { dataId: data })
-              }
-            />
-          </View>
-          <Text style={styles.title}> {data.application.value}</Text>
-          <Text style={styles.title}> {data.date}</Text>
-          <Text style={styles.title}> {data.spend}</Text>
-        </View>
-
+      <View style={styles.imageContainer}>
+       
+        <Text
+        numberOfLines={1} ellipsizeMode='tail'
+         style={{ ...styles.title, fontSize: 35 , fontFamily:"SpartanBold"}}>
+          {data.productName}
+        </Text>
+        <Text style={{...styles.title, marginBottom:20, fontSize:20}}> {data.spend}</Text>
+      </View>
+      <View style={styles.contentContainer}>
         <View style={styles.rowContain}>
-          <Lights title="Important level" color={data.important.color}>
-            <Text style={styles.textInside}>{data.important.value}</Text>
-          </Lights>
-
-          <Lights title="Necessary?" color={data.necessary.color}>
-            <Text style={styles.textInside}>{data.necessary.value}</Text>
-          </Lights>
+          <ImportantLabels type={data.important.value} />
+          <NecessaryLabels type={data.necessary.value} />
         </View>
 
-        <ShowMore observation={data.observation} />
-      </ScrollView>
+
+        
+        <View style={styles.content}>
+        <View style={{flexDirection:"column", width:"40%"}}>
+           <View >
+            <TitleText title="Date" />
+            <Text style={styles.title}> {data.date}</Text>
+          </View>
+          <View>
+            <TitleText title="Application" />
+            <Text style={styles.title}> {data.application.value}</Text>
+          </View>
+        </View>
+      
+         
+
+        <View style={{flexDirection:"column", width:"40%"}}>
+         
+          
+          <View>
+            <TitleText title="Attachment" />
+            <Text style={styles.note}>add an attachment </Text>
+          </View>
+
+          <View style={{marginBottom:20}}>
+          <TitleText title="Observation" />
+      
+            
+            {data.observation.length === 0 ? (
+              <Text style={styles.note}>add an observation </Text>
+            ) : (
+              <Text style={{ ...styles.title, width: 200 }}>
+                {" "}
+                {data.observation}
+              </Text>
+            )}
+         
+            
+          </View>
+        </View>
+        </View>
+      </View>
+      
     </View>
   );
 };
 
+
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.background,
+    //height: "80%",
+    width: "100%",
+    backgroundColor: colors.bottomSheet,
     //marginTop: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   title: {
-    fontFamily: "Piedra",
-    fontSize: 40,
-    margin: 15,
+    fontFamily: "Spartan",
+    fontSize: 15,
+   // marginVertical:5
   },
   imageContainer: {
-    width: "100%",
+    width: "90%",
     // height: "50%",
     alignItems: "center",
     borderBottomWidth: 1,
-    padding: 20,
+    borderBottomColor: colors.border,
+    // padding:10
   },
   image: {
-    width: 200,
-    height: 200,
-    borderRadius: 30,
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    
   },
-  rowContain: {
+  content: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    margin:10
+  },
+
+  contentContainer: {
     flexDirection: "column",
+    alignItems: "center",
+    width: "100%",
+    margin: 20,
+  },
+
+  rowContain: {
+    flexDirection: "row",
     width: "100%",
     // height: "20%",
     alignItems: "flex-end",
     //margin:10,
-    borderBottomWidth: 1,
+
     paddingBottom: 20,
-    //  justifyContent:"flex-start",
+    justifyContent: "space-between",
   },
-  background: {
-    flexDirection: "row",
-    borderRadius: 50,
-    marginTop: 10,
-    backgroundColor: colors.textBack,
-    padding: 10,
-    width: "40%",
-    alignItems: "center",
-    //justifyContent: "space-around",
+  note: {
+    fontFamily: "Spartan",
+    fontSize: 15,
+    width: 300,
+    color: colors.editable,
+    // marginVertical:5,
+     
+   
   },
-  colorCircle: {
-    borderRadius: 50,
-    height: 50,
-    width: 50,
-  },
-  textbox: {
-    backgroundColor: colors.textBack,
-    width: "100%",
-    height: "25%",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 20,
-    margin: 10,
-  },
-  textInside: {
-    fontSize: 27,
-    fontFamily: "Piedra",
-    marginLeft: 20,
-  },
-  titlesContain: {
-    //borderTopWidth: 1,
-    borderBottomWidth: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 20,
-  },
-  txtDescribe: {
-    fontSize: 30,
-    fontFamily: "Piedra",
-  },
+
+  icons:{ width: 55,
+     height: 55, 
+     backgroundColor: colors.icons , 
+     borderWidth:0 }
 });
 export default DetailsScreen;

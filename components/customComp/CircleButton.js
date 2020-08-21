@@ -1,13 +1,17 @@
 import React from "react";
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
-
+import { View, Image, StyleSheet } from "react-native";
+import {TouchableOpacity} from "react-native-gesture-handler"
 const circleButton = (props) => {
+
+
   return (
-    <TouchableOpacity onPress={props.onPress}>
+    <TouchableOpacity onPress={props.onPress}
+    enabledContentTapInteraction={false}>
       <View style={{ ...styles.container, backgroundColor: props.color, ...props.style }}>
         <Image style={{...styles.img,...props.img}} source={props.src} />
       </View>
     </TouchableOpacity>
+  
   );
 };
 

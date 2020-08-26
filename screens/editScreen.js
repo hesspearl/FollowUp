@@ -77,7 +77,7 @@ const EditScreen = (props) => {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}
-   
+    behavior="height"
         >
       <View style={styles.container}>
         <View style={styles.imageContainer}>
@@ -184,10 +184,10 @@ const EditScreen = (props) => {
               />
             </Observation>
           </View>
-           
+          
         </ScrollView>
 
-       <FAB
+        <FAB
           style={styles.fab}
           icon={() => <AntDesign name="check" size={27} color="black" />}
           onPress={submit}
@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
+    marginHorizontal:20,
     fontFamily: "Piedra",
     fontSize: 40,
     margin: 15,
@@ -253,9 +254,9 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 100,
-position: "absolute",
+position: "relative",
     margin: 16,
-    right:"40%",
+    left:0,
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",

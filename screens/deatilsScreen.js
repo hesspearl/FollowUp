@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useRef, useState} from "react";
 import {
   View,
   Text,
@@ -8,8 +8,9 @@ import {
 import { useFirestore, isLoaded } from "react-redux-firebase";
 import colors from "../colors";
 import TitleText from "../components/customComp/titleText";
+import ToolTip from "../components/customComp/tooltip"
 import CircleButton from "../components/customComp/CircleButton";
-
+import {TouchableOpacity} from "react-native-gesture-handler"
 import {
   ImportantLabels,
   NecessaryLabels,
@@ -18,9 +19,10 @@ import {
 const DetailsScreen = (props) => {
   const firestore = useFirestore();
   const { data, id, refTo } = props;
-
+  const ref2 = useRef()
+  const ref = useRef()
  
- console.log(data.productName)
+ console.log(ref.current)
  
 
   const edit = () => {
@@ -63,12 +65,22 @@ const DetailsScreen = (props) => {
       </View>
 
       <View style={styles.imageContainer}>
-       
-        <Text
+      <ToolTip
+      forwardRef={ref}
+      tip={data.productName}
+      >
+      <TouchableOpacity onLongPress={()=>ref.current.toggleTooltip()}>
+           <Text
         numberOfLines={1} ellipsizeMode='tail'
          style={{ ...styles.title, fontSize: 35 , fontFamily:"SpartanBold"}}>
           {data.productName}
         </Text>
+      </TouchableOpacity>
+      
+    
+      </ToolTip>
+          
+      
         <Text style={{...styles.title, marginBottom:20, fontSize:20}}> {data.spend}</Text>
       </View>
       <View style={styles.contentContainer}>
@@ -108,10 +120,20 @@ const DetailsScreen = (props) => {
             {data.observation.length === 0 ? (
               <Text style={styles.note}>add an observation </Text>
             ) : (
-              <Text style={{ ...styles.title, width: 200 }}>
+              <ToolTip
+              
+      forwardRef={ref2}
+      tip= {data.observation}
+      >
+      <TouchableOpacity onLongPress={()=>ref2.current.toggleTooltip()}>
+        <Text
+                numberOfLines={2} ellipsizeMode='tail'
+                 style={{ ...styles.title, width: 180 }}>
                 {" "}
                 {data.observation}
               </Text>
+      </TouchableOpacity>
+              </ToolTip>
             )}
          
             

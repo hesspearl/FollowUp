@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { useFirestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import BottomSheet from "reanimated-bottom-sheet";
 import DetailsScreen from "./deatilsScreen";
+import ToolTip from "../components/customComp/tooltip"
 
 const todosQuery = {
   collection: "Cards",
@@ -24,7 +25,7 @@ const ListScreen = (props) => {
   const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
 
   const ref = useRef();
-
+  const refTool = useRef()
   const pressed = (item) => {
     ref.current.snapTo(1);
 
@@ -64,20 +65,29 @@ const ListScreen = (props) => {
         data={cards}
         keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (
+          <>
+      
           <TouchableOpacity
             onPress={
               () => pressed(itemData.item)
 
               //props.navigation.navigate("details", { , })
             }
+            onLongPress={()=>refTool.current.toggleTooltip()}
           >
             <Card
               product={itemData.item.format.productName}
               picture={itemData.item.format.application.avatar}
             />
           </TouchableOpacity>
+          <ToolTip
+      forwardRef={refTool}
+      tip={itemData.item.format.productName}
+      />
+          </>
         )}
       />
+      <ToolTip/>
       <BottomSheet
         ref={ref}
         snapPoints={[500, 350, 0]}

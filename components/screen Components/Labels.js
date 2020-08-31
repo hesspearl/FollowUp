@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     borderRadius: 11,
+    
   },
   textInside: {
     fontSize: 17,

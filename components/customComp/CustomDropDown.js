@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 
-
 const DropDownComp = (props) => {
   const [visible, setVisible] = useState(false);
 
@@ -23,7 +22,7 @@ const DropDownComp = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <Modal
         animationType="fade"
         transparent={true}
@@ -31,26 +30,16 @@ const DropDownComp = (props) => {
         presentationStyle="overFullScreen"
         onRequestClose={() => setVisible(false)}
       >
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          {options.map((i, index) => (
-            <View
-              style={{
-                width: "60%",
-                height: "10%",
-                backgroundColor: "white",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+        <View style={styles.container}>
+          <View style={styles.modal}>
+            {options.map((i, index) => (
               <View key={index}>
                 <TouchableOpacity onPress={() => onValueChange(i.value)}>
                   <Text style={styles.text}>{i.label}</Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
       </Modal>
 
@@ -62,7 +51,24 @@ const DropDownComp = (props) => {
 };
 
 const styles = StyleSheet.create({
-  text: { fontSize: 25, fontFamily: "Piedra" },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  text: {
+    fontSize: 25,
+    fontFamily: "Piedra",
+  },
+  modal: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    width: "60%",
+    height: "20%",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
 });
 
 export default DropDownComp;

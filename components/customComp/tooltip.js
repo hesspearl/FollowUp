@@ -8,10 +8,13 @@ return (
 <Tooltip
 ref={forwardRef}
 onClose={close}
+//backgroundColor={"black"}
 ModalComponent={Modal}
+
 width={400}
 height={100}
- popover={<Text
+ popover={
+ <Text
  style={styles.title}>{tip}</Text>}>
   {props.children}
 </Tooltip>
@@ -21,7 +24,9 @@ height={100}
 const styles= StyleSheet.create({
     title: {
         fontFamily: "Spartan",
-        fontSize: 20,
+        fontSize: 23,
+        color:"white",
+       
        // marginVertical:5
       },
 })

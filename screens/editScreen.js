@@ -80,6 +80,14 @@ const EditScreen = (props) => {
     behavior="height"
         >
       <View style={styles.container}>
+
+      <View
+      style={styles.content}
+      >
+
+        
+      </View>
+
         <View style={styles.imageContainer}>
           <TextInput
             style={{ ...styles.title, fontSize: 60 }}
@@ -88,10 +96,13 @@ const EditScreen = (props) => {
           />
 
           <View style={{ elevation: 10 }}>
-            <Image
+          <TouchableOpacity  onPress={() => setShow(true)}>
+             <Image
               style={styles.image}
               source={{ uri: stateInputs.inputValues.application.avatar }}
             />
+          </TouchableOpacity>
+           
           </View>
         </View>
 
@@ -100,7 +111,7 @@ const EditScreen = (props) => {
             <TouchableOpacity onPress={() => setShow(true)}>
               <View>
                 <Text style={styles.title}>
-                  {" "}
+
                   {stateInputs.inputValues.application.value}
                 </Text>
               </View>
@@ -178,7 +189,7 @@ const EditScreen = (props) => {
           >
             <Observation observation={stateInputs.inputValues.observation}>
               <TextInput
-                style={{ ...styles.title, fontSize: 30 }}
+                style={{ ...styles.title, fontSize: 30, marginRight:60 }}
                 onChangeText={inputTextHolder.bind(this, "observation")}
                 value={stateInputs.inputValues.observation}
               />
@@ -187,20 +198,31 @@ const EditScreen = (props) => {
           
         </ScrollView>
 
-        <FAB
+        {/* <FAB
           style={styles.fab}
           icon={() => <AntDesign name="check" size={27} color="black" />}
           onPress={submit}
-        />
+        /> */}
         {/* <View
             style={{flex:1,paddingBottom:50 ,}}
           />  */}
-        {/* <CircleButton
+         
+          <KeyboardAvoidingView
+          behavior="position"
+          style={{flex:1, position: "absolute",
+    margin: 16,
+    right:0,
+    bottom: 0,}}>
+                  <CircleButton
       
-        style={{  height:80 , width:80}}
+        style={{  height:80 , width:80, margin: 16, }}
         img={{width:80, height:80 }}
         src={{uri:"https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f289947c950b95d8e1efa2f/de27745669e300a78ec467bc058725fb/check.png"}}
-      /> */}
+      /> 
+          </KeyboardAvoidingView>
+      
+
+         
       </View>
     </KeyboardAvoidingView>
   );
@@ -221,10 +243,10 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   imageContainer: {
-    width: "80%",
+    width: "100%",
     // height: "50%",
     alignItems: "center",
-
+     borderBottomWidth: 1,
     padding: 20,
   },
   image: {
@@ -238,12 +260,12 @@ const styles = StyleSheet.create({
     // height: "20%",
     alignItems: "flex-end",
     //margin:10,
-    borderBottomWidth: 1,
+   borderBottomWidth: 1,
     paddingBottom: 20,
     //  justifyContent:"flex-start",
   },
   titlesContain: {
-    borderTopWidth: 1,
+   
     borderBottomWidth: 1,
     width: "100%",
     justifyContent: "center",
@@ -261,6 +283,12 @@ position: "relative",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.stateBar,
+  },
+  content: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    margin: 10,
   },
 });
 export default EditScreen;

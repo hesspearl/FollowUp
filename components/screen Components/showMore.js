@@ -21,7 +21,7 @@ const ShowMore = (props) => {
 
      <View style={styles.field}>
     <Text style={styles.text}> Observation</Text>
-        <View style={{ flexDirection: "row", }}>
+        <View style={{ flexDirection: "row", width:"100%" }}>
           {props.observation.length > 0 ? (
             <Image
               style={styles.img}

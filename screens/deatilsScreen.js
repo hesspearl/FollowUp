@@ -1,16 +1,11 @@
-import React , {useRef, useState} from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-} from "react-native";
+import React, { useRef, useState } from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { useFirestore, isLoaded } from "react-redux-firebase";
 import colors from "../colors";
 import TitleText from "../components/customComp/titleText";
-import ToolTip from "../components/customComp/tooltip"
+import ToolTip from "../components/customComp/tooltip";
 import CircleButton from "../components/customComp/CircleButton";
-import {TouchableOpacity} from "react-native-gesture-handler"
+import { TouchableOpacity } from "react-native-gesture-handler";
 import {
   ImportantLabels,
   NecessaryLabels,
@@ -19,11 +14,10 @@ import {
 const DetailsScreen = (props) => {
   const firestore = useFirestore();
   const { data, id, refTo } = props;
-  const ref2 = useRef()
-  const ref = useRef()
- 
- console.log(ref.current)
- 
+  const ref2 = useRef();
+  const ref = useRef();
+
+  console.log(ref.current);
 
   const edit = () => {
     refTo.current.snapTo(2);
@@ -37,7 +31,6 @@ const DetailsScreen = (props) => {
 
   return (
     <View style={styles.container}>
-  
       <View style={{ ...styles.content, marginTop: 20 }}>
         <CircleButton
           onPress={deleteCard}
@@ -48,15 +41,17 @@ const DetailsScreen = (props) => {
               "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/827eaeb69a6d09069231ac25c8021a30/lixo.png",
           }}
         />
-        <View style={{elevation:10 }}>
-           <Image style={styles.image} source={{ uri: data.application.avatar }} />
+        <View style={{ elevation: 10 }}>
+          <Image
+            style={styles.image}
+            source={{ uri: data.application.avatar }}
+          />
         </View>
-        
+
         <CircleButton
           onPress={edit}
           img={{ width: 40, height: 40 }}
           style={styles.icons}
-            
           src={{
             uri:
               "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/1812944bc0f48c288cee3b58267b9fac/correcao.png",
@@ -65,23 +60,26 @@ const DetailsScreen = (props) => {
       </View>
 
       <View style={styles.imageContainer}>
-      <ToolTip
-      forwardRef={ref}
-      tip={data.productName}
-      >
-      <TouchableOpacity onLongPress={()=>ref.current.toggleTooltip()}>
-           <Text
-        numberOfLines={1} ellipsizeMode='tail'
-         style={{ ...styles.title, fontSize: 35 , fontFamily:"SpartanBold"}}>
-          {data.productName}
+        <ToolTip forwardRef={ref} tip={data.productName}>
+          <TouchableOpacity onPress={() => ref.current.toggleTooltip()}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{
+                ...styles.title,
+                fontSize: 35,
+                fontFamily: "SpartanBold",
+              }}
+            >
+              {data.productName}
+            </Text>
+          </TouchableOpacity>
+        </ToolTip>
+
+        <Text style={{ ...styles.title, marginBottom: 20, fontSize: 20 }}>
+          {" "}
+          {data.spend}
         </Text>
-      </TouchableOpacity>
-      
-    
-      </ToolTip>
-          
-      
-        <Text style={{...styles.title, marginBottom:20, fontSize:20}}> {data.spend}</Text>
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.rowContain}>
@@ -89,64 +87,51 @@ const DetailsScreen = (props) => {
           <NecessaryLabels type={data.necessary.value} />
         </View>
 
-
-        
         <View style={styles.content}>
-        <View style={{flexDirection:"column", width:"40%"}}>
-           <View >
-            <TitleText title="Date" />
-            <Text style={styles.title}> {data.date}</Text>
-          </View>
-          <View>
-            <TitleText title="Application" />
-            <Text style={styles.title}> {data.application.value}</Text>
-          </View>
-        </View>
-      
-         
-
-        <View style={{flexDirection:"column", width:"40%"}}>
-         
-          
-          <View>
-            <TitleText title="Attachment" />
-            <Text style={styles.note}>add an attachment </Text>
+          <View style={{ flexDirection: "column", width: "40%" }}>
+            <View>
+              <TitleText title="Date" />
+              <Text style={styles.title}> {data.date}</Text>
+            </View>
+            <View>
+              <TitleText title="Application" />
+              <Text style={styles.title}> {data.application.value}</Text>
+            </View>
           </View>
 
-          <View style={{marginBottom:20}}>
-          <TitleText title="Observation" />
-      
-            
-            {data.observation.length === 0 ? (
-              <Text style={styles.note}>add an observation </Text>
-            ) : (
-              <ToolTip
-              
-      forwardRef={ref2}
-      tip= {data.observation}
-      >
-      <TouchableOpacity onLongPress={()=>ref2.current.toggleTooltip()}>
-        <Text
-                numberOfLines={2} ellipsizeMode='tail'
-                 style={{ ...styles.title, width: 180 }}>
-                {" "}
-                {data.observation}
-              </Text>
-      </TouchableOpacity>
-              </ToolTip>
-            )}
-         
-            
+          <View style={{ flexDirection: "column", width: "40%" }}>
+            <View>
+              <TitleText title="Attachment" />
+              <Text style={styles.note}>add an attachment </Text>
+            </View>
+
+            <View style={{ marginBottom: 20 }}>
+              <TitleText title="Observation" />
+
+              {data.observation.length === 0 ? (
+                <Text style={styles.note}>add an observation </Text>
+              ) : (
+                <ToolTip forwardRef={ref2} tip={data.observation}>
+                  <TouchableOpacity
+                    onPress={() => ref2.current.toggleTooltip()}
+                  >
+                    <Text
+                      numberOfLines={3}
+                      ellipsizeMode="tail"
+                      style={{ ...styles.title, width: 180 }}
+                    >
+                      {data.observation}
+                    </Text>
+                  </TouchableOpacity>
+                </ToolTip>
+              )}
+            </View>
           </View>
-        </View>
         </View>
       </View>
-      
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -160,7 +145,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Spartan",
     fontSize: 15,
-   // marginVertical:5
+    // marginVertical:5
   },
   imageContainer: {
     width: "90%",
@@ -174,13 +159,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 10,
-    
   },
   content: {
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",
-    margin:10
+    margin: 10,
   },
 
   contentContainer: {
@@ -206,13 +190,13 @@ const styles = StyleSheet.create({
     width: 300,
     color: colors.editable,
     // marginVertical:5,
-     
-   
   },
 
-  icons:{ width: 55,
-     height: 55, 
-     backgroundColor: colors.icons , 
-     borderWidth:0 }
+  icons: {
+    width: 55,
+    height: 55,
+    backgroundColor: colors.icons,
+    borderWidth: 0,
+  },
 });
 export default DetailsScreen;

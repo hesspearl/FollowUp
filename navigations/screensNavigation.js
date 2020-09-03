@@ -14,13 +14,13 @@ const screenNavigator = (props) => {
   const BodyStack = createStackNavigator();
   return (
     <NavigationContainer>
-      <BodyStack.Navigator screenOptions={{ header: () => null }}>
-      <BodyStack.Screen name="start" component={start}/>
-        <BodyStack.Screen name="list" component={list} />
-        <BodyStack.Screen name="details" component={details} />
-        <BodyStack.Screen name="body01" component={body01} />
-        <BodyStack.Screen name="body02" component={body02} />
-        <BodyStack.Screen name="loading" component={loadScreen} />
+      <BodyStack.Navigator >
+      <BodyStack.Screen name="start" component={start} options={{ header: () => null}} />
+        <BodyStack.Screen name="list" component={list} options={{ header: () => null}} />
+        <BodyStack.Screen name="details" component={details} options={{ header: () => null}} />
+        <BodyStack.Screen name="body01" component={body01}  options={{ header: () => null}}/>
+        <BodyStack.Screen name="body02" component={body02} options={{ header: () => null}}/>
+        <BodyStack.Screen name="loading" component={loadScreen} options={{ header: () => null}} />
         <BodyStack.Screen name="Edit" component={editScreen} />
       </BodyStack.Navigator>
     </NavigationContainer>

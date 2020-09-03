@@ -1,7 +1,8 @@
-import { POST_FROM_PAGE_01, POST_FROM_PAGE_02 } from "../actions/format"
+import { POST_FROM_PAGE_01, POST_FROM_PAGE_02, EDIT } from "../actions/format"
 
 initialState={
-format:{}
+format:{},
+edit:{}
 }
 
 
@@ -12,17 +13,27 @@ export default format=(state=initialState, action)=>{
             const page01=action.value
        
             return{
-               ...page01
+                ...state,
+              format:{ ...page01}
             }
 
             case POST_FROM_PAGE_02:
                 const page02=action.value
 
                 return{
+                    ...state,
                    format:{ ...state,
                     ...page02}
                 }
         
+                case EDIT:
+                    
+                    const edit=action.value
+                 
+                    return{
+                        ...state,
+                        edit:{...edit}
+                    }
     }
 
     return state

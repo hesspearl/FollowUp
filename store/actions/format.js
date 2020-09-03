@@ -1,5 +1,6 @@
 export const POST_FROM_PAGE_01 = "POST_FROM_PAGE_01";
 export const POST_FROM_PAGE_02 = "POST_FROM_PAGE_02";
+export const EDIT = "EDIT";
 
 export const inputsPage1 = (productName, application, spend, important) => {
  return{type : POST_FROM_PAGE_01,
@@ -12,3 +13,7 @@ return { type : POST_FROM_PAGE_02,
     value : { date, picture, observation, necessary}}}
 
     
+export const edit = (value) => {
+    
+    return { type : EDIT,
+        value:value}}

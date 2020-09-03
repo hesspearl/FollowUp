@@ -31,7 +31,7 @@ const styles= StyleSheet.create({
   ,
 },
     txtDescribe: {
-        fontSize: 30,
+        fontSize: 35,
         fontFamily: "Piedra",
       
       },

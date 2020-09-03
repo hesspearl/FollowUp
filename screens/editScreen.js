@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import { useFirestore, isLoaded } from "react-redux-firebase";
 import colors from "../colors";
-import ShowMore from "../components/screen Components/showMore";
+import * as actions from "../store/actions/format"
 import ModalComp from "../components/customComp/Modal";
 import DateCalender from "../components/customComp/dateCalender";
 import Lights from "../components/customComp/lights";
@@ -38,17 +38,28 @@ const EditScreen = (props) => {
   const optionsImportant = ["high", " average", "low"];
   const optionsNecessary = ["yes", "maybe", " no"];
   const firestore = useFirestore();
-
+  const dispatch = useDispatch()
+const state = useSelector(state =>  state.format.edit)
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
+  //console.log(stateInputs)
+  
+
+
+  useEffect(() => {
+    dispatch(actions.edit(stateInputs.inputValues))
+  }, [stateInputs.inputValues])
+
 
   const submit = () => {
     if (!stateInputs.formIsValid) {
       alert("Don't leave field empty please");
       return;
     }
-    firestore.update(`Cards/${id}`, { format: stateInputs.inputValues });
+   
+  console.log(state)
+    firestore.update(`Cards/${id}`, { format: state });
     props.navigation.navigate("list");
   };
 
@@ -75,43 +86,80 @@ const EditScreen = (props) => {
     setShow(false);
   };
 
-  return (
-    <KeyboardAvoidingView style={{ flex: 1 }}
-    behavior="height"
-        >
-      <View style={styles.container}>
-
-      <View
-      style={styles.content}
-      >
-
-        
-      </View>
-
-        <View style={styles.imageContainer}>
-          <TextInput
-            style={{ ...styles.title, fontSize: 60 }}
-            onChangeText={inputTextHolder.bind(this, "productName")}
-            value={stateInputs.inputValues.productName}
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerStyle: {
+        backgroundColor: colors.background,
+      },
+  
+      headerTitle:() => <Text
+      style={{fontSize:30, alignSelf:"center", fontFamily: "Piedra",}}
+      >Editing my purchase</Text>,
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => props.navigation.navigate("list")}>
+          <Image
+            style={{ width: 30, height: 30, marginLeft:10 }}
+            source={{
+              uri:
+                "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/bbb0a5b7cce06aad27996ff3de6c2cc6/close.png",
+            }}
           />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity onPress={submit}>
+          <Image
+            style={{ width: 40, height: 40 , marginRight:10 }}
+            source={{
+              uri:
+                "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/74f50c68f5f4f44d63340858c8d151aa/correct.png",
+            }}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [ state]);
 
-          <View style={{ elevation: 10 }}>
-          <TouchableOpacity  onPress={() => setShow(true)}>
-             <Image
-              style={styles.image}
-              source={{ uri: stateInputs.inputValues.application.avatar }}
+  return (
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <View style={styles.content}>
+          
+          </View>
+
+          <View style={{ elevation: 10, marginTop: 5 }}>
+            <TouchableOpacity onPress={() => setShow(true)}>
+              <Image
+                style={styles.image}
+                source={{ uri: stateInputs.inputValues.application.avatar }}
+              />
+            </TouchableOpacity>
+          </View>
+
+
+          <View style={styles.editContainer}>
+            <Image
+              style={styles.edit}
+              source={{
+                uri:
+                  // "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/69b491b216e5844d348b33dac7a9fca7/draw.png"
+                  "https://s3-alpha-sig.figma.com/img/e0fb/7988/359b5222ffbd5a5d5986151c959f9138?Expires=1600041600&Signature=Tc2iDLGWOomVtuAzjly0QgKoZfovjPA9r7ua5avyhKYNZg~EW-Yezjez57shbpjwmTvEZGesx4GNfB-BfdyAa~i91aa0zyaipj0-dB9CiiWbUreQV9ItQ5~-nAN5mFOFzZwGYLsjBuu7LdUQoSUpsDyP38I299nN6nTUvEc-fLhtG13AhZxiTg71dCAInV4Hp54q7-LJfhcdeRQDOo6Jv39fxBoCnH56HI7obgP81rCHURYnOLmAYYULv-Tj7DvYbUkTGBCH~giRsCZFxPTnDxQqohak54XU032xZ1VSEzTT1P09JYz8tP-0vAGTJpO4K9Vwi~j5A1U3NhXr8ODHFg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
+              }}
             />
-          </TouchableOpacity>
-           
           </View>
         </View>
 
-        <ScrollView style={{ width: "100%",  }}>
+        <ScrollView style={{ width: "100%", zIndex: -10 }}>
           <View style={styles.titlesContain}>
+            <TextInput
+              style={{ ...styles.title, fontSize: 50 }}
+              onChangeText={inputTextHolder.bind(this, "productName")}
+              value={stateInputs.inputValues.productName}
+            />
             <TouchableOpacity onPress={() => setShow(true)}>
               <View>
                 <Text style={styles.title}>
-
                   {stateInputs.inputValues.application.value}
                 </Text>
               </View>
@@ -189,40 +237,13 @@ const EditScreen = (props) => {
           >
             <Observation observation={stateInputs.inputValues.observation}>
               <TextInput
-                style={{ ...styles.title, fontSize: 30, marginRight:60 }}
+                style={{ ...styles.title, fontSize: 30, marginRight: 60 }}
                 onChangeText={inputTextHolder.bind(this, "observation")}
                 value={stateInputs.inputValues.observation}
               />
             </Observation>
           </View>
-          
         </ScrollView>
-
-        {/* <FAB
-          style={styles.fab}
-          icon={() => <AntDesign name="check" size={27} color="black" />}
-          onPress={submit}
-        /> */}
-        {/* <View
-            style={{flex:1,paddingBottom:50 ,}}
-          />  */}
-         
-          <KeyboardAvoidingView
-          behavior="position"
-          style={{flex:1, position: "absolute",
-    margin: 16,
-    right:0,
-    bottom: 0,}}>
-                  <CircleButton
-      
-        style={{  height:80 , width:80, margin: 16, }}
-        img={{width:80, height:80 }}
-        src={{uri:"https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f289947c950b95d8e1efa2f/de27745669e300a78ec467bc058725fb/check.png"}}
-      /> 
-          </KeyboardAvoidingView>
-      
-
-         
       </View>
     </KeyboardAvoidingView>
   );
@@ -232,12 +253,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-   
+
     justifyContent: "center",
     alignItems: "center",
   },
   title: {
-    marginHorizontal:20,
+    marginHorizontal: 20,
     fontFamily: "Piedra",
     fontSize: 40,
     margin: 15,
@@ -246,7 +267,7 @@ const styles = StyleSheet.create({
     width: "100%",
     // height: "50%",
     alignItems: "center",
-     borderBottomWidth: 1,
+    borderBottomWidth: 1,
     padding: 20,
   },
   image: {
@@ -260,12 +281,11 @@ const styles = StyleSheet.create({
     // height: "20%",
     alignItems: "flex-end",
     //margin:10,
-   borderBottomWidth: 1,
+    borderBottomWidth: 1,
     paddingBottom: 20,
     //  justifyContent:"flex-start",
   },
   titlesContain: {
-   
     borderBottomWidth: 1,
     width: "100%",
     justifyContent: "center",
@@ -276,19 +296,36 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 100,
-position: "relative",
-    margin: 16,
-    left:0,
-    bottom: 0,
+    position: "relative",
+
+    top: 50,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.stateBar,
   },
   content: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     width: "100%",
-    margin: 10,
+    marginTop: 20,
+  },
+
+  edit: {
+    width: 35,
+    height: 35,
+    alignSelf: "center",
+    //
+  },
+  editContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+
+    // zIndex:10,
+    justifyContent: "center",
+    backgroundColor: "white",
+    position: "relative",
+    top: 40,
   },
 });
 export default EditScreen;

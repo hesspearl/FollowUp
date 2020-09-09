@@ -22,7 +22,7 @@ export default format=(state=initialState, action)=>{
 
                 return{
                     ...state,
-                   format:{ ...state,
+                   format:{ ...state.format,
                     ...page02}
                 }
         

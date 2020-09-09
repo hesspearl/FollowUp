@@ -4,7 +4,8 @@ import colors from "../../colors";
 
 const Cards = (props) => {
   return (
-    <View style={styles.product}>
+   
+        <View style={styles.product}>
       <View
         style={{
           flex: 1,
@@ -23,6 +24,8 @@ const Cards = (props) => {
         </View>
       </View>
     </View>
+   
+  
   );
 };
 
@@ -32,11 +35,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
-    borderBottomColor: "black",
-    borderBottomWidth: 2,
+   borderRadius:20,
     backgroundColor: colors.textBack,
-    elevation: 10,
+    
     width: "100%",
+    
   },
   touchable: {
     borderRadius: 10,

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import Card from "../components/customComp/Card";
 import colors from "../colors";
@@ -12,7 +13,16 @@ import { useSelector } from "react-redux";
 import { useFirestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import BottomSheet from "reanimated-bottom-sheet";
 import DetailsScreen from "./deatilsScreen";
-import ToolTip from "../components/customComp/tooltip"
+import ToolTip from "../components/customComp/tooltip";
+import {
+  FontAwesome5,
+  FontAwesome,
+  AntDesign,
+  Fontisto,
+} from "@expo/vector-icons";
+import ListIcons from "../components/screen Components/listIcons";
+import Selectable from "../components/screen Components/Selectable";
+import { months } from "../modals/itemsArray";
 
 const todosQuery = {
   collection: "Cards",
@@ -20,12 +30,14 @@ const todosQuery = {
 };
 const ListScreen = (props) => {
   const [cardsData, setData] = useState();
-  useFirestoreConnect(() => [todosQuery]);
+  const [cards, setCards] = useState()
+  //useFirestoreConnect(() => [todosQuery]);
 
-  const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
+ // const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
 
+  
   const ref = useRef();
-  const refTool = useRef()
+  const refTool = useRef();
   const pressed = (item) => {
     ref.current.snapTo(1);
 
@@ -58,36 +70,58 @@ const ListScreen = (props) => {
       </View>
     </View>
   );
+
   return (
     <View style={styles.container}>
-      <FlatList
+      <View style={styles.iconsContainer}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flex: 1 }}>
+          <Selectable array={months} cardsItem={setCards} />
+        </ScrollView>
+      </View>
+      <View style={{ ...styles.iconsContainer, marginBottom: 15 }}>
+        <ListIcons color={"black"}>
+          <FontAwesome5 name="calendar-alt" size={45} color="black" />
+        </ListIcons>
+        <ListIcons color={colors.icons}>
+          <FontAwesome name="exclamation" size={45} color="black" />
+        </ListIcons>
+
+        <ListIcons color={colors.icons}>
+          <AntDesign name="pushpin" size={45} color="black" />
+        </ListIcons>
+
+        <ListIcons color={colors.icons}>
+          <Fontisto name="wallet" size={45} color="black" />
+        </ListIcons>
+      </View>
+       <FlatList
         style={{ flex: 1 }}
         data={cards}
         keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (
+         
           <>
-      
-          <TouchableOpacity
-            onPress={
-              () => pressed(itemData.item)
+            <TouchableOpacity
+              onPress={
+                () => pressed(itemData.item)
 
-              //props.navigation.navigate("details", { , })
-            }
-            onLongPress={()=>refTool.current.toggleTooltip()}
-          >
-            <Card
-              product={itemData.item.format.productName}
-              picture={itemData.item.format.application.avatar}
+                //props.navigation.navigate("details", { , })
+              }
+              onLongPress={() => refTool.current.toggleTooltip()}
+            >
+              <Card
+                product={itemData.item.format.productName}
+                picture={itemData.item.format.application.avatar}
+              />
+            </TouchableOpacity>
+            <ToolTip
+              forwardRef={refTool}
+              tip={itemData.item.format.productName}
             />
-          </TouchableOpacity>
-          <ToolTip
-      forwardRef={refTool}
-      tip={itemData.item.format.productName}
-      />
           </>
         )}
-      />
-      <ToolTip/>
+      /> 
+      <ToolTip />
       <BottomSheet
         ref={ref}
         snapPoints={[500, 350, 0]}
@@ -137,6 +171,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "#00000040",
     marginBottom: 10,
+  },
+  iconsContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    height: "10%",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor:"grey"
   },
 });
 export default ListScreen;

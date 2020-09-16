@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import colors from "../../colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import {Update} from "../functional components/updateScreen"
 import { useSelector } from "react-redux";
 import { useFirestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import moment from "moment";
@@ -14,16 +15,19 @@ const Selectable = (props) => {
   const { array, cardsItem } = props;
   const [selected, setSelected] = useState();
   const [item, setItems] = useState([])
-
+ 
 
   useEffect(() => {
     cardsItem([...item])
+    
   }, [item])
   
-   useFirestoreConnect(() => [todosQuery]);
+    useFirestoreConnect(['Cards']);
 
-  const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
+    const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
 
+ //
+  
   // function that return the month selected
   const Handler=(index)=>{
     let items=[]
@@ -46,7 +50,8 @@ const Selectable = (props) => {
 
   return array.map((item, index) => (
     <View key={index}>
-      <TouchableOpacity onPress={() => Handler(index)}>
+      <TouchableOpacity
+       onPress={() => Handler(index)}>
         <View
           style={{
             ...styles.container,

@@ -1,24 +1,35 @@
-import React from 'react'
-import { View,TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useRef } from "react";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import Tooltip from "../customComp/tooltip";
 
-const ListIcons= props =>{
-return (
-<View style={{ alignItems:"center"}}>
-<TouchableOpacity>
-  {props.children}
-</TouchableOpacity>
+const ListIcons = (props) => {
+  const { title } = props;
 
-<View style={{...styles.selected, backgroundColor:props.color}}/>
-</View>
-)
-}
+  const ref = useRef();
+  const longPressHandler = () => {
+    ref.current.toggleTooltip();
+  };
 
-const styles= StyleSheet.create({
+  
+  return (
+    <View style={{ alignItems: "center" }}>
+      <Tooltip forwardRef={ref} tip={title}>
+        <TouchableOpacity onLongPress={longPressHandler}>
+          {props.children}
+        </TouchableOpacity>
+      </Tooltip>
 
-    selected:
-    {width:60 , 
-        height: 10 ,
- 
-          marginTop:5}
-})
+      <View style={{ ...styles.selected, backgroundColor: props.color }} />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  selected: {
+    width: 60,
+    height: 10,
+
+    marginTop: 5,
+  },
+});
 export default ListIcons;

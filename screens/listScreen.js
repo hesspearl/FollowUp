@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import {
   View,
   FlatList,
@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import Card from "../components/customComp/Card";
 import colors from "../colors";
@@ -24,29 +25,42 @@ import ListIcons from "../components/screen Components/listIcons";
 import Selectable from "../components/screen Components/Selectable";
 import { months } from "../modals/itemsArray";
 
-const todosQuery = {
-  collection: "Cards",
-  queryParams: ["orderByChild=createdAt"],
-};
+
+
 const ListScreen = (props) => {
+  //clicked card data
   const [cardsData, setData] = useState();
-  const [cards, setCards] = useState()
-  //useFirestoreConnect(() => [todosQuery]);
-
- // const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
-
+  //cards that have same filter
+  const [cards, setCards] = useState();
   
   const ref = useRef();
   const refTool = useRef();
+
+
+// to refresh edited item
+  useEffect(() => {
+    if (props.route.params?.newData) {
+      let newData = props.route.params?.newData[0];
+      let replacement = [...cards];
+      const replace = replacement.findIndex((i) => i.id === newData.id);
+
+      replacement[replace] = newData;
+      setCards(replacement);
+    }
+  }, [props.route.params?.newData]);
+
+
   const pressed = (item) => {
     ref.current.snapTo(1);
-
+//item that got pressed data
     setData({
       data: item.format,
       id: item.id,
     });
   };
 
+  
+//bottomSheet render
   const renderInner = () => {
     {
       if (cardsData)
@@ -59,7 +73,6 @@ const ListScreen = (props) => {
           />
         );
     }
-
     return <View />;
   };
 
@@ -74,32 +87,35 @@ const ListScreen = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flex: 1 }}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ flex: 1 }}
+        >
           <Selectable array={months} cardsItem={setCards} />
         </ScrollView>
       </View>
       <View style={{ ...styles.iconsContainer, marginBottom: 15 }}>
-        <ListIcons color={"black"}>
+        <ListIcons color={"black"} title="monthly">
           <FontAwesome5 name="calendar-alt" size={45} color="black" />
         </ListIcons>
-        <ListIcons color={colors.icons}>
+        <ListIcons color={colors.icons} title="importance">
           <FontAwesome name="exclamation" size={45} color="black" />
         </ListIcons>
 
-        <ListIcons color={colors.icons}>
+        <ListIcons color={colors.icons} title="necessary">
           <AntDesign name="pushpin" size={45} color="black" />
         </ListIcons>
 
-        <ListIcons color={colors.icons}>
+        <ListIcons color={colors.icons} title="price">
           <Fontisto name="wallet" size={45} color="black" />
         </ListIcons>
       </View>
-       <FlatList
+      <FlatList
         style={{ flex: 1 }}
         data={cards}
         keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (
-         
           <>
             <TouchableOpacity
               onPress={
@@ -120,7 +136,7 @@ const ListScreen = (props) => {
             />
           </>
         )}
-      /> 
+      />
       <ToolTip />
       <BottomSheet
         ref={ref}
@@ -179,7 +195,7 @@ const styles = StyleSheet.create({
     height: "10%",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor:"grey"
+    borderBottomColor: "grey",
   },
 });
 export default ListScreen;

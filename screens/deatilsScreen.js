@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useContext } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { useFirestore, isLoaded } from "react-redux-firebase";
 import colors from "../colors";
@@ -11,13 +11,16 @@ import {
   NecessaryLabels,
 } from "../components/screen Components/Labels";
 
+
+const size={width:400, height:100}
+
 const DetailsScreen = (props) => {
   const firestore = useFirestore();
   const { data, id, refTo } = props;
   const ref2 = useRef();
   const ref = useRef();
-
-  console.log(ref.current);
+ 
+  
 
   const edit = () => {
     refTo.current.snapTo(2);
@@ -60,7 +63,7 @@ const DetailsScreen = (props) => {
       </View>
 
       <View style={styles.imageContainer}>
-        <ToolTip forwardRef={ref} tip={data.productName}>
+        <ToolTip forwardRef={ref} tip={data.productName} size={size}>
           <TouchableOpacity onPress={() => ref.current.toggleTooltip()}>
             <Text
               numberOfLines={1}
@@ -111,7 +114,7 @@ const DetailsScreen = (props) => {
               {data.observation.length === 0 ? (
                 <Text style={styles.note}>add an observation </Text>
               ) : (
-                <ToolTip forwardRef={ref2} tip={data.observation}>
+                <ToolTip forwardRef={ref2} tip={data.observation} size={size}>
                   <TouchableOpacity
                     onPress={() => ref2.current.toggleTooltip()}
                   >

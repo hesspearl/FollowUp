@@ -6,7 +6,7 @@ const low = "low";
 const average = " average";
 
 export const ImportantLabels = (props) => {
-  console.log(props.type);
+  //console.log(props.type);
 
   let option;
   let color;
@@ -28,7 +28,7 @@ export const ImportantLabels = (props) => {
       break;
   }
 
-  console.log(option);
+  //console.log(option);
   return (
     <View style={{ ...styles.contain, backgroundColor: color }}>
       <Text style={styles.textInside}>{option}</Text>

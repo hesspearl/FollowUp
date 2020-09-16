@@ -30,7 +30,7 @@ const initial={
     },
     inputValidation:{
       productName:data.productName? true: false,
-      observation:true,
+      // //observation:true,
       spend:data.spend? true: false,
       
   
@@ -56,6 +56,8 @@ export const  inputReducer = (state, action) => {
       let updateFormIsValid=true
        for(const key in updateValidity)
        updateFormIsValid=updateFormIsValid && updateValidity[key]
+
+     
       return {
         formIsValid:updateFormIsValid,
         inputValues: updateValues,

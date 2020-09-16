@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useReducer, useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFirestore, isLoaded } from "react-redux-firebase";
 import colors from "../colors";
-import * as actions from "../store/actions/format"
+import * as actions from "../store/actions/format";
 import ModalComp from "../components/customComp/Modal";
 import DateCalender from "../components/customComp/dateCalender";
 import Lights from "../components/customComp/lights";
@@ -30,6 +30,7 @@ import {
 import moment from "moment";
 import CircleButton from "../components/customComp/CircleButton";
 import Observation from "../components/screen Components/showMore";
+
 import { FAB } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -37,30 +38,32 @@ const EditScreen = (props) => {
   const { dataId, id } = props.route.params;
   const optionsImportant = ["high", " average", "low"];
   const optionsNecessary = ["yes", "maybe", " no"];
+
   const firestore = useFirestore();
-  const dispatch = useDispatch()
-const state = useSelector(state =>  state.format.edit)
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.format.edit);
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
-  //console.log(stateInputs)
   
 
 
   useEffect(() => {
-    dispatch(actions.edit(stateInputs.inputValues))
-  }, [stateInputs.inputValues])
+    dispatch(actions.edit(stateInputs.inputValues));
+  }, [stateInputs.inputValues]);
 
-
-  const submit = () => {
+  const submit = async () => {
     if (!stateInputs.formIsValid) {
       alert("Don't leave field empty please");
       return;
     }
-   
-  console.log(state)
-    firestore.update(`Cards/${id}`, { format: state });
-    props.navigation.navigate("list");
+
+    try {
+      await firestore.update(`Cards/${id}`, { format: state });
+      props.navigation.navigate("updating",{ id:id});
+    } catch (e) {
+      //console.log(e);
+    }
   };
 
   const inputTextHolder = (inputIdentifier, text) => {
@@ -91,14 +94,18 @@ const state = useSelector(state =>  state.format.edit)
       headerStyle: {
         backgroundColor: colors.background,
       },
-  
-      headerTitle:() => <Text
-      style={{fontSize:30, alignSelf:"center", fontFamily: "Piedra",}}
-      >Editing my purchase</Text>,
+
+      headerTitle: () => (
+        <Text
+          style={{ fontSize: 30, alignSelf: "center", fontFamily: "Piedra" }}
+        >
+          Editing my purchase
+        </Text>
+      ),
       headerLeft: () => (
         <TouchableOpacity onPress={() => props.navigation.navigate("list")}>
           <Image
-            style={{ width: 30, height: 30, marginLeft:10 }}
+            style={{ width: 30, height: 30, marginLeft: 10 }}
             source={{
               uri:
                 "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/bbb0a5b7cce06aad27996ff3de6c2cc6/close.png",
@@ -109,7 +116,7 @@ const state = useSelector(state =>  state.format.edit)
       headerRight: () => (
         <TouchableOpacity onPress={submit}>
           <Image
-            style={{ width: 40, height: 40 , marginRight:10 }}
+            style={{ width: 40, height: 40, marginRight: 10 }}
             source={{
               uri:
                 "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/74f50c68f5f4f44d63340858c8d151aa/correct.png",
@@ -118,15 +125,13 @@ const state = useSelector(state =>  state.format.edit)
         </TouchableOpacity>
       ),
     });
-  }, [ state]);
+  }, [state]);
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <View style={styles.content}>
-          
-          </View>
+          <View style={styles.content}></View>
 
           <View style={{ elevation: 10, marginTop: 5 }}>
             <TouchableOpacity onPress={() => setShow(true)}>
@@ -136,7 +141,6 @@ const state = useSelector(state =>  state.format.edit)
               />
             </TouchableOpacity>
           </View>
-
 
           <View style={styles.editContainer}>
             <Image

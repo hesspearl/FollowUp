@@ -4,6 +4,7 @@ import firebase from "../firebase"
   import { createFirestoreInstance, firestoreReducer }
    from 'redux-firestore' 
    import { composeWithDevTools } from 'redux-devtools-extension';
+import filter from "./reduces/filter";
 
    const rrfConfig = {
     userProfile: 'users',
@@ -12,6 +13,7 @@ import firebase from "../firebase"
 
 const rootReducers= combineReducers({
  format:Format,
+ filter:filter,
  fireStore:firestoreReducer
   })
 

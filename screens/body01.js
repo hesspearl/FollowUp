@@ -8,8 +8,7 @@ import { AntDesign } from "@expo/vector-icons";
 import DropDown from "../components/screen Components/DropDown";
 import {useDispatch} from "react-redux"
 import * as actions from "../store/actions/format"
-import { useForm, Controller } from "react-hook-form";
-import { onChange } from "react-native-reanimated";
+import{important} from "../modals/itemsArray"
 
 const INPUTS_VALUES = "INPUTS_VALUES";
 const CHOICE = "CHOICE";
@@ -64,7 +63,7 @@ const inputReducer = (state, action) => {
   return state;
 };
 
-const important = ["high", " average","low"];
+
 
 const Body01 = (props) => {
 

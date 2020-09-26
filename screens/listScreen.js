@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect,} from "react";
 import {
   View,
   FlatList,
@@ -6,48 +6,33 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
 import Card from "../components/customComp/Card";
 import colors from "../colors";
-import { useSelector } from "react-redux";
-import { useFirestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import BottomSheet from "reanimated-bottom-sheet";
 import DetailsScreen from "./deatilsScreen";
 import ToolTip from "../components/customComp/tooltip";
-import {
-  FontAwesome5,
-  FontAwesome,
-  AntDesign,
-  Fontisto,
-} from "@expo/vector-icons";
 import ListIcons from "../components/screen Components/listIcons";
 import Selectable from "../components/screen Components/Selectable";
-import { months } from "../modals/itemsArray";
-
+import { months, icons } from "../modals/itemsArray";
+import { useSelector } from "react-redux";
 
 
 const ListScreen = (props) => {
   //clicked card data
   const [cardsData, setData] = useState();
-  //cards that have same filter
-  const [cards, setCards] = useState();
   
+  //header filter array
+  const [filter, setFilter] = useState()
+
+  
+ const filterState = useSelector(state => state.filter)
+
+ 
+ 
+
   const ref = useRef();
   const refTool = useRef();
-
-
-// to refresh edited item
-  useEffect(() => {
-    if (props.route.params?.newData) {
-      let newData = props.route.params?.newData[0];
-      let replacement = [...cards];
-      const replace = replacement.findIndex((i) => i.id === newData.id);
-
-      replacement[replace] = newData;
-      setCards(replacement);
-    }
-  }, [props.route.params?.newData]);
 
 
   const pressed = (item) => {
@@ -92,28 +77,34 @@ const ListScreen = (props) => {
           showsHorizontalScrollIndicator={false}
           style={{ flex: 1 }}
         >
-          <Selectable array={months} cardsItem={setCards} />
+       <Selectable
+        filter={filter} 
+        array={months}
+      
+           newData={props.route.params?.newData}
+        
+         />
         </ScrollView>
       </View>
       <View style={{ ...styles.iconsContainer, marginBottom: 15 }}>
-        <ListIcons color={"black"} title="monthly">
-          <FontAwesome5 name="calendar-alt" size={45} color="black" />
-        </ListIcons>
-        <ListIcons color={colors.icons} title="importance">
-          <FontAwesome name="exclamation" size={45} color="black" />
-        </ListIcons>
-
-        <ListIcons color={colors.icons} title="necessary">
-          <AntDesign name="pushpin" size={45} color="black" />
-        </ListIcons>
-
-        <ListIcons color={colors.icons} title="price">
-          <Fontisto name="wallet" size={45} color="black" />
-        </ListIcons>
+     
+ 
+    { icons.map((item,index)=>(
+      <View key={index}>
+      <ListIcons 
+      index={index} 
+      title={item.title}
+       setFilter={setFilter}
+       filter={filter}
+       color={item.color} >
+      {item.icon}
+      </ListIcons>
+      </View>)) }
+       
       </View>
       <FlatList
         style={{ flex: 1 }}
-        data={cards}
+        data={filter? filterState.filter:filterState.months}
         keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (
           <>
@@ -135,7 +126,8 @@ const ListScreen = (props) => {
               tip={itemData.item.format.productName}
             />
           </>
-        )}
+        )
+        }
       />
       <ToolTip />
       <BottomSheet

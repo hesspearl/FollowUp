@@ -25,15 +25,12 @@ const ListScreen = (props) => {
   //header filter array
   const [filter, setFilter] = useState()
 
-  
  const filterState = useSelector(state => state.filter)
-
- 
- 
 
   const ref = useRef();
   const refTool = useRef();
 
+  
 
   const pressed = (item) => {
     ref.current.snapTo(1);
@@ -80,9 +77,6 @@ const ListScreen = (props) => {
        <Selectable
         filter={filter} 
         array={months}
-      
-           newData={props.route.params?.newData}
-        
          />
         </ScrollView>
       </View>

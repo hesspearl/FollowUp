@@ -8,7 +8,7 @@ import ListLayout from "../screen Components/listLyout";
 
 
 const Selectable = (props) => {
-  const { array, filter, newData, } = props;
+  const { array, filter,  } = props;
   // selected change color to black
   const [selectedMonth, setSelectedMonth] = useState();
   // selected change color to black
@@ -18,21 +18,11 @@ const Selectable = (props) => {
   const state = useSelector(state => state.filter)
  useFirestoreConnect(["Cards"]);
   const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
+ 
 
+  
   // to refresh edited item
-  useEffect(() => {
-    if (newData) {
-
-      filterHandler(selectedFilter)
-      // let newD = newData[0];
-      // let replacement = [...state.months];
-      
-      // const replace = replacement.findIndex((i) => i.id === newD.id);
-      
-      // replacement[replace] = newD;
-      // dispatch(actions.filterByMonths(replacement))
-    }
-  }, [newData]);
+ 
 
  
 
@@ -58,6 +48,8 @@ const Selectable = (props) => {
   const filterHandler = (index) => {
     let f = [];
     setSelectedFilter(index)
+
+    
 
     if (!state.months.length) {
       return alert("please choose month, or this month have no items  ");

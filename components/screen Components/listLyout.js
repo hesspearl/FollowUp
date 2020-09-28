@@ -7,7 +7,7 @@ const listLayout= props =>{
 
     const {array , Handler, selected ,clean }=props
 
-   
+
 
     useEffect(() => {
       if(clean){clean()}

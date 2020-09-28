@@ -179,7 +179,7 @@ isValid:isValid,
       >
         is it important?
       </SwitchSelector>
-      <SwipeButton
+       <SwipeButton
         railFillBackgroundColor="white" //(Optional)npm install redux
         thumbIconComponent={triangle}
         thumbIconBackgroundColor={colors.icons}
@@ -188,9 +188,9 @@ isValid:isValid,
         titleFontSize={30}
         title="Slide to Next"
         onSwipeSuccess={ swiping  }
-       
+       resetAfterSuccessAnimDuration
         shouldResetAfterSuccess={true}
-      />
+      /> 
     </View>
     </ScrollView>
     </KeyboardAvoidingView>

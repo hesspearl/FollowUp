@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Modal, StyleSheet } from 'react-native';
-import { ListItem } from "react-native-elements";
+import { ListItem, Avatar } from "react-native-elements";
+
 
 const ModalComp= props =>{
     const list = [
@@ -70,16 +71,16 @@ return (
             {list.map((l, i) => (
               <ListItem
                 key={i.toString()}
-                leftAvatar={{
-                  size: "medium",
-                  rounded: false,
-                  source: { uri: l.avatar },
-                }}
-                title={l.label}
-                titleStyle={{ fontSize: 30, fontWeight: "bold" }}
+                
                 onPress={()=>props.onPress(l)}
                 bottomDivider
-              />
+              >
+                <Avatar  size="medium" source={{uri: l.avatar }}/>
+                <ListItem.Content>
+                  <ListItem.Title style={styles.title}>{l.label}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+
             ))} 
           </Modal>
         </View>
@@ -88,5 +89,20 @@ return (
 
 const styles= StyleSheet.create({
     modalContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+    title:{
+      fontSize:35,
+      fontWeight:"bold"
+    },
+    img:{
+      
+    }
 })
 export default ModalComp;
+
+// leftAvatar={{
+//   size: "medium",
+//   rounded: false,
+//   source: { },
+// }}
+// title={l.label}
+// titleStyle={{ fontSize: 30, fontWeight: "bold" }}

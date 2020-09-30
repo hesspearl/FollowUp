@@ -30,7 +30,7 @@ const initial={
     },
     inputValidation:{
       productName:data.productName? true: false,
-      // //observation:true,
+      observation:data.observation?true:true,
       spend:data.spend? true: false,
       
   

@@ -1,10 +1,24 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import colors from "../colors";
 import WavyHeader from "../components/screen Components/wavyHeader";
 import CircleButton from "../components/customComp/CircleButton";
+import * as actions from "../store/actions/filter"
+import {useDispatch} from "react-redux"
 
 const startScreen = (props) => {
+const {navigation}= props
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(actions.deleteMonth())
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+
   return (
     <View style={styles.contain}>
       <View style={{ height: "40%", justifyContent: "center" }}>

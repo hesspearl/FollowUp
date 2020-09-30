@@ -8,7 +8,7 @@ import ListLayout from "../screen Components/listLyout";
 
 
 const Selectable = (props) => {
-  const { array, filter,  } = props;
+  const { array, filter, navigation } = props;
   // selected change color to black
   const [selectedMonth, setSelectedMonth] = useState();
   // selected change color to black
@@ -21,8 +21,14 @@ const Selectable = (props) => {
  
 
   
-  // to refresh edited item
- 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+     setSelectedFilter()
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
 
  
 

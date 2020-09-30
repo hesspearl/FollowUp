@@ -46,7 +46,7 @@ const EditScreen = (props) => {
   const [open, setOpen] = useState(false);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
   
-
+//console.log(stateInputs.inputValidation)
 
   useEffect(() => {
     dispatch(actions.edit(stateInputs.inputValues));
@@ -67,10 +67,14 @@ const EditScreen = (props) => {
   };
 
   const inputTextHolder = (inputIdentifier, text) => {
+
+    
     let isValid = false;
-    if (text.trim().length > 0) {
+    if (text.trim().length > 0 || inputIdentifier==="observation") {
       isValid = true;
     }
+
+    
     dispatchInputs({
       type: INPUTS_VALUES,
       value: text,
@@ -147,8 +151,8 @@ const EditScreen = (props) => {
               style={styles.edit}
               source={{
                 uri:
-                  // "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/69b491b216e5844d348b33dac7a9fca7/draw.png"
-                  "https://s3-alpha-sig.figma.com/img/e0fb/7988/359b5222ffbd5a5d5986151c959f9138?Expires=1600041600&Signature=Tc2iDLGWOomVtuAzjly0QgKoZfovjPA9r7ua5avyhKYNZg~EW-Yezjez57shbpjwmTvEZGesx4GNfB-BfdyAa~i91aa0zyaipj0-dB9CiiWbUreQV9ItQ5~-nAN5mFOFzZwGYLsjBuu7LdUQoSUpsDyP38I299nN6nTUvEc-fLhtG13AhZxiTg71dCAInV4Hp54q7-LJfhcdeRQDOo6Jv39fxBoCnH56HI7obgP81rCHURYnOLmAYYULv-Tj7DvYbUkTGBCH~giRsCZFxPTnDxQqohak54XU032xZ1VSEzTT1P09JYz8tP-0vAGTJpO4K9Vwi~j5A1U3NhXr8ODHFg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
+                  "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/69b491b216e5844d348b33dac7a9fca7/draw.png"
+                 // "https://s3-alpha-sig.figma.com/img/e0fb/7988/359b5222ffbd5a5d5986151c959f9138?Expires=1600041600&Signature=Tc2iDLGWOomVtuAzjly0QgKoZfovjPA9r7ua5avyhKYNZg~EW-Yezjez57shbpjwmTvEZGesx4GNfB-BfdyAa~i91aa0zyaipj0-dB9CiiWbUreQV9ItQ5~-nAN5mFOFzZwGYLsjBuu7LdUQoSUpsDyP38I299nN6nTUvEc-fLhtG13AhZxiTg71dCAInV4Hp54q7-LJfhcdeRQDOo6Jv39fxBoCnH56HI7obgP81rCHURYnOLmAYYULv-Tj7DvYbUkTGBCH~giRsCZFxPTnDxQqohak54XU032xZ1VSEzTT1P09JYz8tP-0vAGTJpO4K9Vwi~j5A1U3NhXr8ODHFg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
               }}
             />
           </View>

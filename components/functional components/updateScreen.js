@@ -12,6 +12,7 @@ const {id}=props.route.params;
    const cards = useSelector(({ fireStore: {ordered } }) => ordered.Cards);
 const dispatch = useDispatch()
 
+
    if (isLoaded(cards)) {
     //  get card with same id
       let newData=cards.filter((i)=>i.id===id)

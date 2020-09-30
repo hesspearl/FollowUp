@@ -1,5 +1,5 @@
 
-import {MONTHS, SELECTED_FILTER, DELETED_FILTER} from "../actions/filter"
+import {MONTHS, SELECTED_FILTER, DELETED_FILTER, DELETED_MONTHS} from "../actions/filter"
 
 //save filtered cards
 initialState={
@@ -31,6 +31,13 @@ export default filter=(state=initialState , action)=>{
                 ...state,
                 filter:[]
             }
+
+            case DELETED_MONTHS:
+                return {
+                    months:[],
+                    filter:[]
+                }
+                 
 
     }
 

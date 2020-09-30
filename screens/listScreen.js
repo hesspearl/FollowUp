@@ -21,16 +21,19 @@ import { useSelector } from "react-redux";
 const ListScreen = (props) => {
   //clicked card data
   const [cardsData, setData] = useState();
-  
+  const [positionX, setPositionX] = useState(0)
   //header filter array
   const [filter, setFilter] = useState()
+  const [refScroll, setRefScroll] = useState()
 
  const filterState = useSelector(state => state.filter)
 
   const ref = useRef();
   const refTool = useRef();
 
-  
+
+    
+
 
   const pressed = (item) => {
     ref.current.snapTo(1);
@@ -70,13 +73,18 @@ const ListScreen = (props) => {
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
         <ScrollView
+    
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{ flex: 1 }}
+          ref={(ref)=>setRefScroll(ref)}
+          contentContainerStyle={{width:filter?"100%":null , justifyContent:"center"}}
+         onScroll={(event)=> {if (!filter)setPositionX(event.nativeEvent.contentOffset.x)}}
         >
        <Selectable
         filter={filter} 
         array={months}
+        navigation={props.navigation}
          />
         </ScrollView>
       </View>
@@ -86,6 +94,8 @@ const ListScreen = (props) => {
     { icons.map((item,index)=>(
       <View key={index}>
       <ListIcons 
+      refScroll={refScroll}
+      scrollPosition={positionX}
       index={index} 
       title={item.title}
        setFilter={setFilter}
@@ -105,6 +115,7 @@ const ListScreen = (props) => {
             <TouchableOpacity
               onPress={
                 () => pressed(itemData.item)
+                
 
                 //props.navigation.navigate("details", { , })
               }

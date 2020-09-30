@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useCallback } from "react";
 import { View, StyleSheet, ScrollView , KeyboardAvoidingView, Image } from "react-native";
 import TextField from "../components/customComp/TextField";
 import SwitchSelector from "../components/screen Components/SwitchSelector";
@@ -93,26 +93,29 @@ const Body01 = (props) => {
 , formIsValid:false});
 
   
+
   const dispatch = useDispatch()
 
+  const swiping= () => {
+      
+      // if(!stateInput.formIsValid){
+     
 
+      //   alert("Don't leave field empty please")
+      //   return
+      // }
   
-  const swiping=() =>{
-    if(!stateInput.formIsValid){
-      alert("Don't leave field empty please")
-      return
+      dispatch(actions.inputsPage1(
+        stateInput.inputValues.productName,
+        stateInput.inputValues.application,
+        stateInput.inputValues.spend,
+        stateInput.inputValues.important,
+  
+  
+      ))
+       props.navigation.navigate("body02")
     }
-
-    dispatch(actions.inputsPage1(
-      stateInput.inputValues.productName,
-      stateInput.inputValues.application,
-      stateInput.inputValues.spend,
-      stateInput.inputValues.important,
-
-
-    ))
-     props.navigation.navigate("body02")
-  }
+ 
 
   
   const inputTextHolder = (inputIdentifier, text) => {
@@ -187,8 +190,8 @@ isValid:isValid,
         width={"90%"}
         titleFontSize={30}
         title="Slide to Next"
-        onSwipeSuccess={ swiping  }
-       resetAfterSuccessAnimDuration
+        onSwipeSuccess={swiping}
+       
         shouldResetAfterSuccess={true}
       /> 
     </View>

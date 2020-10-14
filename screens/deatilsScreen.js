@@ -10,6 +10,8 @@ import {
   ImportantLabels,
   NecessaryLabels,
 } from "../components/screen Components/Labels";
+import { useDispatch } from "react-redux";
+import {deletedItem} from "../store/actions/filter"
 
 
 const size={width:400, height:100}
@@ -19,8 +21,8 @@ const DetailsScreen = (props) => {
   const { data, id, refTo } = props;
   const ref2 = useRef();
   const ref = useRef();
- 
-  
+ const dispatch = useDispatch()
+
 
   const edit = () => {
     refTo.current.snapTo(2);
@@ -29,6 +31,7 @@ const DetailsScreen = (props) => {
 
   const deleteCard = () => {
     firestore.delete(`Cards/${id}`);
+dispatch(deletedItem(id))
     refTo.current.snapTo(2);
   };
 

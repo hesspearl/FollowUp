@@ -1,45 +1,66 @@
-
-import {MONTHS, SELECTED_FILTER, DELETED_FILTER, DELETED_MONTHS} from "../actions/filter"
+import {
+  MONTHS,
+  SELECTED_FILTER,
+  SELECTED_MULTI_FILTER,
+  DELETED_FILTER,
+  DELETED_MONTHS,
+  DELETED_ITEMS,
+} from "../actions/filter";
 
 //save filtered cards
-initialState={
-months:[],
-filter:[]
-}
+initialState = {
+  months: [],
+  filter:{},
+   
+  multiFilter:{}
+};
 
-export default filter=(state=initialState , action)=>{
+export default filter = (state = initialState, action) => {
+  switch (action.type) {
+    case MONTHS:
+      return {
+        ...state,
+        months: [...action.value],
+      };
 
-    switch(action.type){
+    case SELECTED_FILTER:
 
-        case MONTHS:
+      return {
+        ...state,
+        filter:{
+          name:action.name,
+          data:[...action.value]}
+      };
 
-            return {
-                ...state,
-                months:[...action.value]
-            }
+      case SELECTED_MULTI_FILTER:
+    //  console.log(action.name)
+      return {
+        ...state,
+        multiFilter: {
+          name:action.name,
+          data:[...action.value]},
+      };
 
-            case SELECTED_FILTER:
+    case DELETED_FILTER:
+      return {
+        ...state,
+        filter:[],
+      };
 
-            return{
-                ...state,
-                filter:[...action.value]
-            }
+    case DELETED_MONTHS:
+      return {
+        months: [],
+        filter:{},
+        multiFilter:[]
+      };
 
-            case DELETED_FILTER:
+    case DELETED_ITEMS:
+      let item = state.months.map((i) => i.id).indexOf(action.value);
 
-            return{
-                ...state,
-                filter:[]
-            }
+      state.months.splice(item, 1);
 
-            case DELETED_MONTHS:
-                return {
-                    months:[],
-                    filter:[]
-                }
-                 
+      return { ...state };
+  }
 
-    }
-
-    return state
-}
+  return state;
+};

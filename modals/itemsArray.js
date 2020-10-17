@@ -46,3 +46,4 @@ export const months = [
 ];
 
 export const important = ["high", " average","low"];
+export const necessary = ["yes", "maybe"," no"];

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect,} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   FlatList,
@@ -16,36 +16,34 @@ import ListIcons from "../components/screen Components/listIcons";
 import Selectable from "../components/screen Components/Selectable";
 import { months, icons } from "../modals/itemsArray";
 import { useSelector } from "react-redux";
-
+import { deleteFilter } from "../store/actions/filter";
 
 const ListScreen = (props) => {
   //clicked card data
   const [cardsData, setData] = useState();
-  const [positionX, setPositionX] = useState(0)
+  const [positionX, setPositionX] = useState(0);
   //header filter array
-  const [filter, setFilter] = useState()
-  const [refScroll, setRefScroll] = useState()
+  const [filter, setFilter] = useState();
+  const [refScroll, setRefScroll] = useState();
+  const [showToast, setShowToast] = useState({value:false, title:""});
 
- const filterState = useSelector(state => state.filter)
+  const filterState = useSelector((state) => state.filter);
 
   const ref = useRef();
   const refTool = useRef();
 
 
-    
-
 
   const pressed = (item) => {
     ref.current.snapTo(1);
-//item that got pressed data
+    //item that got pressed data
     setData({
       data: item.format,
       id: item.id,
     });
   };
 
-  
-//bottomSheet render
+  //bottomSheet render
   const renderInner = () => {
     {
       if (cardsData)
@@ -69,53 +67,63 @@ const ListScreen = (props) => {
     </View>
   );
 
+
+  // useEffect(() => {
+  //   if (filter) {
+  //     setFlatListData(filterState.filter.data);
+  //   }
+  //   if (filterState.multiFilter.name) {
+  //     setFlatListData(filterState.multiFilter.data);
+  //   } 
+  //    {
+  //     setFlatListData(filterState.months);
+  //   }
+  // }, [filterState, filter]);
+
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
         <ScrollView
-    
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{ flex: 1 }}
-          ref={(ref)=>setRefScroll(ref)}
-          contentContainerStyle={{width:filter?"100%":null , justifyContent:"center"}}
-         onScroll={(event)=> {if (!filter)setPositionX(event.nativeEvent.contentOffset.x)}}
+          ref={(ref) => setRefScroll(ref)}
+          contentContainerStyle={{
+            width: filter ? "100%" : null,
+            justifyContent: "center",
+          }}
+          onScroll={(event) => {
+            if (!filter) setPositionX(event.nativeEvent.contentOffset.x);
+          }}
         >
-       <Selectable
-        filter={filter} 
-        array={months}
-        navigation={props.navigation}
-         />
+          <Selectable
+            filter={filter}
+            array={months}
+            navigation={props.navigation}
+          />
         </ScrollView>
       </View>
-      <View style={{ ...styles.iconsContainer, marginBottom: 15 }}>
-     
- 
-    { icons.map((item,index)=>(
-      <View key={index}>
-      <ListIcons 
-      refScroll={refScroll}
-      scrollPosition={positionX}
-      index={index} 
-      title={item.title}
-       setFilter={setFilter}
-       filter={filter}
-       color={item.color} >
-      {item.icon}
-      </ListIcons>
-      </View>)) }
-       
-      </View>
+      {/* <View style={{ ...styles.iconsContainer, marginBottom: 15 }}>
+        {icons.map((item, index) => (
+          <View key={index}>*/}
+            <ListIcons
+              refScroll={refScroll}
+              filterItem={setFilter}
+             showToast={setShowToast}
+            />
+           
+       {/*   </View>
+        ))}
+      </View> */}
       <FlatList
         style={{ flex: 1 }}
-        data={filter? filterState.filter:filterState.months}
+        data={filter ? filterState.filter.data : filterState.months}
         keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (
           <>
             <TouchableOpacity
               onPress={
                 () => pressed(itemData.item)
-                
 
                 //props.navigation.navigate("details", { , })
               }
@@ -131,10 +139,12 @@ const ListScreen = (props) => {
               tip={itemData.item.format.productName}
             />
           </>
-        )
-        }
+        )}
       />
       <ToolTip />
+      {showToast.value&&<View style={styles.toast}>
+        <Text style={styles.title}> {showToast.title} </Text>
+      </View>}
       <BottomSheet
         ref={ref}
         snapPoints={[500, 350, 0]}
@@ -194,5 +204,21 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "grey",
   },
+  toast:{
+  position:"absolute",
+  right:150,
+  bottom:20,
+  width:"40%", 
+  height:50, 
+  backgroundColor:"grey",
+borderRadius:40,
+opacity:5,
+justifyContent:"center",
+alignItems:"center"},
+title: {
+  fontFamily: "SpartanBold",
+  fontSize: 20,
+  //color:"white"
+},
 });
 export default ListScreen;

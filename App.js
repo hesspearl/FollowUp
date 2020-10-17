@@ -34,13 +34,15 @@ export default function App() {
      dispatch={store.dispatch}
       {...rrfProps}>
       <ProviderPaper>
-    <View style={{flex:1,   backgroundColor: colors.background,}}>
-      <ScreenNav/>
     
-      <StatusBar 
+    
+    
+       {/* <StatusBar 
+    
       backgroundColor={colors.stateBar}
-      style="auto" />
-    </View>
+      style="light" />  */}
+        <ScreenNav/>
+    
     </ProviderPaper>
     </ReactReduxFirebaseProvider>
     </Provider>

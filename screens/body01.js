@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback } from "react";
+import React, { useReducer, useEffect , useState} from "react";
 import { View, StyleSheet, ScrollView , KeyboardAvoidingView, Image } from "react-native";
 import TextField from "../components/customComp/TextField";
 import SwitchSelector from "../components/screen Components/SwitchSelector";
@@ -65,8 +65,10 @@ const inputReducer = (state, action) => {
 
 
 
+
 const Body01 = (props) => {
 
+  const [swipe, setSwipe] = useState(false)
  
 
   const [stateInput, dispatchInput] = useReducer(inputReducer, {
@@ -92,29 +94,34 @@ const Body01 = (props) => {
   }
 , formIsValid:false});
 
-  
+  useEffect(() => {
+    if(swipe){
+      
+      if(!stateInput.formIsValid){
+     
+
+         alert("Don't leave field empty please")
+         setSwipe(false)
+         return
+       }else{
+        dispatch(actions.inputsPage1(
+          stateInput.inputValues.productName,
+          stateInput.inputValues.application,
+          stateInput.inputValues.spend,
+          stateInput.inputValues.important,
+    
+    
+        ))
+         props.navigation.navigate("body02")
+         setSwipe(false)
+       }
+
+    }
+  }, [swipe])
 
   const dispatch = useDispatch()
 
-  const swiping= () => {
-      
-      // if(!stateInput.formIsValid){
-     
-
-      //   alert("Don't leave field empty please")
-      //   return
-      // }
-  
-      dispatch(actions.inputsPage1(
-        stateInput.inputValues.productName,
-        stateInput.inputValues.application,
-        stateInput.inputValues.spend,
-        stateInput.inputValues.important,
-  
-  
-      ))
-       props.navigation.navigate("body02")
-    }
+  const swiping= () => { setSwipe(true) }
  
 
   

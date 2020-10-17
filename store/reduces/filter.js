@@ -10,7 +10,7 @@ import {
 //save filtered cards
 initialState = {
   months: [],
-  filter:{},
+  filter:[],
    
   multiFilter:{}
 };
@@ -18,6 +18,8 @@ initialState = {
 export default filter = (state = initialState, action) => {
   switch (action.type) {
     case MONTHS:
+
+    
       return {
         ...state,
         months: [...action.value],
@@ -25,6 +27,7 @@ export default filter = (state = initialState, action) => {
 
     case SELECTED_FILTER:
 
+ 
       return {
         ...state,
         filter:{
@@ -32,19 +35,14 @@ export default filter = (state = initialState, action) => {
           data:[...action.value]}
       };
 
-      case SELECTED_MULTI_FILTER:
-    //  console.log(action.name)
-      return {
-        ...state,
-        multiFilter: {
-          name:action.name,
-          data:[...action.value]},
-      };
 
     case DELETED_FILTER:
       return {
         ...state,
-        filter:[],
+        filter:{
+          name:state.filter.name,
+          data:[]
+        },
       };
 
     case DELETED_MONTHS:

@@ -2,32 +2,36 @@ import React , {useEffect} from 'react'
 import { View, Text, StyleSheet,FlatList } from "react-native";
 import colors from "../../colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
+import { useSelector } from "react-redux"
 const listLayout= props =>{
 
-    const {array , Handler, selected ,clean }=props
+    const {array , Handler, selected , width, fontSize }=props
 
 
+  
 
-    useEffect(() => {
-      if(clean){clean()}
-    }, [clean])
+
 
 return (
     array.map((item, index) =>(
         <View key={index}>
           <TouchableOpacity
-           onPress={() => Handler(index)}>
+           onPress={() => Handler(index)}
+           
+           >
+           
             <View
               style={{
                 ...styles.container,
-                backgroundColor: selected === index ? "black" : colors.textBack,
+                backgroundColor:selected === index ? "black" : colors.textBack,
+                width:width? width:100
               }}
             >
               <Text
                 style={{
                   ...styles.title,
                   color: selected === index ? "white" : "black",
+                  fontSize:fontSize?fontSize:20
                 }}
               >
                 {item}
@@ -41,7 +45,7 @@ return (
 }
 const styles = StyleSheet.create({
     container: {
-      width: 100,
+      
       height: 50,
   
       borderRadius: 10,
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
     },
     title: {
       fontFamily: "SpartanBold",
-      fontSize: 20,
+   
       //color:"white"
     },
   });

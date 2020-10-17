@@ -1,23 +1,36 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import colors from "../colors";
 import WavyHeader from "../components/screen Components/wavyHeader";
 import CircleButton from "../components/customComp/CircleButton";
 import * as actions from "../store/actions/filter"
 import {useDispatch} from "react-redux"
+import {position}from "../modals/itemsArray"
+import moment from "moment";
+
 
 const startScreen = (props) => {
 const {navigation}= props
   const dispatch = useDispatch()
+
+  const [current, setCurrent] = useState()
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       dispatch(actions.deleteMonth())
     });
 
+    currentMonth()
+
     return unsubscribe;
   }, [navigation]);
 
+  const currentMonth=()=>{
+ const thisMonth= moment().month()
+
+ const current=position[thisMonth]
+ setCurrent({position:current , index:thisMonth})
+  }
 
   return (
     <View style={styles.contain}>
@@ -31,7 +44,7 @@ const {navigation}= props
         <View style={{ height: "60%", justifyContent: "center" }}>
           <CircleButton color={colors.fab}
           src={require("../assets/business-and-finance.png")}
-          onPress={()=>props.navigation.navigate("list")} />
+          onPress={()=>props.navigation.navigate("loadingMonth", {position:current.position, index:current.index})} />
         </View>
       </WavyHeader>
     </View>

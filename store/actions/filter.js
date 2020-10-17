@@ -13,9 +13,7 @@ export const selectFilter =(filter, name)=>{
    return{type:SELECTED_FILTER , value:filter, name}
 }
 
-export const selectMultiFilter =(filter , name)=>{
-   return{type:SELECTED_MULTI_FILTER , value:filter, name }
-}
+
 export const deleteFilter =()=>{
    return{type:DELETED_FILTER  }
 }

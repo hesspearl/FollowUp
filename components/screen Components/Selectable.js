@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import * as actions from "../../store/actions/filter";
@@ -6,17 +6,20 @@ import { useFirestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import moment from "moment";
 import ListLayout from "../screen Components/listLyout";
 
+//import {MonthsHandler} from "../functional components/selectmonth"
+
 const Selectable = (props) => {
-  const { array, filter, navigation } = props;
+  const { array, filter, navigation, indexOfMonth, store } = props;
   // selected change color to black
-  const [selectedMonth, setSelectedMonth] = useState();
+  const [selectedMonth, setSelectedMonth] = useState(indexOfMonth);
   // selected change color to black
   const [selectedFilter, setSelectedFilter] = useState();
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state.filter);
 
- //console.log(state.multiFilter)
+ 
+console.log(selectedFilter)
 
   useFirestoreConnect(["Cards"]);
   const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
@@ -25,11 +28,16 @@ const Selectable = (props) => {
     const unsubscribe = navigation.addListener("focus", () => {
       setSelectedFilter();
     });
-
+store({
+  "storing":[selectedFilter, setSelectedFilter]
+})
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, selectedFilter]);
 
-  // function that return the month selected
+
+  
+
+  //function that return the month selected
   const MonthsHandler = (index) => {
     let items = [];
     setSelectedMonth(index);
@@ -47,41 +55,9 @@ const Selectable = (props) => {
     dispatch(actions.filterByMonths(items));
   };
 
-  const filtering = (item, index) => {
-    let f = [];
-
-  if (state.filter.name===item || Object.keys(state.filter).length===0)
-
-    {state.months
-      .filter((i) => i.format[item].value == filter.array[index])
-      .map((i) => f.push(i));
-      if (!f.length) {
-        dispatch(actions.deleteFilter());
-      } else {
-        dispatch(actions.selectFilter(f,item));
-      }
-
-    }else if (state.filter.name !==item){
-
-      let n=[]
-
-      state.filter.data.filter((i) =>i.format[item].value == filter.array[index])
-      .map((i) => n.push(i));
-
- 
-      // if (!f.length) {
-      //   dispatch(actions.deleteFilter());
-      // } else {
-        dispatch(actions.selectMultiFilter(n , item));
-     // }
-    }
-
-    
-  };
-
   // function that handle the filters returns
   const filterHandler = (index) => {
-    setSelectedFilter(index);
+    //setSelectedFilter(index);
 
     if (!state.months.length) {
       return alert("please choose month, or this month have no items  ");
@@ -89,13 +65,57 @@ const Selectable = (props) => {
 
     switch (filter.type) {
       case "importance":
+        
         filtering("important", index);
         break;
       case "necessary":
         filtering("necessary", index);
         break;
+
+      case "price":
+        filterPrice(index);
+        break;
     }
   };
+
+  const filtering = (item, index) => {
+   
+    setSelectedFilter(index)
+    let f = [];
+
+    state.months
+      .filter((i) => i.format[item].value == filter.array[index])
+      .map((i) => f.push(i));
+    if (!f.length) {
+      dispatch(actions.deleteFilter());
+    } else {
+      dispatch(actions.selectFilter(f, item));
+    }
+  };
+
+  const filterPrice = (index) => {
+    setSelectedFilter(index)
+    let f = [];
+    // if filter array =1 (highest to lowest)
+    if (index === 0) {
+      state.months
+        .sort((a, b) => b.format.spend - a.format.spend)
+        .map((i) => f.push(i));
+      dispatch(actions.selectFilter(f, "price"));
+    }
+
+    if (index === 1) {
+      state.months
+        .sort((a, b) => a.format.spend - b.format.spend)
+        .map((i) => f.push(i));
+      dispatch(actions.selectFilter(f, "price"));
+    }
+    if (!f.length) {
+      dispatch(actions.deleteFilter());
+    }
+  };
+
+  
 
   if (filter) {
     return (
@@ -103,7 +123,9 @@ const Selectable = (props) => {
         array={filter.array}
         selected={selectedFilter}
         Handler={filterHandler}
-        clean={setSelectedFilter}
+        width={filter.type === "price" && 180}
+        fontSize={filter.type === "price" && 15}
+     
       />
     );
   } else {
@@ -118,4 +140,3 @@ const Selectable = (props) => {
 };
 
 export default Selectable;
-

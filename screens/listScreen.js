@@ -16,23 +16,25 @@ import ListIcons from "../components/screen Components/listIcons";
 import Selectable from "../components/screen Components/Selectable";
 import { months, icons } from "../modals/itemsArray";
 import { useSelector } from "react-redux";
-import { deleteFilter } from "../store/actions/filter";
+
+
+export const MyContext = React.createContext(null);
 
 const ListScreen = (props) => {
-  //clicked card data
+  const { position, index } = props.route.params;
   const [cardsData, setData] = useState();
   const [positionX, setPositionX] = useState(0);
   //header filter array
   const [filter, setFilter] = useState();
   const [refScroll, setRefScroll] = useState();
-  const [showToast, setShowToast] = useState({value:false, title:""});
-
+  const [showToast, setShowToast] = useState({ value: false, title: "" });
+const [store, setStore] = useState()
   const filterState = useSelector((state) => state.filter);
+
+
 
   const ref = useRef();
   const refTool = useRef();
-
-
 
   const pressed = (item) => {
     ref.current.snapTo(1);
@@ -43,46 +45,29 @@ const ListScreen = (props) => {
     });
   };
 
-  //bottomSheet render
-  const renderInner = () => {
-    {
-      if (cardsData)
-        return (
-          <DetailsScreen
-            data={cardsData.data}
-            id={cardsData.id}
-            refTo={ref}
-            navigation={props.navigation}
-          />
-        );
+
+  //change scrollView position to current month
+
+  useEffect(() => {
+    if (refScroll) {
+      const time = setTimeout(() => {
+        refScroll.scrollTo({ x: position });
+       
+      }, 200);
+
+      return () => clearTimeout(time);
     }
-    return <View />;
-  };
-
-  const renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.panelHeader}>
-        <View style={styles.panelHandle} />
-      </View>
-    </View>
-  );
+  }, [position, refScroll]);
 
 
-  // useEffect(() => {
-  //   if (filter) {
-  //     setFlatListData(filterState.filter.data);
-  //   }
-  //   if (filterState.multiFilter.name) {
-  //     setFlatListData(filterState.multiFilter.data);
-  //   } 
-  //    {
-  //     setFlatListData(filterState.months);
-  //   }
-  // }, [filterState, filter]);
+
+  
 
   return (
     <View style={styles.container}>
+    <MyContext.Provider value={store}>
       <View style={styles.iconsContainer}>
+      
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -100,21 +85,21 @@ const ListScreen = (props) => {
             filter={filter}
             array={months}
             navigation={props.navigation}
+            indexOfMonth={index}
+
+            store={setStore}
           />
         </ScrollView>
       </View>
-      {/* <View style={{ ...styles.iconsContainer, marginBottom: 15 }}>
-        {icons.map((item, index) => (
-          <View key={index}>*/}
-            <ListIcons
-              refScroll={refScroll}
-              filterItem={setFilter}
-             showToast={setShowToast}
-            />
-           
-       {/*   </View>
-        ))}
-      </View> */}
+
+      <ListIcons
+        refScroll={refScroll}
+        filterItem={setFilter}
+        showToast={setShowToast}
+        positionX={positionX}
+      
+      />
+      </MyContext.Provider>
       <FlatList
         style={{ flex: 1 }}
         data={filter ? filterState.filter.data : filterState.months}
@@ -138,18 +123,39 @@ const ListScreen = (props) => {
               forwardRef={refTool}
               tip={itemData.item.format.productName}
             />
-          </>
+          </> 
         )}
       />
       <ToolTip />
-      {showToast.value&&<View style={styles.toast}>
-        <Text style={styles.title}> {showToast.title} </Text>
-      </View>}
+      {showToast.value && (
+        <View style={styles.toast}>
+          <Text style={styles.title}> {showToast.title} </Text>
+        </View>
+      )}
       <BottomSheet
         ref={ref}
         snapPoints={[500, 350, 0]}
-        renderContent={renderInner}
-        renderHeader={renderHeader}
+        renderContent={() => {
+    {
+      if (cardsData)
+        return (
+          <DetailsScreen
+            data={cardsData.data}
+            id={cardsData.id}
+            refTo={ref}
+            navigation={props.navigation}
+          />
+        );
+    }
+    return <View />;
+  }}
+        renderHeader={ () => (
+    <View style={styles.header}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  )}
         initialSnap={2}
       />
       <View style={styles.fab}>
@@ -204,21 +210,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "grey",
   },
-  toast:{
-  position:"absolute",
-  right:150,
-  bottom:20,
-  width:"40%", 
-  height:50, 
-  backgroundColor:"grey",
-borderRadius:40,
-opacity:5,
-justifyContent:"center",
-alignItems:"center"},
-title: {
-  fontFamily: "SpartanBold",
-  fontSize: 20,
-  //color:"white"
-},
+  toast: {
+    position: "absolute",
+    right: 150,
+    bottom: 20,
+    width: "40%",
+    height: 50,
+    backgroundColor: "grey",
+    borderRadius: 40,
+    opacity: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontFamily: "SpartanBold",
+    fontSize: 20,
+    //color:"white"
+  },
 });
 export default ListScreen;

@@ -31,7 +31,7 @@ return (
                 style={{
                   ...styles.title,
                   color: selected === index ? "white" : "black",
-                  fontSize:fontSize?fontSize:20
+                  fontSize:fontSize?fontSize:15
                 }}
               >
                 {item}

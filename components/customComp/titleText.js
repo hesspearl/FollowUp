@@ -12,7 +12,7 @@ return (
 const styles= StyleSheet.create({
     txt:{
         color:colors.titles,
-        fontSize:20,
+        fontSize:15,
         marginVertical:10,
         fontFamily:"Spartan"
         

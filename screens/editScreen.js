@@ -172,7 +172,10 @@ const EditScreen = (props) => {
                 </Text>
               </View>
             </TouchableOpacity>
-            <ModalComp visible={show} onPress={pressHandler} />
+            <ModalComp
+             visible={show}
+             onPress={pressHandler}  
+             onRequestClose={() => setShow(false)} />
 
             <TouchableOpacity onPress={() => setOpen(true)}>
               <Text style={styles.title}> {stateInputs.inputValues.date}</Text>

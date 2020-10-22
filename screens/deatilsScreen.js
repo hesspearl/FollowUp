@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import {deletedItem} from "../store/actions/filter"
 
 
-const size={width:400, height:100}
+const size={width:250, height:60}
 
 const DetailsScreen = (props) => {
   const firestore = useFirestore();
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "Spartan",
-    fontSize: 15,
+    fontSize: 10,
     // marginVertical:5
   },
   imageContainer: {

@@ -59,6 +59,8 @@ useEffect(() => {
 }, [stateValue ]
 )
 
+
+
 const pressHandler=(l)=>{
   
   dispatch({
@@ -87,6 +89,7 @@ const pressHandler=(l)=>{
         <ModalComp
            visible={stateValue.show}
            onPress={pressHandler }
+           onRequestClose={() => dispatch({type:SHOW, show:false})}
         /> 
       </TouchableOpacity>
     </View>

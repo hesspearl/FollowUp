@@ -6,14 +6,16 @@ import { important, necessary, icons, price } from "../../modals/itemsArray";
 import * as actions from "../../store/actions/filter";
 import { useDispatch  } from "react-redux";
 import { color } from "react-native-reanimated";
-import {MyContext} from "../../screens/listScreen"
+import {MyContext} from "../../context"
 
 const ListIcons = (props) => {
   const { filterItem, refScroll, showToast, positionX } = props;
 
   const [colors, setColor] = useState();
   const [filter, setFilter] = useState();
-const {["storing"]: [data, setData]} = useContext(MyContext)
+const{["storing"]: [data, setData]}= useContext(MyContext)
+
+
 
 
   const dispatch = useDispatch();

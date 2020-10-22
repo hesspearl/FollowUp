@@ -9,7 +9,7 @@ const wavyHeader = (props) => {
       <View style={styles.wave}>
         <Svg
           style={styles.svg}
-          height="45%"
+          height="41%"
           width="100%"
           viewBox="10 0 1440 1"
         >
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   svg: {
     position: "absolute",
-    bottom:  Dimensions.get("window").height/2
+    bottom:  Dimensions.get("screen").height/2
   },
 });
 export default wavyHeader;

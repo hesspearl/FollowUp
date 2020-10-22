@@ -46,16 +46,16 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   imageContainer: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     marginLeft: 20,
     borderWidth: 1,
     margin: 10,
     borderRadius: 40,
   },
   image: {
-    width: 65,
-    height: 65,
+    width: 48,
+    height: 48,
 
     borderRadius: 50,
   },
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
     width: "75%",
   },
   title: {
-    fontFamily: "Piedra",
-    fontSize: 40,
+    fontFamily: "SpartanBold",
+    fontSize: 20,
   },
   report: {
     fontFamily: "Piedra",

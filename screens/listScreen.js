@@ -6,6 +6,9 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Image,
+  BackHandler,
+  ActivityIndicator,
 } from "react-native";
 import Card from "../components/customComp/Card";
 import colors from "../colors";
@@ -16,9 +19,8 @@ import ListIcons from "../components/screen Components/listIcons";
 import Selectable from "../components/screen Components/Selectable";
 import { months, icons } from "../modals/itemsArray";
 import { useSelector } from "react-redux";
-
-
-export const MyContext = React.createContext(null);
+import { useFirestoreConnect } from "react-redux-firebase";
+import {MyContext}from "../context"
 
 const ListScreen = (props) => {
   const { position, index } = props.route.params;
@@ -27,13 +29,14 @@ const ListScreen = (props) => {
   //header filter array
   const [filter, setFilter] = useState();
   const [refScroll, setRefScroll] = useState();
+  // shows toast from months/important/necessary/price
   const [showToast, setShowToast] = useState({ value: false, title: "" });
-const [store, setStore] = useState()
+  const [store, setStore] = useState({ ["storing"]: [] });
   const filterState = useSelector((state) => state.filter);
 
-
-
+  //bottomSheet ref
   const ref = useRef();
+  //tooltip ref
   const refTool = useRef();
 
   const pressed = (item) => {
@@ -45,65 +48,78 @@ const [store, setStore] = useState()
     });
   };
 
-
   //change scrollView position to current month
 
   useEffect(() => {
     if (refScroll) {
       const time = setTimeout(() => {
         refScroll.scrollTo({ x: position });
-       
       }, 200);
-
       return () => clearTimeout(time);
     }
   }, [position, refScroll]);
 
+  //handle back button to return to top stack 
+  useEffect(() => {
+    const onBackPress = () => {
+      props.navigation.popToTop();
+      return true;
+    };
+    BackHandler.addEventListener("hardwareBackPress", onBackPress);
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+  }, [BackHandler]);
 
-
-  
+  const EmptyImage = () => (
+    <View style={{alignItems: "center", paddingTop:100}}>
+      <Image
+        source={require("../assets/caja.png")}
+        style={{ width: 100, height: 100 }}
+      />
+      <Text style={styles.title}>It's Empty , Filter Again !</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-    <MyContext.Provider value={store}>
-      <View style={styles.iconsContainer}>
-      
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ flex: 1 }}
-          ref={(ref) => setRefScroll(ref)}
-          contentContainerStyle={{
-            width: filter ? "100%" : null,
-            justifyContent: "center",
-          }}
-          onScroll={(event) => {
-            if (!filter) setPositionX(event.nativeEvent.contentOffset.x);
-          }}
-        >
-          <Selectable
-            filter={filter}
-            array={months}
-            navigation={props.navigation}
-            indexOfMonth={index}
+      <MyContext.Provider value={store}>
+        <View style={styles.iconsContainer}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{ flex: 1 }}
+            ref={(ref) => setRefScroll(ref)}
+            contentContainerStyle={{
+              width: filter ? "100%" : null,
+              justifyContent: "center",
+            }}
+            onScroll={(event) => {
+              if (!filter) setPositionX(event.nativeEvent.contentOffset.x);
+            }}
+          >
+            <Selectable
+              filter={filter}
+              array={months}
+              navigation={props.navigation}
+              indexOfMonth={index}
+              store={setStore}
+            />
+          </ScrollView>
+        </View>
 
-            store={setStore}
-          />
-        </ScrollView>
-      </View>
-
-      <ListIcons
-        refScroll={refScroll}
-        filterItem={setFilter}
-        showToast={setShowToast}
-        positionX={positionX}
-      
-      />
+        <ListIcons
+          refScroll={refScroll}
+          filterItem={setFilter}
+          showToast={setShowToast}
+          positionX={positionX}
+        />
       </MyContext.Provider>
       <FlatList
-        style={{ flex: 1 }}
+        style={{ flex:1}}
         data={filter ? filterState.filter.data : filterState.months}
         keyExtractor={(item, index) => item.id}
+        ListEmptyComponent={<EmptyImage />}
+        refreshing={true}
         renderItem={(itemData) => (
           <>
             <TouchableOpacity
@@ -123,7 +139,7 @@ const [store, setStore] = useState()
               forwardRef={refTool}
               tip={itemData.item.format.productName}
             />
-          </> 
+          </>
         )}
       />
       <ToolTip />
@@ -136,31 +152,31 @@ const [store, setStore] = useState()
         ref={ref}
         snapPoints={[500, 350, 0]}
         renderContent={() => {
-    {
-      if (cardsData)
-        return (
-          <DetailsScreen
-            data={cardsData.data}
-            id={cardsData.id}
-            refTo={ref}
-            navigation={props.navigation}
-          />
-        );
-    }
-    return <View />;
-  }}
-        renderHeader={ () => (
-    <View style={styles.header}>
-      <View style={styles.panelHeader}>
-        <View style={styles.panelHandle} />
-      </View>
-    </View>
-  )}
+          {
+            if (cardsData)
+              return (
+                <DetailsScreen
+                  data={cardsData.data}
+                  id={cardsData.id}
+                  refTo={ref}
+                  navigation={props.navigation}
+                />
+              );
+          }
+          return <View />;
+        }}
+        renderHeader={() => (
+          <View style={styles.header}>
+            <View style={styles.panelHeader}>
+              <View style={styles.panelHandle} />
+            </View>
+          </View>
+        )}
         initialSnap={2}
       />
       <View style={styles.fab}>
         <TouchableOpacity onPress={() => props.navigation.navigate("body01")}>
-          <Text style={{ fontSize: 100, fontFamily: "Piedra" }}>+</Text>
+          <Text style={{ fontSize: 60, fontFamily: "Piedra" }}>+</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -168,14 +184,14 @@ const [store, setStore] = useState()
 };
 
 const styles = StyleSheet.create({
-  container: {
+ container: {
     flex: 1,
     backgroundColor: colors.background,
     marginTop: 20,
   },
   fab: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     borderRadius: 100,
     position: "absolute",
     bottom: 10,
@@ -184,17 +200,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.fab,
   },
-  header: {
+ header: {
     backgroundColor: colors.bottomSheet,
     shadowColor: "#000000",
     paddingTop: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
-  panelHeader: {
+ panelHeader: {
     alignItems: "center",
   },
-  panelHandle: {
+ panelHandle: {
     width: 40,
     height: 8,
     borderRadius: 4,
@@ -210,7 +226,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "grey",
   },
-  toast: {
+ toast: {
     position: "absolute",
     right: 150,
     bottom: 20,
@@ -224,8 +240,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "SpartanBold",
-    fontSize: 20,
-    //color:"white"
+    fontSize: 15,
+    color:"white"
   },
 });
 export default ListScreen;

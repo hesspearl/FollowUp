@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
 
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height/2
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height/2
   },
 });
 export default startScreen;

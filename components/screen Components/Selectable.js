@@ -29,7 +29,7 @@ console.log(selectedFilter)
       setSelectedFilter();
     });
 store({
-  "storing":[selectedFilter, setSelectedFilter]
+  ["storing"]:[selectedFilter, setSelectedFilter]
 })
     return unsubscribe;
   }, [navigation, selectedFilter]);

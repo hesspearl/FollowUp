@@ -67,7 +67,7 @@ export const NecessaryLabels = (props) => {
 
 const styles = StyleSheet.create({
   contain: {
-    width: 200,
+    width: 180,
     height: 40,
     justifyContent: "center",
     alignItems: "center",
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     
   },
   textInside: {
-    fontSize: 17,
+    fontSize: 15,
     fontFamily:"SpartanBold",
     marginLeft: 20,
   },

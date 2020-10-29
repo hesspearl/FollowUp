@@ -11,20 +11,20 @@ const switchSelector = (props) => {
   ];
 
   return (
-    <View>
-      <Text style={{ fontSize: 40, margin: 10 ,marginTop:20, fontFamily:'Piedra'}}>{props.children}</Text>
+    <View style={{alignItems:"center"}}>
+      <Text style={{ fontSize: 20, margin: 25, fontFamily:'SpartanBold'}}>{props.children}</Text>
       <SwitchSelector
         textColor={"black"}
-        fontSize={30}
+        fontSize={20}
         selectedColor={"white"}
-        buttonColor={colors.buttons}
-        borderColor={"purple"}
+        buttonColor={"black"}
+        borderColor="black"
         options={options}
         borderRadius={6}
-        style={{ width: "80%", height: "10%" , marginTop:30}}
+        style={{ width: "100%", height: "10%" ,}}
         initial={0}
         onPress={props.onPress}
-        height={60}
+        height={40}
       />
     </View>
   );

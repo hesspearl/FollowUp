@@ -44,7 +44,7 @@ const DropDownComp = (props) => {
       </Modal>
 
       <TouchableOpacity onPress={() => setVisible(true)}>
-        <Text style={{ ...styles.text, margin: 20 }}>{props.value}</Text>
+        <Text style={styles.value}>{props.value}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -58,11 +58,19 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 25,
-    fontFamily: "Piedra",
+    fontSize: 13,
+    fontFamily: "SpartanBold",
+    color: "white",
+  },
+
+  value: {
+    fontSize: 13,
+    fontFamily: "Spartan",
+    margin: 5,
+    color: "black",
   },
   modal: {
-    backgroundColor: "white",
+    backgroundColor: "black",
     borderRadius: 20,
     width: "60%",
     height: "20%",

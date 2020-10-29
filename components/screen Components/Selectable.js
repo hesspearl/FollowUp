@@ -19,7 +19,7 @@ const Selectable = (props) => {
   const state = useSelector((state) => state.filter);
 
  
-console.log(selectedFilter)
+//console.log(selectedFilter)
 
   useFirestoreConnect(["Cards"]);
   const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);

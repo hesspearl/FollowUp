@@ -4,13 +4,14 @@ import colors from "../../colors";
 
 const Cards = (props) => {
   return (
-   
-        <View style={styles.product}>
+    <View style={styles.product}>
       <View
         style={{
           flex: 1,
           flexDirection: "row",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingLeft:30
         }}
       >
         <View style={styles.imageContainer}>
@@ -18,14 +19,15 @@ const Cards = (props) => {
         </View>
 
         <View style={styles.details}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}> 
+          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
             {props.product}
+          </Text>
+          <Text  style={styles.title}>
+            {props.price}
           </Text>
         </View>
       </View>
     </View>
-   
-  
   );
 };
 
@@ -35,34 +37,38 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
-   borderRadius:20,
+    borderRadius: 20,
     backgroundColor: colors.textBack,
-    marginVertical:3,
-    width: "100%",
-    
+    marginVertical: 3,
+    width: "80%",
+    elevation: 10,
+    alignSelf: "center",
+    marginVertical: 20,
+    height: 100,
   },
   touchable: {
     borderRadius: 10,
     overflow: "hidden",
   },
   imageContainer: {
-    width: 50,
-    height: 50,
-    marginLeft: 20,
+    width: 70,
+    height: 70,
+  //  marginLeft: 20,
     borderWidth: 1,
-    margin: 10,
+  //  margin: 10,
     borderRadius: 40,
   },
   image: {
-    width: 48,
-    height: 48,
+    width: 68,
+    height: 68,
 
     borderRadius: 50,
   },
   details: {
     //flex:1,
-    justifyContent: "space-evenly",
-    marginHorizontal: 20,
+   // justifyContent: "center",
+    alignItems: "center",
+   // marginHorizontal: 30,
     width: "75%",
   },
   title: {

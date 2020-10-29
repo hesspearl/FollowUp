@@ -4,20 +4,28 @@ import {
   Text,
   StyleSheet,
   Image,
-  ScrollView,
+  SafeAreaView,
   TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
+  //TouchableOpacity,
+ Keyboard,
+  Dimensions,
+  ImageBackground,
+  ScrollView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useFirestore, isLoaded } from "react-redux-firebase";
 import colors from "../colors";
 import * as actions from "../store/actions/format";
+import {
+  changeValidation,
+  returnValidation,
+} from "../store/actions/modalState";
 import ModalComp from "../components/customComp/Modal";
 import DateCalender from "../components/customComp/dateCalender";
 import Lights from "../components/customComp/lights";
 import DropDownComp from "../components/customComp/CustomDropDown";
-import SwitchSelctor from "../components/screen Components/SwitchSelector";
+import { InputModal, TextModal } from "../components/customComp/inputModal";
+import WavyHeader from "../components/screen Components/wavyHeader";
 import {
   inputReducer,
   INPUTS_VALUES,
@@ -28,11 +36,9 @@ import {
   CHOICES,
 } from "../store/reduces/editReducer";
 import moment from "moment";
-import CircleButton from "../components/customComp/CircleButton";
 import Observation from "../components/screen Components/showMore";
-
-import { FAB } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
+import {TouchableOpacity} from "react-native-gesture-handler"
 
 const EditScreen = (props) => {
   const { dataId, id } = props.route.params;
@@ -42,11 +48,8 @@ const EditScreen = (props) => {
   const firestore = useFirestore();
   const dispatch = useDispatch();
   const state = useSelector((state) => state.format.edit);
-  const [show, setShow] = useState(false);
-  const [open, setOpen] = useState(false);
+  const stateModal = useSelector((state) => state.modal);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
-  
-//console.log(stateInputs.inputValidation)
 
   useEffect(() => {
     dispatch(actions.edit(stateInputs.inputValues));
@@ -60,21 +63,18 @@ const EditScreen = (props) => {
 
     try {
       await firestore.update(`Cards/${id}`, { format: state });
-      props.navigation.navigate("updating",{ id:id});
+      props.navigation.navigate("updating", { id: id });
     } catch (e) {
       //console.log(e);
     }
   };
 
   const inputTextHolder = (inputIdentifier, text) => {
-
-    
     let isValid = false;
-    if (text.trim().length > 0 || inputIdentifier==="observation") {
+    if (text.trim().length > 0 || inputIdentifier === "observation") {
       isValid = true;
     }
 
-    
     dispatchInputs({
       type: INPUTS_VALUES,
       value: text,
@@ -89,104 +89,116 @@ const EditScreen = (props) => {
       value: l.label,
       avatar: l.avatar,
     });
-
-    setShow(false);
+    dispatch(returnValidation());
   };
-
   useEffect(() => {
-    props.navigation.setOptions({
-      headerStyle: {
-        backgroundColor: colors.background,
-      },
+    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
 
-      headerTitle: () => (
-        <Text
-          style={{ fontSize: 30, alignSelf: "center", fontFamily: "Piedra" }}
-        >
-          Editing my purchase
-        </Text>
-      ),
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => props.navigation.navigate("list")}>
-          <Image
-            style={{ width: 30, height: 30, marginLeft: 10 }}
-            source={{
-              uri:
-                "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/bbb0a5b7cce06aad27996ff3de6c2cc6/close.png",
-            }}
-          />
-        </TouchableOpacity>
-      ),
-      headerRight: () => (
-        <TouchableOpacity onPress={submit}>
-          <Image
-            style={{ width: 40, height: 40, marginRight: 10 }}
-            source={{
-              uri:
-                "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/74f50c68f5f4f44d63340858c8d151aa/correct.png",
-            }}
-          />
-        </TouchableOpacity>
-      ),
-    });
-  }, [state]);
+    //  Don't forget to cleanup with remove listeners
+    return () => {
+      Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+      Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+    };
+  }, []);
+
+  const _keyboardDidShow = () => {
+    dispatch(changeValidation("image", true))
+  }
+
+  const _keyboardDidHide = () => {
+    dispatch(returnValidation())
+  }
+
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <View style={styles.content}></View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
+      <ImageBackground
+        source={require("../assets/icons/Rectangle.png")}
+        style={styles.svg}
+      />
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+          marginTop: 20,
+        }}
+      >
+        <TouchableOpacity onPress={() => props.navigation.navigate("list")}>
+          <AntDesign name="close" size={30} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={submit}>
+          <AntDesign name="check" size={30} color="white" />
+        </TouchableOpacity>
+      </View>
 
-          <View style={{ elevation: 10, marginTop: 5 }}>
-            <TouchableOpacity onPress={() => setShow(true)}>
-              <Image
-                style={styles.image}
-                source={{ uri: stateInputs.inputValues.application.avatar }}
-              />
-            </TouchableOpacity>
-          </View>
+      <View
+        style={{
+         alignItems:"flex-end",
+          width: "100%",
+          marginTop:20
+          
+        }}
+      >
 
-          <View style={styles.editContainer}>
+<TextInput
+          style={{  color: "white",  ...styles.title, fontSize: 25,paddingBottom:50  }}
+          onChangeText={inputTextHolder.bind(this, "productName")}
+          value={stateInputs.inputValues.productName}
+        />
+         {/* <TouchableOpacity
+          onPress={() => dispatch(changeValidation("productName", true))}
+        >
+         <Text style={{ ...styles.title, color: "white", fontSize: 25 }}>
+            {stateInputs.inputValues.productName}
+          </Text>
+        </TouchableOpacity> */}
+
+      </View>
+
+      {stateModal.image?null:<View style={styles.imageContainer}>
+      <View style={styles.content}></View> 
+
+        <View style={{ elevation: 10, marginTop: 5 }}>
+          <TouchableOpacity
+            onPress={() => dispatch(changeValidation("Application", true))}
+          >
             <Image
-              style={styles.edit}
-              source={{
-                uri:
-                  "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f46e37fdc10ed5b3c2bd8a6/69b491b216e5844d348b33dac7a9fca7/draw.png"
-                 // "https://s3-alpha-sig.figma.com/img/e0fb/7988/359b5222ffbd5a5d5986151c959f9138?Expires=1600041600&Signature=Tc2iDLGWOomVtuAzjly0QgKoZfovjPA9r7ua5avyhKYNZg~EW-Yezjez57shbpjwmTvEZGesx4GNfB-BfdyAa~i91aa0zyaipj0-dB9CiiWbUreQV9ItQ5~-nAN5mFOFzZwGYLsjBuu7LdUQoSUpsDyP38I299nN6nTUvEc-fLhtG13AhZxiTg71dCAInV4Hp54q7-LJfhcdeRQDOo6Jv39fxBoCnH56HI7obgP81rCHURYnOLmAYYULv-Tj7DvYbUkTGBCH~giRsCZFxPTnDxQqohak54XU032xZ1VSEzTT1P09JYz8tP-0vAGTJpO4K9Vwi~j5A1U3NhXr8ODHFg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-              }}
+              style={styles.image}
+              source={{ uri: stateInputs.inputValues.application.avatar }}
             />
-          </View>
+          </TouchableOpacity>
         </View>
+      </View>}
 
-        <ScrollView style={{ width: "100%", zIndex: -10 }}>
-          <View style={styles.titlesContain}>
-            <TextInput
-              style={{ ...styles.title, fontSize: 50 }}
-              onChangeText={inputTextHolder.bind(this, "productName")}
-              value={stateInputs.inputValues.productName}
+      <View />
+      <ScrollView>
+      
+        <View style={styles.container}>
+       
+          <View style={styles.card}>
+            <TextModal
+              title="Application"
+              text={stateInputs.inputValues.application.value}
+              type="Application"
             />
-            <TouchableOpacity onPress={() => setShow(true)}>
-              <View>
-                <Text style={styles.title}>
-                  {stateInputs.inputValues.application.value}
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <ModalComp
-             visible={show}
-             onPress={pressHandler}  
-             onRequestClose={() => setShow(false)} />
+          
 
-            <TouchableOpacity onPress={() => setOpen(true)}>
-              <Text style={styles.title}> {stateInputs.inputValues.date}</Text>
-            </TouchableOpacity>
-            {open && (
+            <TextModal
+              title="Date"
+              text={stateInputs.inputValues.date}
+              type="date"
+            />
+
+            {stateModal.date ? (
               <DateCalender
                 value={moment(
                   stateInputs.inputValues.date,
                   "DD/MM/YYYY"
                 ).toDate()}
-                open={setOpen}
+              
                 newDate={(value) =>
                   dispatchInputs({
                     type: DATE,
@@ -194,18 +206,30 @@ const EditScreen = (props) => {
                   })
                 }
               />
-            )}
-            <TextInput
-              style={styles.title}
-              onChangeText={inputTextHolder.bind(this, "spend")}
-              keyboardType="number-pad"
-              value={stateInputs.inputValues.spend}
+            ) : null}
+            <View style={styles.spendContain}>
+              <Text style={styles.title}>Spend</Text>
+              <TextInput
+                style={{ fontFamily: "SpartanBold", fontSize: 15 }}
+                onChangeText={inputTextHolder.bind(this, "spend")}
+                keyboardType="number-pad"
+                value={stateInputs.inputValues.spend}
+                
+              />
+            </View>
+            <ModalComp
+              visible={
+                stateModal.Application
+                  ? stateModal.Application
+                  : stateModal.openModals.Application
+              }
+              onPress={pressHandler}
+              onRequestClose={() => dispatch(returnValidation())}
             />
           </View>
-
-          <View style={styles.rowContain}>
+          <View style={styles.card2}>
             <Lights
-              title="Important level"
+              title="Important "
               color={stateInputs.inputValues.important.color}
             >
               <DropDownComp
@@ -222,7 +246,7 @@ const EditScreen = (props) => {
             </Lights>
 
             <Lights
-              title="Necessary?"
+              title="Necessary"
               color={stateInputs.inputValues.necessary.color}
             >
               <DropDownComp
@@ -238,105 +262,102 @@ const EditScreen = (props) => {
               />
             </Lights>
           </View>
-          <View
-            style={{
-              width: "100%",
-              borderBottomWidth: 1,
-              height: "20%",
-              marginVertical: 10,
-            }}
-          >
+          <View style={styles.card3}>
             <Observation observation={stateInputs.inputValues.observation}>
               <TextInput
-                style={{ ...styles.title, fontSize: 30, marginRight: 60 }}
+                style={{ ...styles.title, fontSize: 15 }}
                 onChangeText={inputTextHolder.bind(this, "observation")}
                 value={stateInputs.inputValues.observation}
+            
               />
             </Observation>
           </View>
-        </ScrollView>
-      </View>
-    </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
+    
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.background,
 
     justifyContent: "center",
     alignItems: "center",
+    height: Dimensions.get("window").height,
+  },
+  svg: {
+    
+      position: "absolute",
+      left: 0,
+      top: 110,
+      width: Dimensions.get("screen").width,
+      height: Dimensions.get("screen").height,
+    
+  },
+  card: {
+    width: "80%",
+    height: "30%",
+    elevation: 10,
+    borderRadius: 20,
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    marginVertical: 10,
+
+  },
+  card2: {
+    width: "80%",
+    height: "20%",
+    elevation: 10,
+    borderRadius: 20,
+    backgroundColor: "white",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginVertical: 10,
+  },
+  card3: {
+    width: "80%",
+    height: "20%",
+    elevation: 10,
+    borderRadius: 20,
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    marginVertical: 10,
   },
   title: {
-    marginHorizontal: 20,
-    fontFamily: "Piedra",
-    fontSize: 40,
-    margin: 15,
+    fontFamily: "SpartanBold",
+    fontSize: 13,
+    marginVertical: 5,
   },
   imageContainer: {
-    width: "100%",
-    // height: "50%",
-    alignItems: "center",
-    borderBottomWidth: 1,
-    padding: 20,
+    position: "absolute",
+    left: 25,
+    top: 60,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     borderRadius: 30,
   },
   rowContain: {
-    flexDirection: "column",
+    flexDirection: "row",
     width: "100%",
     // height: "20%",
-    alignItems: "flex-end",
-    //margin:10,
-    borderBottomWidth: 1,
-    paddingBottom: 20,
-    //  justifyContent:"flex-start",
-  },
-  titlesContain: {
-    borderBottomWidth: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 20,
-  },
-  fab: {
-    height: 80,
-    width: 80,
-    borderRadius: 100,
-    position: "relative",
 
-    top: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.stateBar,
-  },
-  content: {
-    flexDirection: "row",
+    marginTop: 10,
+    borderBottomWidth: 1,
+    paddingBottom: 20,
     justifyContent: "space-between",
-    width: "100%",
-    marginTop: 20,
   },
-
-  edit: {
-    width: 35,
-    height: 35,
-    alignSelf: "center",
-    //
+  spendContain: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    width: "50%",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
   },
-  editContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-
-    // zIndex:10,
-    justifyContent: "center",
-    backgroundColor: "white",
-    position: "relative",
-    top: 40,
-  },
+  
 });
 export default EditScreen;

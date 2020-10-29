@@ -38,7 +38,7 @@ return (
 const styles= StyleSheet.create({
     modalContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
     title:{
-      fontSize:35,
+      fontSize:25,
       fontWeight:"bold"
     },
     img:{

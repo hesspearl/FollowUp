@@ -7,10 +7,10 @@ export const inputsPage1 = (productName, application, spend, important) => {
     value : { productName, application, spend, important }}};
 ;
 
-export const inputsPage2 = (date, picture, observation, necessary) => {
+export const inputsPage2 = (date, observation, necessary) => {
 
 return { type : POST_FROM_PAGE_02,
-    value : { date, picture, observation, necessary}}}
+    value : { date,  observation, necessary}}}
 
     
 export const edit = (value) => {

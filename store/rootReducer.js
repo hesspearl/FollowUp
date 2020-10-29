@@ -5,6 +5,7 @@ import firebase from "../firebase"
    from 'redux-firestore' 
    import { composeWithDevTools } from 'redux-devtools-extension';
 import filter from "./reduces/filter";
+import modalState from "./reduces/modalsState"
 
    const rrfConfig = {
     userProfile: 'users',
@@ -14,6 +15,7 @@ import filter from "./reduces/filter";
 const rootReducers= combineReducers({
  format:Format,
  filter:filter,
+ modal:modalState,
  fireStore:firestoreReducer
   })
 

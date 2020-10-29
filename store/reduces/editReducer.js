@@ -6,42 +6,41 @@ export const PICTURE = "PICTURE";
 export const DATE = "DATE";
 
 
-export const init=(data)=>{
-
-const initial={
-     inputValues: {
-      date:data.date,
-      picture:data.picture,
+export const init = (data) => {
+  const initial = {
+    inputValues: {
+      date: data.date,
+      picture: data.picture,
       observation: data.observation,
       necessary: {
-        value:  data.necessary.value,
-        color:  data.necessary.color,
+        value: data.necessary.value,
+        color: data.necessary.color,
       },
       productName: data.productName,
       application: {
-       value: data.application.value,
-       avatar: data.application.avatar
+        value: data.application.value,
+        avatar: data.application.avatar,
       },
       spend: data.spend,
       important: {
         value: data.important.value,
-        color:  data.important.color,
+        color: data.important.color,
       },
     },
-    inputValidation:{
-      productName:data.productName? true: false,
-      observation:data.observation?true:true,
-      spend:data.spend? true: false,
-      
-  
-  },
-  formIsValid:true
-    }
+    inputValidation: {
+      productName: data.productName ? true : false,
+      observation: data.observation ? true : true,
+      spend: data.spend ? true : false,
+    },
+    formIsValid: true,
+    
+  };
 
-return initial}
+  return initial;
+};
 
 
-export const  inputReducer = (state, action) => {
+export const inputReducer = (state, action) => {
   switch (action.type) {
     case INPUTS_VALUES:
       const updateValues = {
@@ -53,23 +52,23 @@ export const  inputReducer = (state, action) => {
         [action.input]: action.isValid,
       };
 
-      let updateFormIsValid=true
-       for(const key in updateValidity)
-       updateFormIsValid=updateFormIsValid && updateValidity[key]
+      let updateFormIsValid = true;
+      for (const key in updateValidity)
+        updateFormIsValid = updateFormIsValid && updateValidity[key];
 
-     
       return {
-        formIsValid:updateFormIsValid,
+        formIsValid: updateFormIsValid,
         inputValues: updateValues,
-        inputValidation:updateValidity
+        inputValidation: updateValidity,
       };
 
     case DROP:
       const updateDrop = {
         ...state.inputValues,
-        application:{
-          value:action.value,
-          avatar:action.avatar}
+        application: {
+          value: action.value,
+          avatar: action.avatar,
+        },
       };
       return {
         ...state,
@@ -87,7 +86,7 @@ export const  inputReducer = (state, action) => {
         ...state,
         inputValues: updateChoices,
       };
-      
+
     case DATE:
       const updateDate = {
         ...state.inputValues,
@@ -118,6 +117,11 @@ export const  inputReducer = (state, action) => {
         ...state,
         inputValues: updatePic,
       };
+
+      
   }
   return state;
 };
+
+// -------------------------------------------------------------
+

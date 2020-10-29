@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import {deletedItem} from "../store/actions/filter"
 
 
-const size={width:250, height:60}
+const size={width:250, height:40}
 
 const DetailsScreen = (props) => {
   const firestore = useFirestore();
@@ -40,7 +40,7 @@ dispatch(deletedItem(id))
       <View style={{ ...styles.content, marginTop: 20 }}>
         <CircleButton
           onPress={deleteCard}
-          img={{ width: 40, height: 40 }}
+          img={{ width: 35, height: 35 }}
           style={styles.icons}
           src={{
             uri:
@@ -56,7 +56,7 @@ dispatch(deletedItem(id))
 
         <CircleButton
           onPress={edit}
-          img={{ width: 40, height: 40 }}
+          img={{ width: 35, height: 35 }}
           style={styles.icons}
           src={{
             uri:
@@ -73,7 +73,7 @@ dispatch(deletedItem(id))
               ellipsizeMode="tail"
               style={{
                 ...styles.title,
-                fontSize: 35,
+                fontSize: 25,
                 fontFamily: "SpartanBold",
               }}
             >
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     //margin:10,
 
     paddingBottom: 20,
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
   },
   note: {
     fontFamily: "Spartan",
@@ -201,8 +201,9 @@ const styles = StyleSheet.create({
   icons: {
     width: 55,
     height: 55,
-    backgroundColor: colors.icons,
+    //backgroundColor: colors.icons,
     borderWidth: 0,
+   
   },
 });
 export default DetailsScreen;

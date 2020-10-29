@@ -42,7 +42,7 @@ const DropDown = (props) => {
   const [stateValue, dispatch] = useReducer(reducer,{
     application:{
 
-    value: "others(observation)",
+    value: "others",
     avatar: "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f12220cda1b8281626dd2e5/f82234345b15940f97eebef361f10dc1/others.PNG",
   }
 ,
@@ -97,30 +97,32 @@ const pressHandler=(l)=>{
 };
 
 const styles = StyleSheet.create({
-  container: { width: "80%", height: "5%" },
+  container: {height:"15%" },
   title: {
-    fontSize: 40,
-    margin: 10,
-    marginTop: 20,
-    marginBottom: 15,
-    fontFamily: "Piedra",
+    fontSize: 18,
+    // margin: 10,
+     marginTop: 20,
+    // marginBottom: 15,
+    fontFamily: "SpartanBold",
   },
   imgContain: {
-    width: 70,
-    height: 70,
+    width: 40,
+    height: 40,
     borderRadius: 15,
     borderWidth: 1,
     alignSelf: "center",
     justifyContent: "center",
+    marginTop:10
   },
 
   img: { width: "100%", height: "95%", borderRadius: 10, alignSelf: "center" },
   value: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight:"bold",
     margin: 20,
     marginTop: 20,
     marginBottom: 15,
+    fontFamily: "Spartan",
   },
 
  

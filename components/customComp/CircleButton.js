@@ -7,7 +7,7 @@ const circleButton = (props) => {
   return (
     <TouchableOpacity onPress={props.onPress}
     enabledContentTapInteraction={false}>
-      <View style={{ ...styles.container, backgroundColor: props.color, ...props.style }}>
+      <View style={{ ...styles.container,  ...props.style }}>
         <Image style={{...styles.img,...props.img}} source={props.src} />
       </View>
     </TouchableOpacity>
@@ -20,7 +20,9 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    borderWidth:3,
+    borderStartWidth:2,
+    borderEndWidth:2,
+
     alignSelf: "center",
     justifyContent: "center",
   },

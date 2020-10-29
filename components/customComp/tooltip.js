@@ -26,7 +26,7 @@ const tooltips = (props) => {
 const styles = StyleSheet.create({
   title: {
     fontFamily: "Spartan",
-    fontSize: 23,
+    fontSize: 15,
     color: "white",
 
     // marginVertical:5

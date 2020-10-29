@@ -112,17 +112,17 @@ const Body02 = (props) => {
 
   const dispatch = useDispatch();
 
-  const finishHandler = () => {
-    dispatch(
-      actions.inputsPage2(
-        stateInputs.inputValues.date,
-        stateInputs.inputValues.picture,
-        stateInputs.inputValues.observation,
-        stateInputs.inputValues.necessary
-      )
-    );
-    props.navigation.navigate("loading");
-  };
+  // const finishHandler = () => {
+  //   dispatch(
+  //     actions.inputsPage2(
+  //       stateInputs.inputValues.date,
+  //       stateInputs.inputValues.picture,
+  //       stateInputs.inputValues.observation,
+  //       stateInputs.inputValues.necessary
+  //     )
+  //   );
+  //   props.navigation.navigate("loading");
+  // };
 
   return (
     <KeyboardAvoidingView

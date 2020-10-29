@@ -25,36 +25,36 @@ return (
 
 const styles= StyleSheet.create({
     container:{
-        flexDirection:"row", 
-    width:"100%", 
-    justifyContent:"space-between"
-  ,
+    //    flexDirection:"column", 
+   // width:"100%", 
+    justifyContent:"center", 
+    alignItems:"center", 
+  
 },
     txtDescribe: {
-        fontSize: 35,
-        fontFamily: "Piedra",
+        fontSize: 13,
+        fontFamily: "SpartanBold",
       
       },
       background: {
-        flexDirection: "row",
+      //  flexDirection: "column",
         borderRadius: 50,
-        marginTop: 10,
+       marginTop:5.,
         backgroundColor: colors.textBack,
-        padding: 10,
-       width: "40%",
-       zIndex:-500,
-        alignItems: "center",
+
+      
+       alignItems: "center",
         //justifyContent: "space-around",
       },
       colorCircle: {
         borderRadius: 50,
-        height: 50,
-        width: 50,
+        height: 30,
+        width: 30,
       },
       textInside: {
-        fontSize: 27,
-        fontFamily: "Piedra",
-        marginLeft: 20,
+        fontSize: 10,
+        fontFamily: "SpartanBold",
+      
       },
 })
 export default Lights;

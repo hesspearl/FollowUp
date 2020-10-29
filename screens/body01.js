@@ -1,218 +1,221 @@
-import React, { useReducer, useEffect , useState} from "react";
-import { View, StyleSheet, ScrollView , KeyboardAvoidingView, Image } from "react-native";
+import React, { useReducer, useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+  Dimensions,
+  Text,
+  TextInput,
+} from "react-native";
 import TextField from "../components/customComp/TextField";
 import SwitchSelector from "../components/screen Components/SwitchSelector";
 import colors from "../colors";
 import SwipeButton from "rn-swipe-button";
-import { AntDesign } from "@expo/vector-icons";
+import { init, types, inputReducer } from "../store/reduces/createReducer";
 import DropDown from "../components/screen Components/DropDown";
-import {useDispatch} from "react-redux"
-import * as actions from "../store/actions/format"
-import{important} from "../modals/itemsArray"
-
-const INPUTS_VALUES = "INPUTS_VALUES";
-const CHOICE = "CHOICE";
-const DROP = "DROP";
-
-
-
-
-const inputReducer = (state, action) => {
-  switch (action.type) {
-    case INPUTS_VALUES:
-      const updateValues = {
-        ...state.inputValues,
-        [action.input]: action.value,
-      };
-      const updateValidity = {
-        ...state.inputValidation,
-        [action.input]: action.isValid,
-      };
-
-      let updateFormIsValid=true
-       for(const key in updateValidity)
-       updateFormIsValid=updateFormIsValid && updateValidity[key]
-      return {
-        formIsValid:updateFormIsValid,
-        inputValues: updateValues,
-        inputValidation:updateValidity
-      };
-
-    case DROP:
-      const updateDrop = {
-        ...state.inputValues,
-        application: action.value,
-      };
-      return {
-        ...state,
-        inputValues: updateDrop,
-      };
-    case CHOICE:
-      const updateChoice = {
-        ...state.inputValues,
-        important: {
-          value: action.value,
-          color: action.color,
-        },
-      };
-      return {
-        ...state,
-        inputValues: updateChoice,
-      };
-  }
-  return state;
-};
-
-
-
+import { useDispatch } from "react-redux";
+import * as actions from "../store/actions/format";
+import { important, necessary } from "../modals/itemsArray";
+import ObservationField from "../components/screen Components/observitionField";
+import DateCalender from "../components/customComp/dateCalender";
 
 const Body01 = (props) => {
-
-  const [swipe, setSwipe] = useState(false)
+  const [stateInput, dispatchInput] = useReducer(inputReducer, init);
+  const dispatch = useDispatch();
  
-
-  const [stateInput, dispatchInput] = useReducer(inputReducer, {
-    inputValues: {
-      productName: "",
-      application: "other",
-      spend: "",
-      important: {
-        value: "high",
-        color: "green",
-      },
-    }
-  ,
-    inputValidation:{
-      productName: false,
-      application: true,
-      spend: false,
-      important: {
-        value:true,
-        color: true,
-      },
- 
-  }
-, formIsValid:false});
-
   useEffect(() => {
-    if(swipe){
-      
-      if(!stateInput.formIsValid){
-     
-
-         alert("Don't leave field empty please")
-         setSwipe(false)
-         return
-       }else{
-        dispatch(actions.inputsPage1(
-          stateInput.inputValues.productName,
-          stateInput.inputValues.application,
-          stateInput.inputValues.spend,
-          stateInput.inputValues.important,
-    
-    
-        ))
-         props.navigation.navigate("body02")
-         setSwipe(false)
-       }
-
+    if (stateInput.swipe) {
+      if (!stateInput.formIsValid) {
+        alert("Don't leave field empty please");
+        dispatchInput({ type: types.SWIPE, value: false });
+        return;
+      } else {
+        dispatch(
+          actions.inputsPage1(
+            stateInput.inputValues.productName,
+            stateInput.inputValues.application,
+            stateInput.inputValues.spend,
+            stateInput.inputValues.important
+          )
+        );
+        dispatch(
+          actions.inputsPage2(
+            stateInput.inputValues.date,
+            stateInput.inputValues.observation,
+            stateInput.inputValues.necessary
+          )
+        );
+        props.navigation.navigate("loading");
+        dispatchInput({ type: types.SWIPE, value: false });
+      }
     }
-  }, [swipe])
+  }, [stateInput.swipe]);
 
-  const dispatch = useDispatch()
+  const swiping = () => {
+    dispatchInput({ type: types.SWIPE, value: true });
+  };
 
-  const swiping= () => { setSwipe(true) }
- 
-
-  
   const inputTextHolder = (inputIdentifier, text) => {
-    let isValid= false
-    if ( text.trim().length>0){
-      isValid=true
+    let isValid = false;
+    if (text.trim().length > 0) {
+      isValid = true;
     }
     dispatchInput({
-      type: INPUTS_VALUES,
+      type: types.INPUTS_VALUES,
       value: text,
-isValid:isValid,
+      isValid: isValid,
       input: inputIdentifier,
     });
   };
 
-  const triangle = () => {
-    return <Image 
-     style={{width:40,height:40, transform:[{rotate:"28deg"}]}}
-    source={{uri:"https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/8c0825cdd6f63c6ab92534cd4077bf46/arrow_poiting_down_no_background.png"}}
-     />;
-  };
-
 
   return (
-    <KeyboardAvoidingView behavior="height" style={{flex:1}}
-    >
-    <ScrollView>
-    <View style={styles.container}>
-      
-      <TextField
-        onChangeText={inputTextHolder.bind(this, "productName")}
-        // value={stateInput.inputValues.productName}
-      >
-        Product Name
-      </TextField>
-      {/* { !stateInput.inputValidation.productName && <Text
-      style={{marginTop:60, fontSize:30}}>please add product name</Text>} */}
-      
-      <DropDown
-        onChangeItem={(item) =>
-          dispatchInput({
-            type: DROP,
-            value: item,
-          })
-        }
+    <View style={{ flex: 1, backgroundColor: "black" }}>
+      <ImageBackground
+        source={require("../assets/icons/Rectangle.png")}
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 110,
+          width: Dimensions.get("window").width,
+          height: Dimensions.get("window").height,
+        }}
       />
-      <TextField
-      style={{marginTop:100}}
-        onChangeText={inputTextHolder.bind(this, "spend")}
-        keyboardType="number-pad"
-        //  value={stateInput.inputValues.spend}
-      >
-        Amounts spend
-      </TextField>
-      <SwitchSelector
-        option={important}
-        onPress={(value) =>
-          dispatchInput({
-            type: CHOICE,
-            value: value.value,
-            color: value.color,
-          })
-        }
-      >
-        is it important?
-      </SwitchSelector>
-        <SwipeButton
-        railFillBackgroundColor="white" //(Optional)npm install redux
-        thumbIconComponent={triangle}
-        thumbIconBackgroundColor={colors.icons}
-        railBackgroundColor={colors.buttons} //(Optional)
-        width={"90%"}
-        titleFontSize={30}
-        title="Slide to Next"
-        onSwipeSuccess={swiping}
-       
-        shouldResetAfterSuccess={true}
-      />  
+      <View style={{ alignItems: "flex-end", marginTop: 30,     fontFamily: "SpartanBold" }}>
+        <Text style={{ color: "white", fontSize: 20 }}>Amount Spend</Text>
+        <TextInput
+        autoFocus={true}
+          style={{ color: "white", fontSize: 30 , height:50, width:150,     fontFamily: "SpartanBold"}}
+          value={stateInput.inputValues.spend}
+          onChangeText={inputTextHolder.bind(this, "spend")}
+          keyboardType="number-pad"
+        />
+      </View>
+
+      <ScrollView>
+        <View style={styles.container}>
+          <DropDown
+            onChangeItem={(item) =>
+              dispatchInput({
+                type: types.DROP,
+                value: item,
+              })
+            }
+          />
+
+          <TextField
+            onChangeText={inputTextHolder.bind(this, "productName")}
+            // value={stateInput.inputValues.productName}
+            color={{ color: "black" }}
+            contain={{ width: 300 }}
+          >
+            Product Name
+          </TextField>
+      
+          <View style={{ margin: 5 }}>
+            <Text style={{ ...styles.title, fontSize: 20 }}>Date</Text>
+
+            <View style={styles.background}>
+              <TouchableOpacity
+                onPress={() => dispatchInput({ type: types.SHOW, value: true })}
+              >
+                <Text style={{ fontSize: 20 }}>
+                  {stateInput.inputValues.date}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {stateInput.show && (
+              <DateCalender
+                value={new Date()}
+                open={(value) =>
+                  dispatchInput({ type: types.SHOW, value: value })
+                }
+                newDate={(value) =>
+                  dispatchInput({
+                    type: types.DATE,
+                    value: value,
+                  })
+                }
+              />
+            )}
+          </View>
+
+          <SwitchSelector
+            option={important}
+            onPress={(value) =>
+              dispatchInput({
+                type: types.CHOICE,
+                value: value.value,
+                color: value.color,
+                name: "important",
+              })
+            }
+          >
+            is it important?
+          </SwitchSelector>
+          <SwitchSelector
+            option={necessary}
+            onPress={(value) =>
+              dispatchInput({
+                type: types.CHOICE,
+                value: value.value,
+                color: value.color,
+                name: "necessary",
+              })
+            }
+          >
+            is it necessary?
+          </SwitchSelector>
+
+          <ObservationField
+            onChangeText={(text) =>
+              dispatchInput({
+                type: types.OBSERVATION,
+                value: text,
+              })
+            }
+          />
+          <SwipeButton
+            railFillBackgroundColor="white" //(Optional)npm install redux
+            thumbIconBackgroundColor={colors.icons}
+            railBackgroundColor="black" //(Optional)
+            width={"90%"}
+            titleFontSize={30}
+            title="Finish"
+            onSwipeSuccess={swiping}
+            shouldResetAfterSuccess={true}
+            titleColor="white"
+          />
+        </View>
+      </ScrollView>
     </View>
-    </ScrollView>
-    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
-    justifyContent: "space-around",
+    marginBottom: 120,
+    margin: 10,
+    height: Dimensions.get("screen").height,
+  },
+  title: {
+    fontFamily: "SpartanBold",
+    fontSize: 13,
+    marginVertical: 5,
+  },
+  background: {
+    borderRadius: 10,
+
+    borderWidth: 1,
+    backgroundColor: colors.textBack,
+    height: 50,
+    width: 200,
     alignItems: "center",
-    flex: 1,
+    justifyContent: "center",
   },
 });
 export default Body01;

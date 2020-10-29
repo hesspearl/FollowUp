@@ -115,8 +115,8 @@ export const list = [
       "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f12220cda1b8281626dd2e5/2a3f1df4d53ac9c7950eb3d23434a2f7/Education.PNG",
   },
   {
-    label: "others(observation)",
-    value: "others(observation)",
+    label: "others",
+    value: "others",
     avatar:
       "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f12220cda1b8281626dd2e5/f82234345b15940f97eebef361f10dc1/others.PNG",
   },

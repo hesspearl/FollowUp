@@ -1,0 +1,70 @@
+import React, { useReducer } from "react";
+import {
+  View,
+  Modal,
+  TextInput,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { changeValidation } from "../../store/actions/modalState";
+import { Input } from "react-native-elements";
+
+export const InputModal = (props) => {
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={props.visible}
+      onRequestClose={props.onRequestClose}
+    >
+      <View style={styles.modalContainer}>{props.children}</View>
+    </Modal>
+  );
+};
+
+export const TextModal = (props) => {
+  const dispatch = useDispatch();
+
+  return (
+    <TouchableOpacity
+      onPress={() => dispatch(changeValidation(props.type, true))}
+    >
+      <View style={styles.rowContain}>
+        <Text style={styles.title}>{props.title}</Text>
+
+        <Text style={styles.title}>{props.text}</Text>
+        <View style={{ marginVertical: 5 }}>
+          <AntDesign name="right" size={15} color="black" />
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    width: 300,
+    height: 500,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  title: {
+    fontFamily: "SpartanBold",
+    fontSize: 13,
+    marginVertical: 5,
+  },
+  rowContain: {
+    flexDirection: "row",
+    width: "100%",
+    // height: "20%",
+
+    marginTop: 10,
+    borderBottomWidth: 1,
+    paddingBottom: 20,
+    justifyContent: "space-between",
+  },
+});

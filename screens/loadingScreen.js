@@ -8,7 +8,7 @@ import moment from "moment";
 export const LoadingScreen = (props) => {
   const data = useSelector((state) => state.format);
 
-  const firestore = useFirestore();
+    const firestore = useFirestore();
 
   firestore.add("Cards", {
     ...data,

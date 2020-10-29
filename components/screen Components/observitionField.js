@@ -22,6 +22,8 @@ const ObservationField = (props) => {
 
   return (
     <View style={styles.container}>
+    
+    <Text style={styles.text}> observation</Text>
       <View style={styles.field}>
         {show ? (
           <Image
@@ -33,21 +35,20 @@ const ObservationField = (props) => {
           />
         ) : (
           <Image
-            style={{ width: 50, height: 50 }}
+            style={{ width: 40, height: 40 }}
             source={{
               uri:
                 "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f12220cda1b8281626dd2e5/19a86db3c602193633f80f685412ea55/image.png",
             }}
           />
         )}
-
-        <Text style={styles.text}> observation</Text>
-      </View>
-      <TextInput
-        style={{ padding: 5, fontSize: 30 }}
+ <TextInput
+        style={{ paddingLeft: 10, fontSize: 18 }}
         onChangeText={(value) => onSubmit(value)}
         placeholder={"write something "}
       />
+      </View>
+     
     </View>
   );
   
@@ -56,37 +57,26 @@ const ObservationField = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    borderTopWidth: 2,
-    padding: 10,
-    borderBottomWidth: 2,
-    paddingBottom: 30,
+    marginVertical:20,
     height: 110,
-    marginBottom: 40,
-    borderColor: "#cac7c7",
+
   },
   text: {
-    fontSize: 40,
-    marginLeft: 15,
-    fontFamily: "Piedra",
+    fontSize: 20,
+
+    fontFamily: "SpartanBold",
   },
-  inputs: {
-    // justifyContent: "flex-start",
-    // padding: 10,
-    // elevation: 5,
-    // borderRadius: 10,
-    // borderBottomColor: "black",
-    // borderTopColor: "white",
-    // borderWidth: 0.5,
-    // backgroundColor: colors.textBack,
-    // height: 60,
-  },
+ 
   img: {
-    width: 43,
-    height: 43,
+    width: 30,
+    height: 30,
     alignSelf: "flex-end",
+    
   },
   field: {
     flexDirection: "row",
+    margin:10,
+    marginVertical:20,
     //justifyContent: "space-between" ,
   },
 });

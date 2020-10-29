@@ -4,6 +4,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+
   TouchableOpacity,
   ScrollView,
   Image,
@@ -76,7 +77,8 @@ const ListScreen = (props) => {
         source={require("../assets/caja.png")}
         style={{ width: 100, height: 100 }}
       />
-      <Text style={styles.title}>It's Empty , Filter Again !</Text>
+      <Text style={{fontFamily: "SpartanBold",
+    fontSize: 20, color: "black"}}>It's Empty , Filter Again !</Text>
     </View>
   );
 
@@ -115,6 +117,7 @@ const ListScreen = (props) => {
         />
       </MyContext.Provider>
       <FlatList
+      
         style={{ flex:1}}
         data={filter ? filterState.filter.data : filterState.months}
         keyExtractor={(item, index) => item.id}
@@ -125,20 +128,16 @@ const ListScreen = (props) => {
             <TouchableOpacity
               onPress={
                 () => pressed(itemData.item)
-
-                //props.navigation.navigate("details", { , })
               }
-              onLongPress={() => refTool.current.toggleTooltip()}
+        
             >
               <Card
                 product={itemData.item.format.productName}
                 picture={itemData.item.format.application.avatar}
+                price={itemData.item.format.spend}
               />
             </TouchableOpacity>
-            <ToolTip
-              forwardRef={refTool}
-              tip={itemData.item.format.productName}
-            />
+          
           </>
         )}
       />
@@ -176,7 +175,7 @@ const ListScreen = (props) => {
       />
       <View style={styles.fab}>
         <TouchableOpacity onPress={() => props.navigation.navigate("body01")}>
-          <Text style={{ fontSize: 60, fontFamily: "Piedra" }}>+</Text>
+          <Text style={{ fontSize: 40, fontFamily: "Spartan", color:"white" }}>+</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -187,11 +186,11 @@ const styles = StyleSheet.create({
  container: {
     flex: 1,
     backgroundColor: colors.background,
-    marginTop: 20,
+  //marginTop  : 20,
   },
   fab: {
-    width: 80,
-    height: 80,
+    width: 65,
+    height: 60,
     borderRadius: 100,
     position: "absolute",
     bottom: 10,
@@ -204,8 +203,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bottomSheet,
     shadowColor: "#000000",
     paddingTop: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    elevation:3,
+    borderTopWidth:0.2,
+    borderRightWidth:0.2,
+    borderLeftWidth:0.2,
   },
  panelHeader: {
     alignItems: "center",
@@ -214,7 +217,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#00000040",
+    backgroundColor: "black",
     marginBottom: 10,
   },
   iconsContainer: {
@@ -223,8 +226,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     height: "10%",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
+    marginTop:35
+   
   },
  toast: {
     position: "absolute",
@@ -232,7 +235,7 @@ const styles = StyleSheet.create({
     bottom: 20,
     width: "40%",
     height: 50,
-    backgroundColor: "grey",
+    backgroundColor: "black",
     borderRadius: 40,
     opacity: 5,
     justifyContent: "center",

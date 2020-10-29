@@ -118,8 +118,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     height: "10%",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
+ 
   },
 });
 export default ListIcons;

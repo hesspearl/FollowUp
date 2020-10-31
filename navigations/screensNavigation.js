@@ -5,7 +5,8 @@ import body01 from "../screens/body01";
 import list from "../screens/listScreen";
 import details from "../screens/deatilsScreen";
 import start from "../screens/startScreen"
-import {LoadingScreen ,LoadingMonth} from "../screens/loadingScreen"
+import LoadingScreen  from "../screens/loadingScreen"
+import LoadingMonth from "../components/functional components/LoadingMonth"
 import editScreen from "../screens/editScreen"
 import updating from "../components/functional components/updateScreen"
 const screenNavigator = (props) => {

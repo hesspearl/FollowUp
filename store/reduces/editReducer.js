@@ -10,7 +10,6 @@ export const init = (data) => {
   const initial = {
     inputValues: {
       date: data.date,
-      picture: data.picture,
       observation: data.observation,
       necessary: {
         value: data.necessary.value,
@@ -108,15 +107,15 @@ export const inputReducer = (state, action) => {
         ...state,
         inputValues: updateChoice,
       };
-    case PICTURE:
-      const updatePic = {
-        ...state.inputValues,
-        picture: action.value,
-      };
-      return {
-        ...state,
-        inputValues: updatePic,
-      };
+    // // case PICTURE:
+    // //   const updatePic = {
+    // //     ...state.inputValues,
+    // //     picture: action.value,
+    // //   };
+    //   return {
+    //     ...state,
+    //     inputValues: updatePic,
+    //   };
 
       
   }

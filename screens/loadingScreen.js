@@ -4,8 +4,9 @@ import { useFirestore, useFirestoreConnect } from "react-redux-firebase";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../store/actions/filter";
 import moment from "moment";
+import { position } from "../modals/itemsArray";
 
-export const LoadingScreen = (props) => {
+ const LoadingScreen = (props) => {
   const data = useSelector((state) => state.format);
 
     const firestore = useFirestore();
@@ -14,47 +15,20 @@ export const LoadingScreen = (props) => {
     ...data,
     createdAt: firestore.FieldValue.serverTimestamp(),
   });
+  const currentMonth = () => {
+    const thisMonth = moment().month();
 
+    const current = position[thisMonth];
+    props.navigation.navigate("loadingMonth",{ position: current, index: thisMonth }); 
+  };
   useEffect(() => {
-    props.navigation.navigate("start");
+    currentMonth();
   }, [data, firestore]);
 
- return <ActivityIndicator  color="red" style={{flex:1, justifyContent:"center", alignItems:"center"}} size="large" />
+ return <View/>
  
 };
 
 
-export const LoadingMonth = (props) => {
-  const { position, index } = props.route.params;
 
-
- useFirestoreConnect(["Cards"]);
-  const cards =  useSelector(({ fireStore: { ordered } }) => ordered.Cards);
-
-  
-  const dispatch = useDispatch()
-
-  let items = [];
-
-  useEffect(() => {
-if(cards){
-
-  for (const card of cards) {
-    let date = moment(card.format.date, "DD/MM/YYYY", true).format();
-
-    if (moment(date).month() === index) {
-      if (moment(date).format("DD/MM/YYYY") === card.format.date) {
-        items.push(card);
-      }
-    }
-  }
-
-  dispatch(actions.filterByMonths(items));
-}
-
-  props.navigation.navigate("list", {position:position, index:index});
-  }, [items, cards]);           
-
- return <ActivityIndicator  color="red" style={{flex:1, justifyContent:"center", alignItems:"center"}} size="large" />
-};
-//export default LoadingScreen;
+export default LoadingScreen;

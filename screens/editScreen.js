@@ -51,21 +51,24 @@ const EditScreen = (props) => {
   const stateModal = useSelector((state) => state.modal);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
 
+
   useEffect(() => {
     dispatch(actions.edit(stateInputs.inputValues));
   }, [stateInputs.inputValues]);
 
   const submit = async () => {
+   
     if (!stateInputs.formIsValid) {
       alert("Don't leave field empty please");
       return;
     }
 
     try {
+    
       await firestore.update(`Cards/${id}`, { format: state });
       props.navigation.navigate("updating", { id: id });
     } catch (e) {
-      //console.log(e);
+      console.log(e);
     }
   };
 

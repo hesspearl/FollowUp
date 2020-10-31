@@ -19,7 +19,7 @@ export default format=(state=initialState, action)=>{
 
             case POST_FROM_PAGE_02:
                 const page02=action.value
-console.log(page02)
+
                 return{
                     ...state,
                    format:{ ...state.format,
@@ -29,7 +29,7 @@ console.log(page02)
                 case EDIT:
                     
                     const edit=action.value
-                 
+                 console.log(edit)
                     return{
                         ...state,
                         edit:{...edit}

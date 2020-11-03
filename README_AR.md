@@ -13,7 +13,7 @@
 <br />
 
 ## اهداف الرنامج
-### -: التحكم بمحفظنك  
+### -: التحكم بمحفظتك  
 ![slide01_followUp](https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f289947c950b95d8e1efa2f/267e7ead97a26cd4dd6ad986e867d6c6/Slide1.JPG)
 ### -: تنظيم وتتبع مصروفاتك:-
 

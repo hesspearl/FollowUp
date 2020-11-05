@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import Log from "./screens/logScreen"
 import ScreenNav from "./navigations/screensNavigation"
 import colors from './colors';
 import{View} from "react-native"
@@ -41,8 +42,8 @@ export default function App() {
     
       backgroundColor={colors.stateBar}
       style="light" />  */}
-        <ScreenNav/>
-    
+        {/* <ScreenNav/> */}
+ <Log/>
     </ProviderPaper>
     </ReactReduxFirebaseProvider>
     </Provider>

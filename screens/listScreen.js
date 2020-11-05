@@ -20,6 +20,7 @@ import ListIcons from "../components/screen Components/listIcons";
 import Selectable from "../components/screen Components/Selectable";
 import { months, icons } from "../modals/itemsArray";
 import { useSelector } from "react-redux";
+import BSH from "../components/customComp/bottomSheetHeader"
 import { useFirestoreConnect } from "react-redux-firebase";
 import {MyContext}from "../context"
 
@@ -165,13 +166,7 @@ const ListScreen = (props) => {
           }
           return <View />;
         }}
-        renderHeader={() => (
-          <View style={styles.header}>
-            <View style={styles.panelHeader}>
-              <View style={styles.panelHandle} />
-            </View>
-          </View>
-        )}
+        renderHeader={() => (<BSH/> )}
         initialSnap={2}
       />
       <View style={styles.fab}>
@@ -200,27 +195,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.fab,
   },
- header: {
-    backgroundColor: colors.bottomSheet,
-    shadowColor: "#000000",
-    paddingTop: 20,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    elevation:3,
-    borderTopWidth:0.2,
-    borderRightWidth:0.2,
-    borderLeftWidth:0.2,
-  },
- panelHeader: {
-    alignItems: "center",
-  },
- panelHandle: {
-    width: 40,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "black",
-    marginBottom: 10,
-  },
+ 
   iconsContainer: {
     width: "100%",
     flexDirection: "row",

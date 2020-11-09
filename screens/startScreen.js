@@ -5,6 +5,7 @@ import * as actions from "../store/actions/filter";
 import { useDispatch } from "react-redux";
 import { position } from "../modals/itemsArray";
 import moment from "moment";
+import Cart from "../assets/cart.svg"
 
 const startScreen = (props) => {
   const { navigation } = props;
@@ -31,8 +32,7 @@ const startScreen = (props) => {
 
   return (
     <View style={styles.contain}>
-      <Image
-        source={require("../assets/icons/cart.png")}
+      <Cart
         style={{ width: 250, height: 200 }}
       />
       <TouchableOpacity

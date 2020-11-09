@@ -10,14 +10,19 @@ import {
 } from "react-native";
 import LogButton from "../components/customComp/logButton";
 import { Entypo } from "@expo/vector-icons";
-
+import Search from "../assets/search.svg"
 import Wallet from "../assets/wallet.svg";
+//import { useFirebase } from "react-redux-firebase";
+import { useSelector } from "react-redux";
+import firebase from "../firebase";
 
 const LogScreen = (props) => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [height, setHeight] = useState(410);
 
+  const state = useSelector(state => state.firebase.profile)
  
+
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
     Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
@@ -41,7 +46,7 @@ const LogScreen = (props) => {
       </View>
       <Wallet width="300" height="200" style={{position:"absolute", top:150}} />
       <View style={{...styles.bottom, height:height}}>
-        {!showSignIn && <Login show={setShowSignIn} />}
+        {!showSignIn && <Login show={setShowSignIn} navigation={props.navigation} />}
         {showSignIn && <SignIn show={setShowSignIn} />}
       </View>
     </View>
@@ -49,17 +54,43 @@ const LogScreen = (props) => {
 };
 
 const Login = (props) => {
+ // const firebase =useFirebase();
+
+  console.log(firebase.auth().AuthCredential);
+  
+  const logIn=()=>{
+    props.show(true)
+
+    firebase.login({
+    email: 'test@test.com',
+    password: 'testest1',
+    
+  }).then(()=>{
+
+  }).catch((err)=>{
+console.log(err)
+  })
+  }
+
+const google=()=>{
+
+  
+  firebase.login({
+    provider: "google" ,
+    
+   
+
+})}
+  
   return (
     <View>
       <Input name="mail" title="Enter your email" />
 
-      <Input name="lock" title="Enter password" />
+      <Input name="lock" title="Enter password" secureTextEntry={true}/>
       <Text style={styles.text}>forgot your password?</Text>
       <LogButton title="Log in" />
       <TouchableOpacity
-        onPress={() => {
-          props.show(true);
-        }}
+        onPress={logIn }
       >
         <Text style={styles.text}>you don't have account? click here</Text>
       </TouchableOpacity>
@@ -72,24 +103,38 @@ const Login = (props) => {
         }}
       >
         <Text style={styles.text}>- or -</Text>
-
-        <Image
-          source={require("../assets/googleAcc.png")}
+<TouchableOpacity onPress={google}>
+   <Search
+          
           style={{ width: 30, height: 30,  }}
         />
+</TouchableOpacity>
+       
       </View>
     </View>
   );
 };
 
 const SignIn = (props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+
+ // const fireBase =useFirebase();
+
+  const sign=()=>{
+    props.show(false)
+     fireBase.createUser({email,password}, username)
+  }
+ 
+ 
   return (
     <View>
-      <Input name="user" title="Enter user name" />
-      <Input name="mail" title="Enter your email" />
-      <Input name="lock" title="Enter password" />
-      <Input name="lock" title="Enter password again" />
-      <LogButton title="sign up" onPress={() => props.show(false)} />
+      <Input name="user" title="Enter user name" onChangeText={(text)=>setUsername(text)} />
+      <Input name="mail" title="Enter your email" onChangeText={(text)=>setEmail(text)}/>
+      <Input name="lock" title="Enter password" secureTextEntry={true} onChangeText={(text)=>setPassword(text)}/>
+      <Input name="lock" title="Enter password again" secureTextEntry={true} />
+      <LogButton title="sign up" onPress={sign} />
     </View>
   );
 };
@@ -104,9 +149,11 @@ const Input = (props) => {
         style={{ alignSelf: "center" }}
       />
       <TextInput
+      {...props}
         style={styles.textInput}
         placeholder={props.title}
         placeholderTextColor="black"
+        onChangeText={props.onChangeText}
       />
     </View>
   );
@@ -141,7 +188,7 @@ backgroundColor: "white",
   textInput: {
     paddingStart: 20,
     fontFamily: "Spartan",
-    width: "100%",
+    width: 200,
     fontSize: 18,
   },
   text: {

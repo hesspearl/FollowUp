@@ -42,8 +42,8 @@ export default function App() {
     
       backgroundColor={colors.stateBar}
       style="light" />  */}
-        {/* <ScreenNav/> */}
- <Log/>
+        {/* <ScreenNav/>  */}
+   <Log/>  
     </ProviderPaper>
     </ReactReduxFirebaseProvider>
     </Provider>

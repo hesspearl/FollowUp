@@ -9,11 +9,15 @@ import LoadingScreen  from "../screens/loadingScreen"
 import LoadingMonth from "../components/functional components/LoadingMonth"
 import editScreen from "../screens/editScreen"
 import updating from "../components/functional components/updateScreen"
-const screenNavigator = (props) => {
+
+
   
   const BodyStack = createStackNavigator();
+ 
+
+  export const ScreenNavigator = (props) => {
   return (
-    <NavigationContainer>
+
       <BodyStack.Navigator screenOptions={{ header: () => null}} >
       <BodyStack.Screen name="start" component={start}  />
         <BodyStack.Screen name="list" component={list}  />
@@ -24,8 +28,7 @@ const screenNavigator = (props) => {
         <BodyStack.Screen name="updating" component={updating}  />
         <BodyStack.Screen name="Edit" component={editScreen} />
       </BodyStack.Navigator>
-    </NavigationContainer>
-  );
+    
+  )
 };
 
-export default screenNavigator;

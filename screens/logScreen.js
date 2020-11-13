@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,47 +6,53 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import LogButton from "../components/customComp/logButton";
 import { Entypo } from "@expo/vector-icons";
-import Search from "../assets/search.svg"
+import Search from "../assets/search.svg";
 import Wallet from "../assets/wallet.svg";
-//import { useFirebase } from "react-redux-firebase";
+import { useFirebase } from "react-redux-firebase";
 import { useSelector } from "react-redux";
-import firebase from "../firebase";
+import * as Google from "expo-google-app-auth";
 
 const LogScreen = (props) => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [height, setHeight] = useState(410);
 
-  const state = useSelector(state => state.firebase.profile)
- 
+  
+  const auth = useSelector((state) => state.firebase.auth);
+  
 
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
     Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
 
     //  Don't forget to cleanup with remove listeners
-    
   }, [Keyboard]);
 
   const _keyboardDidShow = () => {
-    setHeight(500)
-  }
+    setHeight(500);
+  };
 
   const _keyboardDidHide = () => {
-    setHeight(410)
-  }
+    setHeight(410);
+  };
   return (
     <View style={styles.container}>
       <Text style={{ ...styles.title, marginTop: 50 }}>Follow</Text>
       <View style={{ position: "absolute", right: 20, top: 110 }}>
         <Text style={{ ...styles.title, fontFamily: "SpartanBold" }}>Up</Text>
       </View>
-      <Wallet width="300" height="200" style={{position:"absolute", top:150}} />
-      <View style={{...styles.bottom, height:height}}>
-        {!showSignIn && <Login show={setShowSignIn} navigation={props.navigation} />}
+      <Wallet
+        width="300"
+        height="200"
+        style={{ position: "absolute", top: 150 }}
+      />
+      <View style={{ ...styles.bottom, height: height }}>
+        {!showSignIn && (
+          <Login show={setShowSignIn} navigation={props.navigation} />
+        )}
         {showSignIn && <SignIn show={setShowSignIn} />}
       </View>
     </View>
@@ -54,44 +60,75 @@ const LogScreen = (props) => {
 };
 
 const Login = (props) => {
- // const firebase =useFirebase();
+  const firebase = useFirebase();
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
 
-  console.log(firebase.auth().AuthCredential);
-  
-  const logIn=()=>{
-    props.show(true)
+ 
 
-    firebase.login({
-    email: 'test@test.com',
-    password: 'testest1',
+  const logIn = () => {
+     
+    firebase
+      .login({
+        email: userEmail,
+        password: userPassword,
+      })
+     
+      .catch((err) => {
+        alert(err);
+      });
     
-  }).then(()=>{
+  };
 
-  }).catch((err)=>{
-console.log(err)
-  })
-  }
+  const google = async () => {
+    try {
+      const { accessToken, idToken, type } = await Google.logInAsync({
+        androidClientId:
+          "723196642127-annm7c8dombas44vobopnamt8g3h6qs4.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
+      });
 
-const google=()=>{
+      if (type === "success") {
+        props.show(true);
+        firebase.login({
+          credential: firebase.auth.GoogleAuthProvider.credential(
+            idToken,
+            accessToken
+          ),
+        });
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  
-  firebase.login({
-    provider: "google" ,
-    
-   
+  const signInWithGoogle = () => {
+    google();
+  };
 
-})}
-  
+
   return (
     <View>
-      <Input name="mail" title="Enter your email" />
+      <Input
+        name="mail"
+        title="Enter your email"
+        onChangeText={(text) => setUserEmail(text)}
+      />
 
-      <Input name="lock" title="Enter password" secureTextEntry={true}/>
-      <Text style={styles.text}>forgot your password?</Text>
-      <LogButton title="Log in" />
-      <TouchableOpacity
-        onPress={logIn }
-      >
+      <Input
+        name="lock"
+        title="Enter password"
+        secureTextEntry={true}
+        onChangeText={(text) => setUserPassword(text)}
+      />
+        <TouchableOpacity onPress={() => props.show(true)}>
+             <Text style={styles.text}>forgot your password?</Text>
+        </TouchableOpacity>
+   
+      <LogButton title="Log in" onPress={logIn} />
+      <TouchableOpacity onPress={() => props.show(true)}>
         <Text style={styles.text}>you don't have account? click here</Text>
       </TouchableOpacity>
 
@@ -103,13 +140,9 @@ const google=()=>{
         }}
       >
         <Text style={styles.text}>- or -</Text>
-<TouchableOpacity onPress={google}>
-   <Search
-          
-          style={{ width: 30, height: 30,  }}
-        />
-</TouchableOpacity>
-       
+        <TouchableOpacity onPress={() => signInWithGoogle()}>
+          <Search style={{ width: 30, height: 30 }} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -118,23 +151,71 @@ const google=()=>{
 const SignIn = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setUsername] = useState("");
 
- // const fireBase =useFirebase();
+  const firebase = useFirebase();
 
-  const sign=()=>{
-    props.show(false)
-     fireBase.createUser({email,password}, username)
-  }
- 
- 
+  const sign = async() => {
+    const regEmail= /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+
+     if(!password||!email||!username||!confirmPassword){
+      alert("please don't let field empty")
+      return
+     }
+     
+    if(!regEmail.test(email.toLowerCase())){
+   
+      alert("not valid email")
+      return
+    }
+
+    if(confirmPassword!=password){
+      alert("password not matching")
+      return
+    }
+     else{
+    props.show(false);
+    const userDate= await firebase.createUser({ email, password }, {username, email});
+
+    console.log(userDate)
+     }
+  };
+
   return (
     <View>
-      <Input name="user" title="Enter user name" onChangeText={(text)=>setUsername(text)} />
-      <Input name="mail" title="Enter your email" onChangeText={(text)=>setEmail(text)}/>
-      <Input name="lock" title="Enter password" secureTextEntry={true} onChangeText={(text)=>setPassword(text)}/>
-      <Input name="lock" title="Enter password again" secureTextEntry={true} />
-      <LogButton title="sign up" onPress={sign} />
+      <Input
+        name="user"
+        title="Enter user name"
+        onChangeText={(text) => setUsername(text)}
+        type="name"
+      />
+      <Input
+        name="mail"
+        title="Enter your email"
+        onChangeText={(text) => setEmail(text)}
+        type="email"
+      />
+      <Input
+        name="lock"
+        title="Enter password"
+        secureTextEntry={true}
+        onChangeText={(text) => setPassword(text)}
+        type="password"
+      />
+      <Input
+       name="lock"
+       title="Enter password again"
+        secureTextEntry={true}
+        type="password"
+        onChangeText={(text) => setConfirmPassword(text)}
+        />
+        <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+        <LogButton title="return" onPress={()=> props.show(false)} />
+<LogButton title="sign up" onPress={sign} />
+        </View>     
+
+ 
     </View>
   );
 };
@@ -149,11 +230,12 @@ const Input = (props) => {
         style={{ alignSelf: "center" }}
       />
       <TextInput
-      {...props}
-        style={styles.textInput}
+        {...props}
+        style={{...styles.textInput, ...props.style}}
         placeholder={props.title}
         placeholderTextColor="black"
         onChangeText={props.onChangeText}
+        autoCompleteType={props.type}
       />
     </View>
   );
@@ -164,7 +246,7 @@ const styles = StyleSheet.create({
   image: { width: 300, height: 200 },
   title: { fontSize: 60, fontFamily: "Spartan" },
   bottom: {
-backgroundColor: "white",
+    backgroundColor: "white",
     width: "90%",
     borderTopWidth: 1,
     borderTopLeftRadius: 40,

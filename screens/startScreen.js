@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { FontAwesome5 , Fontisto } from "@expo/vector-icons";
+import { FontAwesome5, Fontisto } from "@expo/vector-icons";
 import * as actions from "../store/actions/filter";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { position } from "../modals/itemsArray";
 import moment from "moment";
-import Cart from "../assets/cart.svg"
+import Cart from "../assets/cart.svg";
+import BSH from "../components/customComp/bottomSheetHeader";
+import BottomSheet from "reanimated-bottom-sheet";
+import { useFirebase } from "react-redux-firebase";
 
 const startScreen = (props) => {
   const { navigation } = props;
   const dispatch = useDispatch();
-
+  const state = useSelector((state) => state.firebase.profile);
+  const firebase = useFirebase();
   const [current, setCurrent] = useState();
 
+  console.log(state);
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       dispatch(actions.deleteMonth());
@@ -32,12 +37,15 @@ const startScreen = (props) => {
 
   return (
     <View style={styles.contain}>
-      <Cart
-        style={{ width: 250, height: 200 }}
-      />
-      <TouchableOpacity
-        onPress={()=>props.navigation.navigate("body01")}
-      >
+      <Text style={{ fontSize: 25, fontFamily: "Spartan" }}>
+        Welcome Back
+        <Text style={{ fontSize: 25, fontFamily: "SpartanBold" }}>
+          {" "}
+          {state.username} !
+        </Text>
+      </Text>
+      <Cart width="300" height="250" />
+      <TouchableOpacity onPress={() => props.navigation.navigate("body01")}>
         <View style={styles.button}>
           <FontAwesome5 name="wallet" size={40} color="black" />
           <Text style={styles.title}>Buy</Text>
@@ -51,11 +59,36 @@ const startScreen = (props) => {
           })
         }
       >
-      <Fontisto name="arrow-swap" size={24} color="black" />
+        <Fontisto name="arrow-swap" size={24} color="black" />
       </TouchableOpacity>
+
+      <BottomSheet
+        snapPoints={[100, 200]}
+        renderContent={() => {
+          return (
+            <View style={styles.buttonsContain}>
+              <Button name="cog" title="Settings" />
+              <Button
+                name="door-open"
+                title="Leave"
+                onPress={() => firebase.logout()}
+              />
+            </View>
+          );
+        }}
+        renderHeader={() => <BSH />}
+        initialSnap={0}
+      />
     </View>
   );
 };
+
+const Button = (props) => (
+  <TouchableOpacity onPress={props.onPress} style={{ alignItems: "center" }}>
+    <FontAwesome5 name={props.name} size={35} color="black" />
+    <Text style={styles.title}>{props.title}</Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   contain: {
@@ -77,8 +110,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "SpartanBold",
   },
+  buttonsContain: {
+    height: "100%",
+    backgroundColor: "white",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingVertical: 20,
+  },
 });
 export default startScreen;
-// 
+//
 
 //  />

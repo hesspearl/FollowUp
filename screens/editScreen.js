@@ -48,6 +48,7 @@ const EditScreen = (props) => {
   const firestore = useFirestore();
   const dispatch = useDispatch();
   const state = useSelector((state) => state.format.edit);
+  const { uid } = useSelector((state) => state.firebase.auth);
   const stateModal = useSelector((state) => state.modal);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
 
@@ -65,7 +66,7 @@ const EditScreen = (props) => {
 
     try {
     
-      await firestore.update(`Cards/${id}`, { format: state });
+      await firestore.collection("users").doc(uid).collection("Cards").doc(id).update( { format: state });
       props.navigation.navigate("updating", { id: id });
     } catch (e) {
       console.log(e);

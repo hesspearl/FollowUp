@@ -35,13 +35,17 @@ const startScreen = (props) => {
     setCurrent({ position: current, index: thisMonth });
   };
 
+  const logOut=()=>{
+   firebase.logout()
+  }
+
   return (
     <View style={styles.contain}>
       <Text style={{ fontSize: 25, fontFamily: "Spartan" }}>
         Welcome Back
         <Text style={{ fontSize: 25, fontFamily: "SpartanBold" }}>
-          {" "}
-          {state.username} !
+          {state.displayName? state.displayName:
+          state.username} !
         </Text>
       </Text>
       <Cart width="300" height="250" />
@@ -63,7 +67,7 @@ const startScreen = (props) => {
       </TouchableOpacity>
 
       <BottomSheet
-        snapPoints={[100, 200]}
+        snapPoints={[130, 250]}
         renderContent={() => {
           return (
             <View style={styles.buttonsContain}>
@@ -71,7 +75,7 @@ const startScreen = (props) => {
               <Button
                 name="door-open"
                 title="Leave"
-                onPress={() => firebase.logout()}
+                onPress={()=>logOut()}
               />
             </View>
           );

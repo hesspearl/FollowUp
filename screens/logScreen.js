@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
+  
 } from "react-native";
 import LogButton from "../components/customComp/logButton";
 import { Entypo } from "@expo/vector-icons";
@@ -15,6 +16,7 @@ import Wallet from "../assets/wallet.svg";
 import { useFirebase } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import * as Google from "expo-google-app-auth";
+import { ActivityIndicator } from "react-native-paper";
 
 const LogScreen = (props) => {
   const [showSignIn, setShowSignIn] = useState(false);
@@ -63,7 +65,7 @@ const Login = (props) => {
   const firebase = useFirebase();
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-
+ const [loading, setLoading] = useState(false)
  
 
   const logIn = () => {
@@ -81,6 +83,7 @@ const Login = (props) => {
   };
 
   const google = async () => {
+    setLoading(true)
     try {
       const { accessToken, idToken, type } = await Google.logInAsync({
         androidClientId:
@@ -89,7 +92,8 @@ const Login = (props) => {
       });
 
       if (type === "success") {
-        props.show(true);
+        setLoading(false)
+       
         firebase.login({
           credential: firebase.auth.GoogleAuthProvider.credential(
             idToken,
@@ -128,7 +132,7 @@ const Login = (props) => {
         </TouchableOpacity>
    
       <LogButton title="Log in" onPress={logIn} />
-      <TouchableOpacity onPress={() => props.show(true)}>
+    <TouchableOpacity onPress={() => props.show(true)}>
         <Text style={styles.text}>you don't have account? click here</Text>
       </TouchableOpacity>
 
@@ -140,9 +144,9 @@ const Login = (props) => {
         }}
       >
         <Text style={styles.text}>- or -</Text>
-        <TouchableOpacity onPress={() => signInWithGoogle()}>
+        {!loading? <TouchableOpacity onPress={() => signInWithGoogle()}>
           <Search style={{ width: 30, height: 30 }} />
-        </TouchableOpacity>
+        </TouchableOpacity>:<ActivityIndicator/>}
       </View>
     </View>
   );
@@ -156,7 +160,7 @@ const SignIn = (props) => {
 
   const firebase = useFirebase();
 
-  const sign = async() => {
+  const sign =() => {
     const regEmail= /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
      if(!password||!email||!username||!confirmPassword){
@@ -176,9 +180,9 @@ const SignIn = (props) => {
     }
      else{
     props.show(false);
-    const userDate= await firebase.createUser({ email, password }, {username, email});
+   firebase.createUser({ email, password }, {username, email});
 
-    console.log(userDate)
+  
      }
   };
 

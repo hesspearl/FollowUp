@@ -8,13 +8,15 @@ import { position } from "../modals/itemsArray";
 
  const LoadingScreen = (props) => {
   const data = useSelector((state) => state.format);
-
+const {uid} = useSelector(state => state.firebase.auth)
     const firestore = useFirestore();
 
-  firestore.add("Cards", {
-    ...data,
+  firestore.collection("users").doc(uid).collection("Cards").add({
+     ...data,
     createdAt: firestore.FieldValue.serverTimestamp(),
-  });
+  })
+  
+  
   const currentMonth = () => {
     const thisMonth = moment().month();
 

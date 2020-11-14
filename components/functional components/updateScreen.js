@@ -6,13 +6,17 @@ import * as actions from "../../store/actions/filter";
 
 const Update = (props) => {
   const { id } = props.route.params;
-
-  useFirestoreConnect(["Cards"]);
+  const { uid } = useSelector((state) => state.firebase.auth);
+  useFirestoreConnect({
+    collection: `users/${uid}/Cards`,
+    storeAs: "Cards",
+  });
 
   const dispatch = useDispatch();
   const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
   const state = useSelector((state) => state.filter.months);
 
+ 
   useEffect(() => {
     //  get card with same id
     let newData = cards.filter((i) => i.id === id);

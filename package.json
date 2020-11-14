@@ -29,7 +29,7 @@
     "react": "~17.0.1",
     "react-dom": "~17.0.1",
     "react-hook-form": "^6.11.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.0.tar.gz",
     "react-native-date-picker": "^3.2.5",
     "react-native-dropdown-picker": "^3.7.1",
     "react-native-elements": "^2.3.2",

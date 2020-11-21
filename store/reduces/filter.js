@@ -19,7 +19,7 @@ export default filter = (state = initialState, action) => {
   switch (action.type) {
     case MONTHS:
 
-    // console.log(action.value)
+   
       return {
         ...state,
         months: [...action.value],

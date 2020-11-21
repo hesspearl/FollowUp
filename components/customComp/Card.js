@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import colors from "../../colors";
 
 const Cards = (props) => {
+
+  
   return (
     <View style={styles.product}>
       <View
@@ -22,9 +24,13 @@ const Cards = (props) => {
           <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
             {props.product}
           </Text>
-          <Text  style={styles.title}>
-            {props.price}
+          <View style={{flexDirection:"row", }}>
+           <Text  style={styles.title}>
+            {props.price.value}
           </Text>
+            <Text style={styles.title}>{props.price.code}</Text>
+          </View>
+          
         </View>
       </View>
     </View>
@@ -74,11 +80,13 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "SpartanBold",
     fontSize: 20,
+    marginHorizontal:5
   },
   report: {
     fontFamily: "Piedra",
     fontSize: 30,
     color: "#888",
+   
   },
 });
 export default Cards;

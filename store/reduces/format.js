@@ -29,7 +29,7 @@ export default format=(state=initialState, action)=>{
                 case EDIT:
                     
                     const edit=action.value
-                 console.log(edit)
+                // console.log(edit)
                     return{
                         ...state,
                         edit:{...edit}

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
@@ -16,11 +17,15 @@ export const InputModal = (props) => {
   return (
     <Modal
       animationType="slide"
-      transparent={true}
+     
       visible={props.visible}
       onRequestClose={props.onRequestClose}
     >
-      <View style={styles.modalContainer}>{props.children}</View>
+    <ScrollView>
+      <View style={styles.modalContainer}>
+      {props.children}
+      </View>
+      </ScrollView>
     </Modal>
   );
 };

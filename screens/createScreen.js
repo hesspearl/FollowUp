@@ -16,16 +16,21 @@ import colors from "../colors";
 import SwipeButton from "rn-swipe-button";
 import { init, types, inputReducer } from "../store/reduces/createReducer";
 import DropDown from "../components/screen Components/DropDown";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/format";
 import { important, necessary } from "../modals/itemsArray";
 import ObservationField from "../components/screen Components/observitionField";
 import DateCalender from "../components/customComp/dateCalender";
+import i18n from 'i18n-js';
 
-const Body01 = (props) => {
+const CreateScreen = (props) => {
+  const { country } = props.route.params;
   const [stateInput, dispatchInput] = useReducer(inputReducer, init);
   const dispatch = useDispatch();
- 
+  // const currency = require('../modals/country-by-currency-code.json')
+  // const curCode=currency.filter(item=>item.country===country)
+  const state = useSelector((state) => state.firebase.profile);
+  
   useEffect(() => {
     if (stateInput.swipe) {
       if (!stateInput.formIsValid) {
@@ -72,6 +77,34 @@ const Body01 = (props) => {
   };
 
 
+  const currencyInput=(text)=>{
+    
+    let isValid = false;
+    if (text.trim().length > 0) {
+      isValid = true;
+    }
+
+    const price=parseFloat(text)
+
+  // const price=parseFloat(text).toLocaleString('en-US', {
+  //   style: 'currency',
+  //  currency:curCode[0].currency_code,
+  //  minimumFractionDigits: 0
+  // });
+
+ 
+
+    dispatchInput({
+      type: types.SPENDS,
+      value: price,
+      isValid: isValid,
+      code: state.currency,
+    });
+  }
+
+
+
+
   return (
     <View style={{ flex: 1, backgroundColor: "black" }}>
       <ImageBackground
@@ -86,14 +119,18 @@ const Body01 = (props) => {
       />
       <View style={{ alignItems: "flex-end", marginTop: 30,     fontFamily: "SpartanBold" }}>
         <Text style={{ color: "white", fontSize: 20 }}>Amount Spend</Text>
+<View style={{width:200, flexDirection:"row"}}>
+  <Text style={{ color: "white", fontSize: 20,margin:5 }}>{state.currency} </Text>
         <TextInput
         autoFocus={true}
           style={{ color: "white", fontSize: 30 , height:50, width:150,     fontFamily: "SpartanBold"}}
-          value={stateInput.inputValues.spend}
-          onChangeText={inputTextHolder.bind(this, "spend")}
+          value={stateInput.inputValues.spend.value}
+          onChangeText={(text)=> currencyInput(text)}
           keyboardType="number-pad"
         />
       </View>
+</View>
+        
 
       <ScrollView>
         <View style={styles.container}>
@@ -218,4 +255,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-export default Body01;
+export default CreateScreen;

@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import BSH from "../components/customComp/bottomSheetHeader"
 import { useFirestoreConnect } from "react-redux-firebase";
 import {MyContext}from "../context"
+import { MaterialIcons } from '@expo/vector-icons';
 
 const ListScreen = (props) => {
   const { position, index } = props.route.params;
@@ -150,6 +151,7 @@ const ListScreen = (props) => {
         </View>
       )}
       <BottomSheet
+      
         ref={ref}
         snapPoints={[500, 350, 0]}
         renderContent={() => {
@@ -170,8 +172,8 @@ const ListScreen = (props) => {
         initialSnap={2}
       />
       <View style={styles.fab}>
-        <TouchableOpacity onPress={() => props.navigation.navigate("body01")}>
-          <Text style={{ fontSize: 40, fontFamily: "Spartan", color:"white" }}>+</Text>
+        <TouchableOpacity onPress={() => props.navigation.navigate("create")}>
+        <MaterialIcons name="add-shopping-cart" size={24} color="white" />
         </TouchableOpacity>
       </View>
     </View>
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
   //marginTop  : 20,
   },
   fab: {
-    width: 65,
+    width: 60,
     height: 60,
     borderRadius: 100,
     position: "absolute",
@@ -193,6 +195,7 @@ const styles = StyleSheet.create({
     right: 10,
     justifyContent: "center",
     alignItems: "center",
+  
     backgroundColor: colors.fab,
   },
  

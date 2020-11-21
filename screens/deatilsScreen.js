@@ -10,28 +10,28 @@ import {
   ImportantLabels,
   NecessaryLabels,
 } from "../components/screen Components/Labels";
-import { useDispatch } from "react-redux";
-import {deletedItem} from "../store/actions/filter"
+import { useDispatch, useSelector } from "react-redux";
+import { deletedItem } from "../store/actions/filter";
 
-
-const size={width:250, height:40}
+const size = { width: 250, height: 40 };
 
 const DetailsScreen = (props) => {
   const firestore = useFirestore();
   const { data, id, refTo } = props;
   const ref2 = useRef();
   const ref = useRef();
- const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { uid } = useSelector((state) => state.firebase.auth);
 
-
+ 
   const edit = () => {
     refTo.current.snapTo(2);
     props.navigation.navigate("Edit", { dataId: data, id: id });
   };
 
   const deleteCard = () => {
-    firestore.delete(`Cards/${id}`);
-dispatch(deletedItem(id))
+    firestore.collection("users").doc(uid).collection("Cards").doc(id).delete();
+    dispatch(deletedItem(id));
     refTo.current.snapTo(2);
   };
 
@@ -42,10 +42,7 @@ dispatch(deletedItem(id))
           onPress={deleteCard}
           img={{ width: 35, height: 35 }}
           style={styles.icons}
-          src={{
-            uri:
-              "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/827eaeb69a6d09069231ac25c8021a30/lixo.png",
-          }}
+          name="delete"
         />
         <View style={{ elevation: 10 }}>
           <Image
@@ -58,10 +55,7 @@ dispatch(deletedItem(id))
           onPress={edit}
           img={{ width: 35, height: 35 }}
           style={styles.icons}
-          src={{
-            uri:
-              "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f1c4ea246e9df0461740000/1812944bc0f48c288cee3b58267b9fac/correcao.png",
-          }}
+          name="pencil"
         />
       </View>
 
@@ -81,11 +75,17 @@ dispatch(deletedItem(id))
             </Text>
           </TouchableOpacity>
         </ToolTip>
-
+        <View style={{flexDirection:"row"}}>
+            <Text style={{ ...styles.title, marginBottom: 20, fontSize: 20 }}>
+          {" "}
+          {data.spend.code}
+        </Text>
         <Text style={{ ...styles.title, marginBottom: 20, fontSize: 20 }}>
           {" "}
-          {data.spend}
+          {data.spend.value}
         </Text>
+        </View>
+      
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.rowContain}>
@@ -203,7 +203,6 @@ const styles = StyleSheet.create({
     height: 55,
     //backgroundColor: colors.icons,
     borderWidth: 0,
-   
   },
 });
 export default DetailsScreen;

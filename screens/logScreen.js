@@ -180,7 +180,7 @@ const SignIn = (props) => {
     }
      else{
     props.show(false);
-   firebase.createUser({ email, password }, {username, email});
+   firebase.createUser({ email, password }, {displayName:username, email});
 
   
      }

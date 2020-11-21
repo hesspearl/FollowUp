@@ -14,6 +14,8 @@ import moment from "moment";
     useFirestoreConnect({
       collection: `users/${uid}/Cards`,
       storeAs: "Cards",
+      orderBy:"createdAt",
+      
     });
     const cards =  useSelector(({ fireStore: { ordered } }) => ordered.Cards);
 //console.log(cards)
@@ -30,6 +32,8 @@ import moment from "moment";
  
       if (moment(date).month() === index) {
         if (moment(date).format("DD/MM/YYYY") === card.format.date) {
+
+        
           items.push(card);
         }
       }

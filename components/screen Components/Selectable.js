@@ -8,6 +8,11 @@ import ListLayout from "../screen Components/listLyout";
 
 //import {MonthsHandler} from "../functional components/selectmonth"
 
+const Query = {
+  collection:"Cards",
+
+  
+}
 const Selectable = (props) => {
   const { array, filter, navigation, indexOfMonth, store } = props;
   // selected change color to black
@@ -17,11 +22,15 @@ const Selectable = (props) => {
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state.filter);
-
+  const { uid } = useSelector((state) => state.firebase.auth);
  
 
 
-  useFirestoreConnect(["Cards"]);
+  useFirestoreConnect({
+    collection: `users/${uid}/Cards`,
+    storeAs: "Cards",
+    orderBy:"createdAt"
+  });
   const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
 
   useEffect(() => {
@@ -47,10 +56,14 @@ store({
 
       if (moment(date).month() === index) {
         if (moment(date).format("DD/MM/YYYY") === card.format.date) {
+
+          
           items.push(card);
         }
       }
     }
+
+
 
     dispatch(actions.filterByMonths(items));
   };

@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler"
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 const circleButton = (props) => {
 
 
@@ -8,7 +10,7 @@ const circleButton = (props) => {
     <TouchableOpacity onPress={props.onPress}
     enabledContentTapInteraction={false}>
       <View style={{ ...styles.container,  ...props.style }}>
-        <Image style={{...styles.img,...props.img}} source={props.src} />
+      <MaterialCommunityIcons name={props.name} size={30} color="black" />
       </View>
     </TouchableOpacity>
   
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     borderStartWidth:2,
     borderEndWidth:2,
 
-    alignSelf: "center",
+   alignItems:"center",
     justifyContent: "center",
   },
   img: {

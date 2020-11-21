@@ -4,7 +4,7 @@ export const DROP = "DROP";
 export const CHOICES = "CHOICES";
 export const PICTURE = "PICTURE";
 export const DATE = "DATE";
-
+export const SPENDS='SPENDS'
 
 export const init = (data) => {
   const initial = {
@@ -20,7 +20,8 @@ export const init = (data) => {
         value: data.application.value,
         avatar: data.application.avatar,
       },
-      spend: data.spend,
+      spend:{ value:data.spend.value,
+      code:data.spend.code},
       important: {
         value: data.important.value,
         color: data.important.color,
@@ -60,7 +61,31 @@ export const inputReducer = (state, action) => {
         inputValues: updateValues,
         inputValidation: updateValidity,
       };
+      case SPENDS:
+         
+        const updateSpends = {
+          ...state.inputValues,
+        spend: {
+            value: action.value,
+            code: action.code,
+          },
+        };
 
+        const updateValidation={
+          ...state.inputValidation,
+          spend:action.isValid
+        }
+        
+      let updateSpendIsValid=true
+      for (const key in updateValidation)
+      updateSpendIsValid= updateSpendIsValid&& updateValidation[key]
+      
+        return {
+          ...state,
+          inputValues: updateSpends,
+          formIsValid: updateFormIsValid,
+          inputValidation: updateValidation,
+        };
     case DROP:
       const updateDrop = {
         ...state.inputValues,

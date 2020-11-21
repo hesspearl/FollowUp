@@ -1,6 +1,7 @@
 import moment from "moment";
 
 const INPUTS_VALUES = "INPUTS_VALUES";
+const SPENDS='SPENDS'
 const CHOICE = "CHOICE";
 const DROP = "DROP";
 const OBSERVATION= "OBSERVATION";
@@ -12,7 +13,10 @@ export const init={
     inputValues: {
         productName: "",
         application: "other",
-        spend: "",
+        spend:{
+          value:0,
+          code:''
+        },
         important: {
           value: "high",
           color: "green",
@@ -62,6 +66,33 @@ export const inputReducer = (state, action) => {
           inputValidation: updateValidity,
         };
   
+        case SPENDS:
+
+        const price= Number(action.value).toFixed(2)
+         
+          const updateSpends = {
+            ...state.inputValues,
+          spend: {
+              value:price ,
+              code: action.code,
+            },
+          };
+
+          const updateValidation={
+            ...state.inputValidation,
+            spend:action.isValid
+          }
+          
+        let updateSpendIsValid=true
+        for (const key in updateValidation)
+        updateSpendIsValid= updateSpendIsValid&& updateValidation[key]
+        
+          return {
+            ...state,
+            inputValues: updateSpends,
+            formIsValid: updateFormIsValid,
+            inputValidation: updateValidation,
+          };
       case DROP:
         const updateDrop = {
           ...state.inputValues,
@@ -94,7 +125,7 @@ export const inputReducer = (state, action) => {
           inputValues: updateChoice,
         };
         case DATE:
-            console.log(action.value)
+          //  console.log(action.value)
             const updateDate = {
               ...state.inputValues,
               date: action.value,
@@ -128,5 +159,6 @@ export const inputReducer = (state, action) => {
      SHOW : "SHOW",
      SWIPE : "SWIPE",
      DATE: "DATE",
-     OBSERVATION: "OBSERVATION"
+     OBSERVATION: "OBSERVATION",
+     SPENDS:'SPENDS'
   }

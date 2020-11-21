@@ -2670,6 +2670,11 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0, cosmiconfig@^5.2.1:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
+country-json@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/country-json/-/country-json-1.1.0.tgz#5a683d3590febd70a1512dd8778eaa9ead40f680"
+  integrity sha512-iJV8zuaB30mD6uOSbYg0UViDrkg1KRf4d113JffNTC7n/RSsvMF4XlxOcnJuL24JQFVYRJvRShAmi2n7WygU9A==
+
 create-react-class@^15.6.2:
   version "15.7.0"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.7.0.tgz#7499d7ca2e69bb51d13faf59bd04f0c65a1d6c1e"

@@ -32,6 +32,7 @@ import {
   DATE,
   DROP,
   CHOICE,
+  SPENDS,
   init,
   CHOICES,
 } from "../store/reduces/editReducer";
@@ -86,6 +87,26 @@ const EditScreen = (props) => {
       input: inputIdentifier,
     });
   };
+
+  const currencyInput=(text)=>{
+    
+    let isValid = false;
+    if (text.trim().length > 0) {
+      isValid = true;
+    }
+
+    const price=parseFloat(text)
+
+ 
+
+    dispatchInputs({
+      type: SPENDS,
+      value: price,
+      isValid: isValid,
+      code: stateInputs.inputValues.spend.code,
+    });
+  }
+
 
   const pressHandler = (l) => {
     dispatchInputs({
@@ -215,9 +236,9 @@ const EditScreen = (props) => {
               <Text style={styles.title}>Spend</Text>
               <TextInput
                 style={{ fontFamily: "SpartanBold", fontSize: 15 }}
-                onChangeText={inputTextHolder.bind(this, "spend")}
+                onChangeText={text=>currencyInput(text)}
                 keyboardType="number-pad"
-                value={stateInputs.inputValues.spend}
+                value={stateInputs.inputValues.spend.value}
                 
               />
             </View>

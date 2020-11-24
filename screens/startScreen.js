@@ -32,6 +32,8 @@ const startScreen = (props) => {
     if (state.currency) {
       return;
     }
+
+    console.log("here")
     let location = await Location.getCurrentPositionAsync({});
     let country = await Location.reverseGeocodeAsync({
       latitude: location.coords.latitude,

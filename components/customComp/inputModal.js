@@ -51,8 +51,7 @@ export const TextModal = (props) => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    width: 300,
-    height: 500,
+   flex:1,
     backgroundColor: "white",
     justifyContent: "center",
     alignSelf: "center",

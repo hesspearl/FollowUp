@@ -21,16 +21,16 @@ import * as actions from "../store/actions/format";
 import { important, necessary } from "../modals/itemsArray";
 import ObservationField from "../components/screen Components/observitionField";
 import DateCalender from "../components/customComp/dateCalender";
-import i18n from 'i18n-js';
+import NumberFormat from "@wwdrew/react-native-numeric-textinput"
 
 const CreateScreen = (props) => {
-  const { country } = props.route.params;
+  // const { country } = props.route.params;
   const [stateInput, dispatchInput] = useReducer(inputReducer, init);
   const dispatch = useDispatch();
   // const currency = require('../modals/country-by-currency-code.json')
   // const curCode=currency.filter(item=>item.country===country)
   const state = useSelector((state) => state.firebase.profile);
-  
+
   useEffect(() => {
     if (stateInput.swipe) {
       if (!stateInput.formIsValid) {
@@ -76,34 +76,21 @@ const CreateScreen = (props) => {
     });
   };
 
-
-  const currencyInput=(text)=>{
-    
+  const currencyInput = (text) => {
     let isValid = false;
-    if (text.trim().length > 0) {
+
+    
+    if (text.toString().length > 0) {
       isValid = true;
     }
 
-    const price=parseFloat(text)
-
-  // const price=parseFloat(text).toLocaleString('en-US', {
-  //   style: 'currency',
-  //  currency:curCode[0].currency_code,
-  //  minimumFractionDigits: 0
-  // });
-
- 
-
     dispatchInput({
       type: types.SPENDS,
-      value: price,
+      value: text,
       isValid: isValid,
-      code: state.currency,
+      code: state.currency.code,
     });
-  }
-
-
-
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "black" }}>
@@ -117,20 +104,38 @@ const CreateScreen = (props) => {
           height: Dimensions.get("window").height,
         }}
       />
-      <View style={{ alignItems: "flex-end", marginTop: 30,     fontFamily: "SpartanBold" }}>
+      <View
+        style={{
+          alignItems: "flex-end",
+          marginTop: 30,
+          fontFamily: "SpartanBold",
+        }}
+      >
         <Text style={{ color: "white", fontSize: 20 }}>Amount Spend</Text>
-<View style={{width:200, flexDirection:"row"}}>
-  <Text style={{ color: "white", fontSize: 20,margin:5 }}>{state.currency} </Text>
-        <TextInput
+        <View style={{ width: 300, flexDirection: "row" }}>
+          <Text style={{ color: "white", fontSize: 20, margin: 5 }}>
+            {state.currency.code}{" "}
+          </Text>
+          {/* <TextInput
         autoFocus={true}
-          style={{ color: "white", fontSize: 30 , height:50, width:150,     fontFamily: "SpartanBold"}}
-          value={stateInput.inputValues.spend.value}
+          style={{ color: "white", fontSize: 30 , height:50, width:250,     fontFamily: "SpartanBold"}}
+           value={stateInput.inputValues.spend.value}
           onChangeText={(text)=> currencyInput(text)}
-          keyboardType="number-pad"
-        />
+          keyboardType="decimal-pad"
+          maxLength={11}
+      
+        /> */}
+           <NumberFormat
+            autoFocus={true}
+            style={{ backgroundColor: "white", fontSize: 30 , height:50, width:250,     fontFamily: "SpartanBold"}}
+           type='decimal'
+          decimalPlaces={2}
+          value={stateInput.inputValues.spend.value}
+          onUpdate={(text)=> currencyInput(text)}
+          maxLength={11}
+          /> 
+        </View>
       </View>
-</View>
-        
 
       <ScrollView>
         <View style={styles.container}>
@@ -151,7 +156,7 @@ const CreateScreen = (props) => {
           >
             Product Name
           </TextField>
-      
+
           <View style={{ margin: 5 }}>
             <Text style={{ ...styles.title, fontSize: 20 }}>Date</Text>
 

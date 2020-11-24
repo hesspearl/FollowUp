@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet,ScrollView } from "react-native";
+import { View, Text, TextInput, StyleSheet,TouchableOpacity} from "react-native";
 import Setting from "../assets/settings.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useFirebase } from "react-redux-firebase";
 import { FontAwesome, AntDesign  } from '@expo/vector-icons';
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 import { InputModal, TextModal } from "../components/customComp/inputModal";
 
 const settingScreen = (props) => {
@@ -12,10 +12,18 @@ const settingScreen = (props) => {
   const profile = useSelector((state) => state.firebase.profile);
 const [name, setName] = useState(profile.displayName?profile.displayName:profile.username)
  const [show, setShow] = useState(false)
+ const [country, setCountry] = useState(profile.currency.country)
+ const [currencyCode, setCurrencyCode] = useState(profile.currency.code)
   const firebase=useFirebase()
 
   const currency = require("../modals/country-by-currency-code.json");
     
+  const chooseCurrency=(currencyCode, country)=>{
+
+    setCountry(country)
+  setCurrencyCode(currencyCode)
+    setShow(false)
+  }
 
 
 
@@ -33,7 +41,8 @@ const [name, setName] = useState(profile.displayName?profile.displayName:profile
  
     
     <TouchableOpacity onPress={()=>{  firebase.updateProfile({
-      displayName:name
+      displayName:name,
+      currency: { code: currencyCode, country:country },
     })
     ,
     props.navigation.navigate('start')}}>
@@ -56,7 +65,7 @@ const [name, setName] = useState(profile.displayName?profile.displayName:profile
           <TouchableOpacity onPress={()=> setShow(true)}>
              <View style={styles.inputsContainer}>
             <Text style={styles.text}>Country :</Text>
-            <Text style={styles.text}> {profile.currency.country}</Text>
+            <Text style={styles.text}> {country}</Text>
             <View style={{ marginVertical: 13, marginLeft:20 }}>
           <AntDesign name="right" size={15} color="black" />
         </View>
@@ -67,12 +76,15 @@ const [name, setName] = useState(profile.displayName?profile.displayName:profile
        onRequestClose={()=>setShow(false)}>
 {currency.map((items,key)=>(
   
-  <View key={key} style={{flexDirection:"row", justifyContent:"space-between"}}>
- 
-     <Text style={styles.text}>{items.country}</Text>
+  <TouchableOpacity key={key}  onPress={()=>chooseCurrency(items.currency_code, items.country)}>
+  <View  style={{flexDirection:"row", justifyContent:"space-around"}}>
+   <Text style={styles.text}>{items.country}</Text>
     <Text style={styles.text}>{items.currency_code} </Text>
+     </View>
+ </TouchableOpacity>
+     
 
-  </View>
+ 
   
 ))}
          </InputModal>

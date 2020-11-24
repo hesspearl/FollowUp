@@ -1,5 +1,6 @@
 import moment from "moment";
 
+
 const INPUTS_VALUES = "INPUTS_VALUES";
 const SPENDS='SPENDS'
 const CHOICE = "CHOICE";
@@ -59,17 +60,21 @@ export const inputReducer = (state, action) => {
         let updateFormIsValid = true;
         for (const key in updateValidity)
           updateFormIsValid = updateFormIsValid && updateValidity[key];
+
+         
         return {
             ...state,
           formIsValid: updateFormIsValid,
           inputValues: updateValues,
-          inputValidation: updateValidity,
+          inputValidation: 
+            updateValidity,
         };
   
         case SPENDS:
 
-        const price= Number(action.value).toFixed(2)
+        const price= action.value
          
+  
           const updateSpends = {
             ...state.inputValues,
           spend: {
@@ -87,6 +92,7 @@ export const inputReducer = (state, action) => {
         for (const key in updateValidation)
         updateSpendIsValid= updateSpendIsValid&& updateValidation[key]
         
+        console.log(state.inputValidation)
           return {
             ...state,
             inputValues: updateSpends,

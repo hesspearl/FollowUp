@@ -108,18 +108,21 @@ store({
 
   const filterPrice = (index) => {
     setSelectedFilter(index)
+    
     let f = [];
     // if filter array =1 (highest to lowest)
     if (index === 0) {
+    
       state.months
-        .sort((a, b) => b.format.spend - a.format.spend)
+        .sort((a, b) => b.format.spend.value - a.format.spend.value)
         .map((i) => f.push(i));
+  
       dispatch(actions.selectFilter(f, "price"));
     }
 
     if (index === 1) {
       state.months
-        .sort((a, b) => a.format.spend - b.format.spend)
+        .sort((a, b) => a.format.spend.value - b.format.spend.value)
         .map((i) => f.push(i));
       dispatch(actions.selectFilter(f, "price"));
     }

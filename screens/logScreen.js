@@ -17,15 +17,17 @@ import { useFirebase } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import * as Google from "expo-google-app-auth";
 import { ActivityIndicator } from "react-native-paper";
+import Input from "../components/customComp/logInput"
+import{ResetPass}from "../components/screen Components/resetPass"
 
 const LogScreen = (props) => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [height, setHeight] = useState(410);
-
+  const [showResetPass, setShowResetPass] = useState(false);
   
   const auth = useSelector((state) => state.firebase.auth);
   
-
+console.log(showResetPass)
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
     Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
@@ -52,10 +54,11 @@ const LogScreen = (props) => {
         style={{ position: "absolute", top: 150 }}
       />
       <View style={{ ...styles.bottom, height: height }}>
-        {!showSignIn && (
-          <Login show={setShowSignIn} navigation={props.navigation} />
+        {!showSignIn && !showResetPass && (
+          <Login show={setShowSignIn} showReset={setShowResetPass} navigation={props.navigation} />
         )}
         {showSignIn && <SignIn show={setShowSignIn} />}
+        {showResetPass && <ResetPass show={setShowResetPass}/>}
       </View>
     </View>
   );
@@ -127,7 +130,7 @@ const Login = (props) => {
         secureTextEntry={true}
         onChangeText={(text) => setUserPassword(text)}
       />
-        <TouchableOpacity onPress={() => props.show(true)}>
+        <TouchableOpacity onPress={() => props.showReset(true)}>
              <Text style={styles.text}>forgot your password?</Text>
         </TouchableOpacity>
    
@@ -224,26 +227,7 @@ const SignIn = (props) => {
   );
 };
 
-const Input = (props) => {
-  return (
-    <View style={styles.input}>
-      <Entypo
-        name={props.name}
-        size={30}
-        color="black"
-        style={{ alignSelf: "center" }}
-      />
-      <TextInput
-        {...props}
-        style={{...styles.textInput, ...props.style}}
-        placeholder={props.title}
-        placeholderTextColor="black"
-        onChangeText={props.onChangeText}
-        autoCompleteType={props.type}
-      />
-    </View>
-  );
-};
+
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "space-between", alignItems: "center" },
@@ -261,22 +245,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 10,
   },
-  input: {
-    width: 300,
-    height: 60,
-    borderWidth: 2,
-    borderRadius: 10,
-    margin: 10,
-    flexDirection: "row",
-    paddingStart: 20,
-    backgroundColor: "white",
-  },
-  textInput: {
-    paddingStart: 20,
-    fontFamily: "Spartan",
-    width: 200,
-    fontSize: 18,
-  },
+
+  
   text: {
     fontSize: 14,
     fontFamily: "SpartanBold",

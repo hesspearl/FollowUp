@@ -4,7 +4,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
-
+RefreshControl,
   TouchableOpacity,
   ScrollView,
   Image,
@@ -36,7 +36,7 @@ const ListScreen = (props) => {
   const [showToast, setShowToast] = useState({ value: false, title: "" });
   const [store, setStore] = useState({ ["storing"]: [] });
   const filterState = useSelector((state) => state.filter);
-
+  
   
   //bottomSheet ref
   const ref = useRef();
@@ -120,7 +120,10 @@ const ListScreen = (props) => {
         />
       </MyContext.Provider>
       <FlatList
-      
+     
+      // refreshControl={<RefreshControl
+      //   refreshing={}
+      // />}
         style={{ flex:1}}
         data={filter ? filterState.filter.data : filterState.months}
         keyExtractor={(item, index) => item.id}
@@ -163,6 +166,7 @@ const ListScreen = (props) => {
                   id={cardsData.id}
                   refTo={ref}
                   navigation={props.navigation}
+                
                 />
               );
           }

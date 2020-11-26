@@ -23,28 +23,41 @@ const startScreen = (props) => {
   const currency = require("../modals/country-by-currency-code.json");
   const curCode = currency.filter((item) => item.country === country);
 
+  
+
   const location = async () => {
     let { status } = await Location.requestPermissionsAsync();
     if (status !== "granted") {
       setErrorMsg("Permission to access location was denied");
     }
-
-    if (state.currency) {
-      return;
+    if(state.currency)
+    {console.log(!!state.currency)
+    return
     }
-
-    console.log("here")
-    let location = await Location.getCurrentPositionAsync({});
+    
+    else{
+ let location = await Location.getCurrentPositionAsync({});
     let country = await Location.reverseGeocodeAsync({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     });
     setCountry(country[0].country);
 
-    firebase.updateProfile({
+    }
+    if(country)
+    {firebase.updateProfile({
       currency: { code: curCode[0].currency_code, country: curCode[0].country },
-    });
+    });}
+   
+
+    
+    
+
+   
   };
+
+
+
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -52,10 +65,11 @@ const startScreen = (props) => {
     });
 
     currentMonth();
-    location();
+    
+    location()
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, state]);
 
   const currentMonth = () => {
     const thisMonth = moment().month();

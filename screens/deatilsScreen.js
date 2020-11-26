@@ -32,6 +32,7 @@ const DetailsScreen = (props) => {
   const deleteCard = () => {
     firestore.collection("users").doc(uid).collection("Cards").doc(id).delete();
     dispatch(deletedItem(id));
+    
     refTo.current.snapTo(2);
   };
 

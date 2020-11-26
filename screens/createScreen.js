@@ -31,6 +31,7 @@ const CreateScreen = (props) => {
   // const curCode=currency.filter(item=>item.country===country)
   const state = useSelector((state) => state.firebase.profile);
 
+ 
   useEffect(() => {
     if (stateInput.swipe) {
       if (!stateInput.formIsValid) {
@@ -127,12 +128,13 @@ const CreateScreen = (props) => {
         /> */}
            <NumberFormat
             autoFocus={true}
-            style={{ backgroundColor: "white", fontSize: 30 , height:50, width:250,     fontFamily: "SpartanBold"}}
+            style={{ color:"white",fontSize: 30 , height:50, width:250,     fontFamily: "SpartanBold"}}
            type='decimal'
           decimalPlaces={2}
           value={stateInput.inputValues.spend.value}
           onUpdate={(text)=> currencyInput(text)}
           maxLength={11}
+          caretHidden={false}
           /> 
         </View>
       </View>

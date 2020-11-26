@@ -18,8 +18,8 @@ import moment from "moment";
       
     });
     const cards =  useSelector(({ fireStore: { ordered } }) => ordered.Cards);
-//console.log(cards)
-  
+
+  console.log(cards)
     const dispatch = useDispatch()
   
   
@@ -27,7 +27,7 @@ import moment from "moment";
   const findMonth=()=>{
        let items = [];
     for (const card of cards) {
-          
+     
       let date = moment(card.format.date, "DD/MM/YYYY", true).format();
  
       if (moment(date).month() === index) {

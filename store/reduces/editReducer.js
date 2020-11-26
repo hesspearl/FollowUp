@@ -83,7 +83,7 @@ export const inputReducer = (state, action) => {
         return {
           ...state,
           inputValues: updateSpends,
-          formIsValid: updateFormIsValid,
+          formIsValid: updateSpendIsValid,
           inputValidation: updateValidation,
         };
     case DROP:

@@ -38,6 +38,7 @@ export default function App() {
       <Provider store={store}>
         <ReactReduxFirebaseProvider dispatch={store.dispatch} {...rrfProps}>
           <ProviderPaper>
+          <StatusBar/>
             <AppNav />
           </ProviderPaper>
         </ReactReduxFirebaseProvider>

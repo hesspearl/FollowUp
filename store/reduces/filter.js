@@ -12,7 +12,7 @@ initialState = {
   months: [],
   filter:[],
    
-  multiFilter:{}
+
 };
 
 export default filter = (state = initialState, action) => {
@@ -49,11 +49,18 @@ export default filter = (state = initialState, action) => {
       return {
         months: [],
         filter:{},
-        multiFilter:[]
+ 
       };
 
     case DELETED_ITEMS:
       let item = state.months.map((i) => i.id).indexOf(action.value);
+      if(state.filter.data){
+
+        
+      let FItem= state.filter.data.map((i) => i.id).indexOf(action.value);
+
+        state.filter.data.splice(FItem,1)
+      }
 
       state.months.splice(item, 1);
 

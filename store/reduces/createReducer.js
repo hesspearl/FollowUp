@@ -88,15 +88,17 @@ export const inputReducer = (state, action) => {
             spend:action.isValid
           }
           
+         
         let updateSpendIsValid=true
         for (const key in updateValidation)
         updateSpendIsValid= updateSpendIsValid&& updateValidation[key]
+       
         
-        console.log(state.inputValidation)
+        console.log(updateSpendIsValid)
           return {
             ...state,
             inputValues: updateSpends,
-            formIsValid: updateFormIsValid,
+            formIsValid: updateSpendIsValid,
             inputValidation: updateValidation,
           };
       case DROP:

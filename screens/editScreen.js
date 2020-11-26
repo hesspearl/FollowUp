@@ -40,6 +40,7 @@ import moment from "moment";
 import Observation from "../components/screen Components/showMore";
 import { AntDesign } from "@expo/vector-icons";
 import {TouchableOpacity} from "react-native-gesture-handler"
+import NumberFormat from "@wwdrew/react-native-numeric-textinput"
 
 const EditScreen = (props) => {
   const { dataId, id } = props.route.params;
@@ -53,6 +54,7 @@ const EditScreen = (props) => {
   const stateModal = useSelector((state) => state.modal);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
 
+  console.log(stateInputs.inputValues.spend.value)
 
   useEffect(() => {
     dispatch(actions.edit(stateInputs.inputValues));
@@ -91,7 +93,7 @@ const EditScreen = (props) => {
   const currencyInput=(text)=>{
     
     let isValid = false;
-    if (text.trim().length > 0) {
+    if (text.toString().length > 0) {
       isValid = true;
     }
 
@@ -148,7 +150,7 @@ const EditScreen = (props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           paddingHorizontal: 10,
-          marginTop: 20,
+          marginTop: 40,
         }}
       >
         <TouchableOpacity onPress={() => props.navigation.navigate("list")}>
@@ -234,13 +236,22 @@ const EditScreen = (props) => {
             ) : null}
             <View style={styles.spendContain}>
               <Text style={styles.title}>Spend</Text>
-              <TextInput
+              <NumberFormat
+             caretHidden={false}
+            style={{ fontFamily: "SpartanBold", fontSize: 15 }}
+           type='decimal'
+          decimalPlaces={2}
+          value={stateInputs.inputValues.spend.value}
+          onUpdate={text=>currencyInput(text)}
+          maxLength={11}
+          /> 
+              {/* <TextInput
                 style={{ fontFamily: "SpartanBold", fontSize: 15 }}
                 onChangeText={text=>currencyInput(text)}
                 keyboardType="number-pad"
                 value={stateInputs.inputValues.spend.value}
                 
-              />
+              /> */}
             </View>
             <ModalComp
               visible={
@@ -310,12 +321,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: Dimensions.get("window").height,
+ 
   },
   svg: {
     
       position: "absolute",
       left: 0,
-      top: 110,
+      top: 120,
       width: Dimensions.get("screen").width,
       height: Dimensions.get("screen").height,
     
@@ -359,7 +371,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: "absolute",
     left: 25,
-    top: 60,
+    top: 80,
   },
   image: {
     width: 100,

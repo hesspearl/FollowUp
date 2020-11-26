@@ -1,9 +1,11 @@
 import * as firebase from "firebase"
 import "@firebase/firestore"
+import{API_KEY} from "@env"
+
 
 
 var firebaseConfig = {
-    apiKey: "AIzaSyCl_Nvek28Tav_qgmHwK61TMESBHDFkxiY",
+    apiKey:API_KEY ,
     authDomain: "followup-ca4f2.firebaseapp.com",
     databaseURL: "https://followup-ca4f2.firebaseio.com",
     projectId: "followup-ca4f2",

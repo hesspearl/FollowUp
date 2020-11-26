@@ -19,6 +19,8 @@ import * as Google from "expo-google-app-auth";
 import { ActivityIndicator } from "react-native-paper";
 import Input from "../components/customComp/logInput"
 import{ResetPass}from "../components/screen Components/resetPass"
+import{ANDROID_CLIENT_ID} from "@env"
+
 
 const LogScreen = (props) => {
   const [showSignIn, setShowSignIn] = useState(false);
@@ -27,6 +29,8 @@ const LogScreen = (props) => {
   
   const auth = useSelector((state) => state.firebase.auth);
   
+
+
 console.log(showResetPass)
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
@@ -89,8 +93,7 @@ const Login = (props) => {
     setLoading(true)
     try {
       const { accessToken, idToken, type } = await Google.logInAsync({
-        androidClientId:
-          "723196642127-annm7c8dombas44vobopnamt8g3h6qs4.apps.googleusercontent.com",
+        androidClientId:ANDROID_CLIENT_ID,
         scopes: ["profile", "email"],
       });
 

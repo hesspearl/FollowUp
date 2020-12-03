@@ -1,5 +1,5 @@
 import React ,{useEffect,useState} from 'react'
-import { View, Modal, StyleSheet, BackHandler } from 'react-native';
+import { View, Modal, StyleSheet, ScrollView} from 'react-native';
 import { ListItem, Avatar } from "react-native-elements";
 import {list} from "../../modals/itemsArray"
 
@@ -9,13 +9,15 @@ const ModalComp= props =>{
 
 return (
 <View style={styles.modalContainer}>
-          <Modal
+<Modal
             animationType="slide"
             //  transparent={true}
             visible={props.visible}
             onRequestClose={props.onRequestClose}
            
            >
+<ScrollView>
+     
             {list.map((l, i) => (
               <ListItem
                 key={i.toString()}
@@ -30,7 +32,10 @@ return (
               </ListItem>
 
             ))} 
-          </Modal>
+        
+
+</ScrollView>
+       </Modal>
         </View>
 )
 }

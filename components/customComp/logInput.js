@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Entypo } from "@expo/vector-icons";
+import size from "../../size";
 
 const logInput= props =>{
 return (
@@ -25,7 +26,7 @@ return (
 
 const styles= StyleSheet.create({
     input: {
-        width: 300,
+        width: size.width===320? 270: 300,
         height: 60,
         borderWidth: 2,
         borderRadius: 10,

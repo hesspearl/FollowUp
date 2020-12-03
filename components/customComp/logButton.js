@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import colors from "../../colors";
+import size from "../../size";
 
 const logButton = (props) => {
   return (
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     color:"white",
   },
   button: {
-    width: 120,
+    width: size.width/3.5,
     height: 60,
     elevation: 6,
     fontSize: 30,

@@ -1,12 +1,11 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { View, TouchableOpacity, StyleSheet, Text, Modal } from "react-native";
 import Tooltip from "../customComp/tooltip";
-import colors from "../../colors";
 import { important, necessary, icons, price } from "../../modals/itemsArray";
 import * as actions from "../../store/actions/filter";
 import { useDispatch  } from "react-redux";
-import { color } from "react-native-reanimated";
 import {MyContext} from "../../context"
+import size from "../../size"
 
 const ListIcons = (props) => {
   const { filterItem, refScroll, showToast, positionX } = props;
@@ -118,6 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     height: "10%",
     alignItems: "center",
+    marginTop: size.height<550 ?10 : null
  
   },
 });

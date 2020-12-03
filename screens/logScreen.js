@@ -2,104 +2,118 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   Keyboard,
-  
 } from "react-native";
 import LogButton from "../components/customComp/logButton";
-import { Entypo } from "@expo/vector-icons";
+import Input from "../components/customComp/logInput";
+import { ResetPass } from "../components/screen Components/resetPass";
 import Search from "../assets/search.svg";
-import Wallet from "../assets/wallet.svg";
+import { ANDROID_CLIENT_ID } from "@env";
 import { useFirebase } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import * as Google from "expo-google-app-auth";
-import { ActivityIndicator } from "react-native-paper";
-import Input from "../components/customComp/logInput"
-import{ResetPass}from "../components/screen Components/resetPass"
-import{ANDROID_CLIENT_ID} from "@env"
+import { ActivityIndicator } from "react-native";
 
+
+
+// first screen show , have log in / sign up components
 
 const LogScreen = (props) => {
   const [showSignIn, setShowSignIn] = useState(false);
+  const [showTitle, setShowTitle] = useState(true);
+  //height of bottom sheet
   const [height, setHeight] = useState(410);
   const [showResetPass, setShowResetPass] = useState(false);
-  
-  const auth = useSelector((state) => state.firebase.auth);
-  
 
-
-console.log(showResetPass)
+// listener to when keyboard open 
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
     Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
 
-    //  Don't forget to cleanup with remove listeners
+    return () => {
+      Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+      Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+    };
   }, [Keyboard]);
 
+  //change bottom sheet height accord to keyboard state
   const _keyboardDidShow = () => {
+    setShowTitle(false)
     setHeight(500);
+    
   };
 
   const _keyboardDidHide = () => {
     setHeight(410);
+    setShowTitle(true)
   };
+
+
+
   return (
     <View style={styles.container}>
-      <Text style={{ ...styles.title, marginTop: 50 }}>Follow</Text>
-      <View style={{ position: "absolute", right: 20, top: 110 }}>
+     {showTitle&& <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ ...styles.title }}>Follow</Text>
         <Text style={{ ...styles.title, fontFamily: "SpartanBold" }}>Up</Text>
-      </View>
-      <Wallet
-        width="300"
-        height="200"
-        style={{ position: "absolute", top: 150 }}
-      />
+      </View>}
       <View style={{ ...styles.bottom, height: height }}>
         {!showSignIn && !showResetPass && (
-          <Login show={setShowSignIn} showReset={setShowResetPass} navigation={props.navigation} />
+          <Login
+            show={setShowSignIn}
+            showReset={setShowResetPass}
+            navigation={props.navigation}
+          />
         )}
         {showSignIn && <SignIn show={setShowSignIn} />}
-        {showResetPass && <ResetPass show={setShowResetPass}/>}
+        {showResetPass && <ResetPass show={setShowResetPass} />}
       </View>
     </View>
   );
 };
 
+
+//log in component 
+
 const Login = (props) => {
   const firebase = useFirebase();
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
- const [loading, setLoading] = useState(false)
- 
+  const [loading, setLoading] = useState(false);
 
+  // log in with email and password
   const logIn = () => {
-     
     firebase
       .login({
         email: userEmail,
         password: userPassword,
       })
-     
+
       .catch((err) => {
         alert(err);
       });
-    
   };
 
+  // log in with google account 
   const google = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const { accessToken, idToken, type } = await Google.logInAsync({
-        androidClientId:ANDROID_CLIENT_ID,
+        androidClientId: ANDROID_CLIENT_ID,
         scopes: ["profile", "email"],
       });
 
       if (type === "success") {
-        setLoading(false)
-       
+        setLoading(false);
+
         firebase.login({
           credential: firebase.auth.GoogleAuthProvider.credential(
             idToken,
@@ -118,7 +132,6 @@ const Login = (props) => {
     google();
   };
 
-
   return (
     <View>
       <Input
@@ -133,12 +146,12 @@ const Login = (props) => {
         secureTextEntry={true}
         onChangeText={(text) => setUserPassword(text)}
       />
-        <TouchableOpacity onPress={() => props.showReset(true)}>
-             <Text style={styles.text}>forgot your password?</Text>
-        </TouchableOpacity>
-   
+      <TouchableOpacity onPress={() => props.showReset(true)}>
+        <Text style={styles.text}>forgot your password?</Text>
+      </TouchableOpacity>
+
       <LogButton title="Log in" onPress={logIn} />
-    <TouchableOpacity onPress={() => props.show(true)}>
+      <TouchableOpacity onPress={() => props.show(true)}>
         <Text style={styles.text}>you don't have account? click here</Text>
       </TouchableOpacity>
 
@@ -150,14 +163,20 @@ const Login = (props) => {
         }}
       >
         <Text style={styles.text}>- or -</Text>
-        {!loading? <TouchableOpacity onPress={() => signInWithGoogle()}>
-          <Search style={{ width: 30, height: 30 }} />
-        </TouchableOpacity>:<ActivityIndicator/>}
+        {!loading ? (
+          <TouchableOpacity onPress={() => signInWithGoogle()}>
+            <Search style={{ width: 30, height: 30 }} />
+          </TouchableOpacity>
+        ) : (
+          <ActivityIndicator />
+        )}
       </View>
     </View>
   );
 };
 
+
+// sign in component 
 const SignIn = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -166,30 +185,30 @@ const SignIn = (props) => {
 
   const firebase = useFirebase();
 
-  const sign =() => {
-    const regEmail= /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+  const sign = () => {
+    //test validation
+    const regEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-     if(!password||!email||!username||!confirmPassword){
-      alert("please don't let field empty")
-      return
-     }
-     
-    if(!regEmail.test(email.toLowerCase())){
-   
-      alert("not valid email")
-      return
+    if (!password || !email || !username || !confirmPassword) {
+      alert("please don't let field empty");
+      return;
     }
 
-    if(confirmPassword!=password){
-      alert("password not matching")
-      return
+    if (!regEmail.test(email.toLowerCase())) {
+      alert("not valid email");
+      return;
     }
-     else{
-    props.show(false);
-   firebase.createUser({ email, password }, {displayName:username, email});
 
-  
-     }
+    if (confirmPassword != password) {
+      alert("password not matching");
+      return;
+    } else {
+      props.show(false);
+      firebase.createUser(
+        { email, password },
+        { displayName: username, email }
+      );
+    }
   };
 
   return (
@@ -214,23 +233,19 @@ const SignIn = (props) => {
         type="password"
       />
       <Input
-       name="lock"
-       title="Enter password again"
+        name="lock"
+        title="Enter password again"
         secureTextEntry={true}
         type="password"
         onChangeText={(text) => setConfirmPassword(text)}
-        />
-        <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-        <LogButton title="return" onPress={()=> props.show(false)} />
-<LogButton title="sign up" onPress={sign} />
-        </View>     
-
- 
+      />
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <LogButton title="return" onPress={() => props.show(false)} />
+        <LogButton title="sign up" onPress={sign} />
+      </View>
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "space-between", alignItems: "center" },
@@ -249,7 +264,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 
-  
   text: {
     fontSize: 14,
     fontFamily: "SpartanBold",

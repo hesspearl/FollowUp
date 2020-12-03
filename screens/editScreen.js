@@ -1,4 +1,5 @@
 import React, { useReducer, useState, useEffect, useContext } from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   View,
   Text,
@@ -41,6 +42,7 @@ import Observation from "../components/screen Components/showMore";
 import { AntDesign } from "@expo/vector-icons";
 import {TouchableOpacity} from "react-native-gesture-handler"
 import NumberFormat from "@wwdrew/react-native-numeric-textinput"
+import { useIsFocused } from '@react-navigation/native'
 
 const EditScreen = (props) => {
   const { dataId, id } = props.route.params;
@@ -54,7 +56,7 @@ const EditScreen = (props) => {
   const stateModal = useSelector((state) => state.modal);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
 
-  console.log(stateInputs.inputValues.spend.value)
+ 
 
   useEffect(() => {
     dispatch(actions.edit(stateInputs.inputValues));
@@ -122,7 +124,7 @@ const EditScreen = (props) => {
     Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
     Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
 
-    //  Don't forget to cleanup with remove listeners
+   
     return () => {
       Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
       Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
@@ -140,7 +142,9 @@ const EditScreen = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
+    <StatusBar hidden={true}/>
       <ImageBackground
+      resizeMode="stretch"
         source={require("../assets/icons/Rectangle.png")}
         style={styles.svg}
       />
@@ -150,7 +154,7 @@ const EditScreen = (props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           paddingHorizontal: 10,
-          marginTop: 40,
+         
         }}
       >
         <TouchableOpacity onPress={() => props.navigation.navigate("list")}>
@@ -334,7 +338,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: "80%",
-    height: "30%",
+    height: Dimensions.get("window").height < 600 ? "40%" : "30%",
     elevation: 10,
     borderRadius: 20,
     backgroundColor: "white",

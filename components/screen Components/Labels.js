@@ -1,12 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import size from "../../size"
 
 const high = "high";
 const low = "low";
 const average = " average";
 
 export const ImportantLabels = (props) => {
-  //console.log(props.type);
+
 
   let option;
   let color;
@@ -67,7 +68,7 @@ export const NecessaryLabels = (props) => {
 
 const styles = StyleSheet.create({
   contain: {
-    width: 170,
+    width: size.height<600 ?150:170,
     height: 40,
     justifyContent: "center",
     alignItems: "center",

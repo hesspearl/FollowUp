@@ -10,6 +10,8 @@ const switchSelector = (props) => {
     { label: props.option[2], value: { value:  props.option[2], color: "red" } },
   ];
 
+  //console.log(props.init)
+
   return (
     <View style={{alignItems:"center"}}>
       <Text style={{ fontSize: 20, margin: 25, fontFamily:'SpartanBold'}}>{props.children}</Text>
@@ -23,8 +25,10 @@ const switchSelector = (props) => {
         borderRadius={6}
         style={{ width: "100%", height: "10%" ,}}
         initial={0}
+        value={props.init}
         onPress={props.onPress}
         height={40}
+        disableValueChangeOnPress
       />
     </View>
   );

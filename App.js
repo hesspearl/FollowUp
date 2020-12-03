@@ -14,7 +14,7 @@ import {
 } from "@expo-google-fonts/spartan";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { Provider as ProviderPaper } from "react-native-paper";
-
+import size from "./size";
 import { decode, encode } from "base-64";
 if (!global.btoa) {
   global.btoa = encode;
@@ -31,16 +31,18 @@ export default function App() {
     Spartan: Spartan_400Regular,
     SpartanBold: Spartan_700Bold,
   });
+
+
   if (!fontLoad) {
     return <AppLoading />;
   } else {
     return (
       <Provider store={store}>
         <ReactReduxFirebaseProvider dispatch={store.dispatch} {...rrfProps}>
-          <ProviderPaper>
+       
           <StatusBar/>
             <AppNav />
-          </ProviderPaper>
+          
         </ReactReduxFirebaseProvider>
       </Provider>
     );

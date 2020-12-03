@@ -35,7 +35,7 @@ const reducer=(state , action )=>{
   return state 
 }
 
-const DropDown = (props) => {
+const ApplicationModal = (props) => {
  
  
 
@@ -128,4 +128,4 @@ const styles = StyleSheet.create({
  
 });
 
-export default DropDown;
+export default ApplicationModal;

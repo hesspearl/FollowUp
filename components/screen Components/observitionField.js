@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
   TextInput,
 } from "react-native";
 
@@ -46,6 +45,7 @@ const ObservationField = (props) => {
         style={{ paddingLeft: 10, fontSize: 18 }}
         onChangeText={(value) => onSubmit(value)}
         placeholder={"write something "}
+        value={props.value}
       />
       </View>
      

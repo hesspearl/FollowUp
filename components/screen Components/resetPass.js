@@ -30,4 +30,3 @@ export const ResetPass = (props) => {
   );
 };
 
-const styles = StyleSheet.create({});

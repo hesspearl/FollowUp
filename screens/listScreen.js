@@ -4,12 +4,10 @@ import {
   FlatList,
   StyleSheet,
   Text,
-RefreshControl,
   TouchableOpacity,
   ScrollView,
   Image,
   BackHandler,
-  ActivityIndicator,
 } from "react-native";
 import Card from "../components/customComp/Card";
 import colors from "../colors";
@@ -18,15 +16,14 @@ import DetailsScreen from "./deatilsScreen";
 import ToolTip from "../components/customComp/tooltip";
 import ListIcons from "../components/screen Components/listIcons";
 import Selectable from "../components/screen Components/Selectable";
-import { months, icons } from "../modals/itemsArray";
+import { months } from "../modals/itemsArray";
 import { useSelector } from "react-redux";
-import BSH from "../components/customComp/bottomSheetHeader"
-import { useFirestoreConnect } from "react-redux-firebase";
-import {MyContext}from "../context"
-import { MaterialIcons } from '@expo/vector-icons';
+import BSH from "../components/customComp/bottomSheetHeader";
+import { MyContext } from "../context";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const ListScreen = (props) => {
-  const { position, index } = props.route.params;
+  // const { position, index } = props.route.params;
   const [cardsData, setData] = useState();
   const [positionX, setPositionX] = useState(0);
   //header filter array
@@ -36,12 +33,11 @@ const ListScreen = (props) => {
   const [showToast, setShowToast] = useState({ value: false, title: "" });
   const [store, setStore] = useState({ ["storing"]: [] });
   const filterState = useSelector((state) => state.filter);
-  
-  
+  const state = useSelector((state) => state.format);
+
   //bottomSheet ref
   const ref = useRef();
-  //tooltip ref
-  const refTool = useRef();
+ 
 
   const pressed = (item) => {
     ref.current.snapTo(1);
@@ -52,18 +48,19 @@ const ListScreen = (props) => {
     });
   };
 
+
   //change scrollView position to current month
 
   useEffect(() => {
     if (refScroll) {
       const time = setTimeout(() => {
-        refScroll.scrollTo({ x: position });
+        refScroll.scrollTo({ x: filterState.currentMonth.position });
       }, 200);
       return () => clearTimeout(time);
     }
-  }, [position, refScroll]);
+  }, [refScroll]);
 
-  //handle back button to return to top stack 
+  //handle back button to return to top stack
   useEffect(() => {
     const onBackPress = () => {
       props.navigation.popToTop();
@@ -74,14 +71,17 @@ const ListScreen = (props) => {
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
   }, [BackHandler]);
 
+
+  //render if there is no items to filter 
   const EmptyImage = () => (
-    <View style={{alignItems: "center", paddingTop:100}}>
+    <View style={{ alignItems: "center", paddingTop: 100 }}>
       <Image
         source={require("../assets/caja.png")}
         style={{ width: 100, height: 100 }}
       />
-      <Text style={{fontFamily: "SpartanBold",
-    fontSize: 20, color: "black"}}>It's Empty , Filter Again !</Text>
+      <Text style={{ fontFamily: "SpartanBold", fontSize: 20, color: "black" }}>
+        It's Empty , Filter Again !
+      </Text>
     </View>
   );
 
@@ -106,7 +106,7 @@ const ListScreen = (props) => {
               filter={filter}
               array={months}
               navigation={props.navigation}
-              indexOfMonth={index}
+              indexOfMonth={filterState.currentMonth.index}
               store={setStore}
             />
           </ScrollView>
@@ -120,30 +120,22 @@ const ListScreen = (props) => {
         />
       </MyContext.Provider>
       <FlatList
-     
-      // refreshControl={<RefreshControl
-      //   refreshing={}
-      // />}
-        style={{ flex:1}}
+        // refreshControl={<RefreshControl
+        //  refreshing={refreshing} onRefresh={onRefresh}
+        // />}
+        style={{ flex: 1 }}
         data={filter ? filterState.filter.data : filterState.months}
         keyExtractor={(item, index) => item.id}
         ListEmptyComponent={<EmptyImage />}
-        refreshing={true}
         renderItem={(itemData) => (
           <>
-            <TouchableOpacity
-              onPress={
-                () => pressed(itemData.item)
-              }
-        
-            >
+            <TouchableOpacity onPress={() => pressed(itemData.item)}>
               <Card
                 product={itemData.item.format.productName}
                 picture={itemData.item.format.application.avatar}
                 price={itemData.item.format.spend}
               />
             </TouchableOpacity>
-          
           </>
         )}
       />
@@ -154,7 +146,6 @@ const ListScreen = (props) => {
         </View>
       )}
       <BottomSheet
-      
         ref={ref}
         snapPoints={[500, 350, 0]}
         renderContent={() => {
@@ -166,18 +157,17 @@ const ListScreen = (props) => {
                   id={cardsData.id}
                   refTo={ref}
                   navigation={props.navigation}
-                
                 />
               );
           }
           return <View />;
         }}
-        renderHeader={() => (<BSH/> )}
+        renderHeader={() => <BSH />}
         initialSnap={2}
       />
       <View style={styles.fab}>
         <TouchableOpacity onPress={() => props.navigation.navigate("create")}>
-        <MaterialIcons name="add-shopping-cart" size={24} color="white" />
+          <MaterialIcons name="add-shopping-cart" size={24} color="white" />
         </TouchableOpacity>
       </View>
     </View>
@@ -185,10 +175,10 @@ const ListScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
- container: {
+  container: {
     flex: 1,
     backgroundColor: colors.background,
-  //marginTop  : 20,
+    //marginTop  : 20,
   },
   fab: {
     width: 60,
@@ -199,20 +189,19 @@ const styles = StyleSheet.create({
     right: 10,
     justifyContent: "center",
     alignItems: "center",
-  
+
     backgroundColor: colors.fab,
   },
- 
+
   iconsContainer: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
     height: "10%",
     alignItems: "center",
-    marginTop:35
-   
+    marginTop: 35,
   },
- toast: {
+  toast: {
     position: "absolute",
     right: 150,
     bottom: 20,
@@ -227,7 +216,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "SpartanBold",
     fontSize: 15,
-    color:"white"
+    color: "white",
   },
 });
 export default ListScreen;

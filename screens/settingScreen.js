@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet,TouchableOpacity} from "react-native"
 import Setting from "../assets/settings.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useFirebase } from "react-redux-firebase";
-import { FontAwesome, AntDesign  } from '@expo/vector-icons';
+import {  AntDesign  } from '@expo/vector-icons';
 
 import { InputModal, TextModal } from "../components/customComp/inputModal";
 
@@ -36,7 +36,7 @@ const [name, setName] = useState(profile.displayName?profile.displayName:profile
     paddingHorizontal:20,
     marginVertical:15}}>
     <TouchableOpacity onPress={()=> props.navigation.goBack()}>
-            <FontAwesome name="chevron-left" size={24} color="black" />
+    <AntDesign name="left" size={35} color="black" />
     </TouchableOpacity>
  
     
@@ -45,8 +45,8 @@ const [name, setName] = useState(profile.displayName?profile.displayName:profile
       currency: { code: currencyCode, country:country },
     })
     ,
-    props.navigation.navigate('start')}}>
-          <FontAwesome name="check" size={28} color="black" />
+    props.navigation.navigate('startLS')}}>
+         <AntDesign name="check" size={38} color="black" />
           </TouchableOpacity>
     </View>
 

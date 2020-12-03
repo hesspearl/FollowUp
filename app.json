@@ -5,9 +5,9 @@
     "description":"App for wallet management",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appIcon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash/drawable-port-xxxhdpi-screen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

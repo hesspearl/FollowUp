@@ -5,7 +5,7 @@ import list from "../screens/listScreen";
 import details from "../screens/deatilsScreen";
 import start from "../screens/startScreen"
 import LoadingScreen  from "../screens/loadingScreen"
-import LoadingMonth from "../components/functional components/LoadingMonth"
+import StartSL from "../components/functional components/startScreenLoading"
 import editScreen from "../screens/editScreen"
 import updating from "../components/functional components/updateScreen"
 import settingScreen from "../screens/settingScreen"
@@ -19,12 +19,12 @@ import settingScreen from "../screens/settingScreen"
   return (
 
       <BodyStack.Navigator screenOptions={{ header: () => null}} >
-      <BodyStack.Screen name="start" component={start}  />
+       <BodyStack.Screen name="startLS" component={StartSL}  /> 
+      {/* <BodyStack.Screen name="start" component={start}  /> */}
         <BodyStack.Screen name="list" component={list}  />
         <BodyStack.Screen name="details" component={details}  />
         <BodyStack.Screen name="create" component={create}  />
         <BodyStack.Screen name="loading" component={LoadingScreen}  />
-        <BodyStack.Screen name="loadingMonth" component={LoadingMonth}  />
         <BodyStack.Screen name="updating" component={updating}  />
         <BodyStack.Screen name="Edit" component={editScreen} />
         <BodyStack.Screen name="setting" component={settingScreen} />

@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   View,
   StyleSheet,
@@ -7,6 +8,7 @@ import {
   Image,
   ImageBackground,
   Dimensions,
+  SafeAreaView,
   Text,
   TextInput,
 } from "react-native";
@@ -15,24 +17,32 @@ import SwitchSelector from "../components/screen Components/SwitchSelector";
 import colors from "../colors";
 import SwipeButton from "rn-swipe-button";
 import { init, types, inputReducer } from "../store/reduces/createReducer";
-import DropDown from "../components/screen Components/DropDown";
+import ApplicationModal from "../components/screen Components/ApplicationModal";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/format";
 import { important, necessary } from "../modals/itemsArray";
 import ObservationField from "../components/screen Components/observitionField";
 import DateCalender from "../components/customComp/dateCalender";
-import NumberFormat from "@wwdrew/react-native-numeric-textinput"
+import NumberFormat from "@wwdrew/react-native-numeric-textinput";
+import size from "../size";
 
 const CreateScreen = (props) => {
-  // const { country } = props.route.params;
   const [stateInput, dispatchInput] = useReducer(inputReducer, init);
   const dispatch = useDispatch();
-  // const currency = require('../modals/country-by-currency-code.json')
-  // const curCode=currency.filter(item=>item.country===country)
   const state = useSelector((state) => state.firebase.profile);
 
- 
+
   useEffect(() => {
+    // clean useReducer from previous states
+    const unsubscribe = props.navigation.addListener("focus", () => {
+      dispatchInput({ type: types.CLEAN });
+    });
+
+    return unsubscribe;
+  });
+
+  useEffect(() => {
+ //   send to firestore reducer 
     if (stateInput.swipe) {
       if (!stateInput.formIsValid) {
         alert("Don't leave field empty please");
@@ -58,12 +68,14 @@ const CreateScreen = (props) => {
         dispatchInput({ type: types.SWIPE, value: false });
       }
     }
-  }, [stateInput.swipe]);
+  }, [stateInput.swipe, stateInput.formIsValid]);
 
+  //swip button function 
   const swiping = () => {
     dispatchInput({ type: types.SWIPE, value: true });
   };
 
+  //input function
   const inputTextHolder = (inputIdentifier, text) => {
     let isValid = false;
     if (text.trim().length > 0) {
@@ -77,10 +89,10 @@ const CreateScreen = (props) => {
     });
   };
 
+  //currency function 
   const currencyInput = (text) => {
     let isValid = false;
 
-    
     if (text.toString().length > 0) {
       isValid = true;
     }
@@ -94,21 +106,25 @@ const CreateScreen = (props) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "black" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
+      <StatusBar hidden={true} />
       <ImageBackground
         source={require("../assets/icons/Rectangle.png")}
+        resizeMode="stretch"
         style={{
           position: "absolute",
           left: 0,
-          top: 110,
+          top: 100,
+
           width: Dimensions.get("window").width,
-          height: Dimensions.get("window").height,
+          height: size.height,
+          //<600? size.height+130 :size.height+10,
         }}
       />
       <View
         style={{
           alignItems: "flex-end",
-          marginTop: 30,
+
           fontFamily: "SpartanBold",
         }}
       >
@@ -117,31 +133,28 @@ const CreateScreen = (props) => {
           <Text style={{ color: "white", fontSize: 20, margin: 5 }}>
             {state.currency.code}{" "}
           </Text>
-          {/* <TextInput
-        autoFocus={true}
-          style={{ color: "white", fontSize: 30 , height:50, width:250,     fontFamily: "SpartanBold"}}
-           value={stateInput.inputValues.spend.value}
-          onChangeText={(text)=> currencyInput(text)}
-          keyboardType="decimal-pad"
-          maxLength={11}
-      
-        /> */}
-           <NumberFormat
+
+          <NumberFormat
             autoFocus={true}
-            style={{ color:"white",fontSize: 30 , height:50, width:250,     fontFamily: "SpartanBold"}}
-           type='decimal'
-          decimalPlaces={2}
-          value={stateInput.inputValues.spend.value}
-          onUpdate={(text)=> currencyInput(text)}
-          maxLength={11}
-          caretHidden={false}
-          /> 
+            style={{
+              color: "white",
+              fontSize: 30,
+              height: 50,
+              width: 250,
+              fontFamily: "SpartanBold",
+            }}
+            type="decimal"
+            decimalPlaces={2}
+            value={stateInput.inputValues.spend.value}
+            onUpdate={(text) => currencyInput(text)}
+            maxLength={11}
+          />
         </View>
       </View>
 
       <ScrollView>
         <View style={styles.container}>
-          <DropDown
+          <ApplicationModal
             onChangeItem={(item) =>
               dispatchInput({
                 type: types.DROP,
@@ -152,9 +165,9 @@ const CreateScreen = (props) => {
 
           <TextField
             onChangeText={inputTextHolder.bind(this, "productName")}
-            // value={stateInput.inputValues.productName}
+            value={stateInput.inputValues.productName}
             color={{ color: "black" }}
-            contain={{ width: 300 }}
+            contain={{ width: 300 , }}
           >
             Product Name
           </TextField>
@@ -189,6 +202,7 @@ const CreateScreen = (props) => {
           </View>
 
           <SwitchSelector
+          init={stateInput.inputValues.important.init}
             option={important}
             onPress={(value) =>
               dispatchInput({
@@ -202,6 +216,7 @@ const CreateScreen = (props) => {
             is it important?
           </SwitchSelector>
           <SwitchSelector
+          init={stateInput.inputValues.necessary.init}
             option={necessary}
             onPress={(value) =>
               dispatchInput({
@@ -216,6 +231,7 @@ const CreateScreen = (props) => {
           </SwitchSelector>
 
           <ObservationField
+          value={stateInput.inputValues.observation }
             onChangeText={(text) =>
               dispatchInput({
                 type: types.OBSERVATION,
@@ -236,13 +252,21 @@ const CreateScreen = (props) => {
           />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
+let margin 
+if (size.height < 550 )
+{margin=350}
+ else
+  if (size.height<600)
+{ margin=300}
+
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 120,
+    marginBottom: margin? margin:120,
+    
     margin: 10,
     height: Dimensions.get("screen").height,
   },

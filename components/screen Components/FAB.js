@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { FAB, Portal, Provider } from "react-native-paper";
 import { View, Text, StyleSheet, Animated, Easing } from "react-native";
 import CircleButton from "../customComp/CircleButton";
 import colors from "../../colors"
 
+//not used 
 const fab = (props) => {
   
 

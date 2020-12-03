@@ -9,6 +9,7 @@ const OBSERVATION= "OBSERVATION";
 const DATE = "DATE";
 const SHOW="SHOW";
 const SWIPE = "SWIPE";
+const CLEAN="CLEAN"
 
 export const init={
     inputValues: {
@@ -21,12 +22,14 @@ export const init={
         important: {
           value: "high",
           color: "green",
+          init:0
         },
         date: moment().format("DD/MM/YYYY"),
         observation: "",
         necessary: {
           value: "yes",
           color: "green",
+          init:0
       }
     },
       inputValidation: {
@@ -36,6 +39,7 @@ export const init={
         important: {
           value: true,
           color: true,
+         
         },
       },
       formIsValid: false,
@@ -74,6 +78,7 @@ export const inputReducer = (state, action) => {
 
         const price= action.value
          
+      
   
           const updateSpends = {
             ...state.inputValues,
@@ -94,7 +99,7 @@ export const inputReducer = (state, action) => {
         updateSpendIsValid= updateSpendIsValid&& updateValidation[key]
        
         
-        console.log(updateSpendIsValid)
+        
           return {
             ...state,
             inputValues: updateSpends,
@@ -121,6 +126,7 @@ export const inputReducer = (state, action) => {
         };
       case CHOICE:
          
+      
         const updateChoice = {
           ...state.inputValues,
          [action.name]: {
@@ -133,7 +139,7 @@ export const inputReducer = (state, action) => {
           inputValues: updateChoice,
         };
         case DATE:
-          //  console.log(action.value)
+            console.log(action.value)
             const updateDate = {
               ...state.inputValues,
               date: action.value,
@@ -155,6 +161,46 @@ export const inputReducer = (state, action) => {
                     ...state,
                     swipe:action.value
                 }
+                case CLEAN:
+                  return{
+                    inputValues: {
+                      productName: "",
+                      application:{
+
+                        value: "others",
+                        avatar: "https://trello-attachments.s3.amazonaws.com/5db8df629e82fa748b5ecf01/5f12220cda1b8281626dd2e5/f82234345b15940f97eebef361f10dc1/others.PNG",
+                      },
+                      spend:{
+                        value:0,
+                        code:''
+                      },
+                      important: {
+                        value: "high",
+                        color: "green",
+                        init:0
+                      },
+                      date: moment().format("DD/MM/YYYY"),
+                      observation: "",
+                      necessary: {
+                        value: "yes",
+                        color: "green",
+                        init:0
+                    }
+                  },
+                    inputValidation: {
+                      productName: false,
+                      application: true,
+                      spend: false,
+                      important: {
+                        value: true,
+                        color: true,
+                      },
+                    },
+                    formIsValid: false,
+                    show:false,
+                    swipe:false
+
+                  }
     }
     return state;
   };
@@ -168,5 +214,6 @@ export const inputReducer = (state, action) => {
      SWIPE : "SWIPE",
      DATE: "DATE",
      OBSERVATION: "OBSERVATION",
-     SPENDS:'SPENDS'
+     SPENDS:'SPENDS',
+     CLEAN:"CLEAN"
   }

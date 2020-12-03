@@ -8,9 +8,12 @@ import {
 } from "../actions/filter";
 
 //save filtered cards
-initialState = {
+const initialState = {
   months: [],
   filter:[],
+  currentMonth:{position:"",
+index:""},
+loaded:true
    
 
 };
@@ -19,11 +22,19 @@ export default filter = (state = initialState, action) => {
   switch (action.type) {
     case MONTHS:
 
-   
+    const values= action.value.reverse()
+       
       return {
         ...state,
-        months: [...action.value],
+        months: [...values],
+        currentMonth:{
+          position:action.position,
+          index:action.index
+        },
+        loaded:false
       };
+     
+   
 
     case SELECTED_FILTER:
 
@@ -47,9 +58,10 @@ export default filter = (state = initialState, action) => {
 
     case DELETED_MONTHS:
       return {
+currentMonth:state.currentMonth,
         months: [],
         filter:{},
- 
+ loaded:true
       };
 
     case DELETED_ITEMS:

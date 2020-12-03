@@ -5,8 +5,8 @@ export const MONTHS="MONTHS"
 export const DELETED_MONTHS="DELETED_MONTHS"
 export const DELETED_ITEMS="DELETED_ITEMS"
 
-export const filterByMonths=(months)=>{
-   return{ type: MONTHS , value:months}
+export const filterByMonths=(months, position, index)=>{
+   return{ type: MONTHS , value:months, position, index}
 }
 
 export const selectFilter =(filter, name)=>{

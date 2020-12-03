@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput, StyleSheet, View, Text } from "react-native";
 import colors from "../../colors";
-
+import size from "../../size"
 
 const TextField = (props) => {
   
@@ -27,11 +27,18 @@ const TextField = (props) => {
   ;
 };
 
+let margin 
+if (size.height < 550 )
+{margin=40}
+ else
+  if (size.height<600)
+{ margin=30}
+
 const styles = StyleSheet.create({
   container:{
     width: 200,
     
-marginVertical:10
+marginTop:margin? margin :10
   },
   text:{
     fontSize:18,

@@ -6,8 +6,6 @@ import { useFirestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import moment from "moment";
 import ListLayout from "../screen Components/listLyout";
 
-//import {MonthsHandler} from "../functional components/selectmonth"
-
 const Query = {
   collection:"Cards",
 

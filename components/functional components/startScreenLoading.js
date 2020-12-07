@@ -26,7 +26,7 @@ const StartLS = (props) => {
   useFirestoreConnect({
     collection: `users/${auth.uid}/Cards`,
     storeAs: "Cards",
-    orderBy: "createdAt",
+    orderBy: "date",
   });
 
 

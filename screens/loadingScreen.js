@@ -8,6 +8,9 @@ import {
   currentMonth,
   findMonth,
 } from "../components/functional components/LoadingMonth";
+import moment from "moment"
+
+import { position } from "../modals/itemsArray";
 
 const Loading = (props) => {
   const dispatch = useDispatch();
@@ -16,10 +19,12 @@ const Loading = (props) => {
 
   const selectCurrentMonth= useCallback(
     () => {
-      const cm = currentMonth();
-      const items = findMonth(cards, cm.thisMonth);
+     // const cm = currentMonth();
 
-      dispatch(actions.filterByMonths(items, cm.current, cm.thisMonth));
+     const p=position[props.month] 
+      const items = findMonth(cards, props.month);
+
+      dispatch(actions.filterByMonths(items, p, props.month));
       props.setDone(false);
 
   }
@@ -63,6 +68,8 @@ const LoadingScreen = (props) => {
       .add({
         ...data,
         createdAt: firestore.FieldValue.serverTimestamp(),
+        date:moment(data.format.date, "DD/MM/YYYY").format('x')
+        
       })
       .then(() => {
         setDone(true);
@@ -92,7 +99,7 @@ const LoadingScreen = (props) => {
 
 
 
-  return <Loading done={done} setDone={setDone} />;
+  return <Loading done={done} setDone={setDone} month={filterState.selectedMonth}/>;
 };
 
 export default LoadingScreen;

@@ -47,8 +47,9 @@ const startScreen = (props) => {
     //using the app so it only return the cards of current month
     if (filterState.loaded) {
       const cm = currentMonth();
+      
       const items = findMonth(cards, cm.thisMonth);
-
+dispatch(actions.selectedMonth(cm.thisMonth))
       dispatch(actions.filterByMonths(items, cm.current, cm.thisMonth));
     }
   });

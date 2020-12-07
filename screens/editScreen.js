@@ -8,13 +8,13 @@ import {
   SafeAreaView,
   TextInput,
   //TouchableOpacity,
- Keyboard,
+  Keyboard,
   Dimensions,
   ImageBackground,
   ScrollView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { useFirestore, isLoaded } from "react-redux-firebase";
+import { useFirestore, useFirebase } from "react-redux-firebase";
 import colors from "../colors";
 import * as actions from "../store/actions/format";
 import {
@@ -40,9 +40,9 @@ import {
 import moment from "moment";
 import Observation from "../components/screen Components/showMore";
 import { AntDesign } from "@expo/vector-icons";
-import {TouchableOpacity} from "react-native-gesture-handler"
-import NumberFormat from "@wwdrew/react-native-numeric-textinput"
-import { useIsFocused } from '@react-navigation/native'
+import { TouchableOpacity } from "react-native-gesture-handler";
+import NumberFormat from "@wwdrew/react-native-numeric-textinput";
+import { useIsFocused } from "@react-navigation/native";
 
 const EditScreen = (props) => {
   const { dataId, id } = props.route.params;
@@ -50,28 +50,35 @@ const EditScreen = (props) => {
   const optionsNecessary = ["yes", "maybe", " no"];
 
   const firestore = useFirestore();
+  const firebase = useFirebase();
   const dispatch = useDispatch();
   const state = useSelector((state) => state.format.edit);
   const { uid } = useSelector((state) => state.firebase.auth);
   const stateModal = useSelector((state) => state.modal);
   const [stateInputs, dispatchInputs] = useReducer(inputReducer, init(dataId));
 
- 
-
+  //const date= firebase.firestore.Timestamp.fromDate)
+  console.log();
   useEffect(() => {
     dispatch(actions.edit(stateInputs.inputValues));
   }, [stateInputs.inputValues]);
 
   const submit = async () => {
-   
     if (!stateInputs.formIsValid) {
       alert("Don't leave field empty please");
       return;
     }
 
     try {
-    
-      await firestore.collection("users").doc(uid).collection("Cards").doc(id).update( { format: state });
+      await firestore
+        .collection("users")
+        .doc(uid)
+        .collection("Cards")
+        .doc(id)
+        .update({
+          format: state,
+          date: moment(state.date, "DD/MM/YYYY").format("x"),
+        });
       props.navigation.navigate("updating", { id: id });
     } catch (e) {
       console.log(e);
@@ -92,16 +99,13 @@ const EditScreen = (props) => {
     });
   };
 
-  const currencyInput=(text)=>{
-    
+  const currencyInput = (text) => {
     let isValid = false;
     if (text.toString().length > 0) {
       isValid = true;
     }
 
-    const price=parseFloat(text)
-
- 
+    const price = parseFloat(text);
 
     dispatchInputs({
       type: SPENDS,
@@ -109,8 +113,7 @@ const EditScreen = (props) => {
       isValid: isValid,
       code: stateInputs.inputValues.spend.code,
     });
-  }
-
+  };
 
   const pressHandler = (l) => {
     dispatchInputs({
@@ -124,7 +127,6 @@ const EditScreen = (props) => {
     Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
     Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
 
-   
     return () => {
       Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
       Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
@@ -132,19 +134,18 @@ const EditScreen = (props) => {
   }, []);
 
   const _keyboardDidShow = () => {
-    dispatch(changeValidation("image", true))
-  }
+    dispatch(changeValidation("image", true));
+  };
 
   const _keyboardDidHide = () => {
-    dispatch(returnValidation())
-  }
-
+    dispatch(returnValidation());
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
-    <StatusBar hidden={true}/>
+      <StatusBar hidden={true} />
       <ImageBackground
-      resizeMode="stretch"
+        resizeMode="stretch"
         source={require("../assets/icons/Rectangle.png")}
         style={styles.svg}
       />
@@ -154,7 +155,6 @@ const EditScreen = (props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           paddingHorizontal: 10,
-         
         }}
       >
         <TouchableOpacity onPress={() => props.navigation.navigate("list")}>
@@ -167,55 +167,56 @@ const EditScreen = (props) => {
 
       <View
         style={{
-         alignItems:"flex-end",
+          alignItems: "flex-end",
           width: "100%",
-          marginTop:20
-          
+          marginTop: 20,
         }}
       >
-
-<TextInput
-          style={{  color: "white",  ...styles.title, fontSize: 25,paddingBottom:50  }}
+        <TextInput
+          style={{
+            color: "white",
+            ...styles.title,
+            fontSize: 25,
+            paddingBottom: 50,
+          }}
           onChangeText={inputTextHolder.bind(this, "productName")}
           value={stateInputs.inputValues.productName}
         />
-         {/* <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => dispatch(changeValidation("productName", true))}
         >
          <Text style={{ ...styles.title, color: "white", fontSize: 25 }}>
             {stateInputs.inputValues.productName}
           </Text>
         </TouchableOpacity> */}
-
       </View>
 
-      {stateModal.image?null:<View style={styles.imageContainer}>
-      <View style={styles.content}></View> 
+      {stateModal.image ? null : (
+        <View style={styles.imageContainer}>
+          <View style={styles.content}></View>
 
-        <View style={{ elevation: 10, marginTop: 5 }}>
-          <TouchableOpacity
-            onPress={() => dispatch(changeValidation("Application", true))}
-          >
-            <Image
-              style={styles.image}
-              source={{ uri: stateInputs.inputValues.application.avatar }}
-            />
-          </TouchableOpacity>
+          <View style={{ elevation: 10, marginTop: 5 }}>
+            <TouchableOpacity
+              onPress={() => dispatch(changeValidation("Application", true))}
+            >
+              <Image
+                style={styles.image}
+                source={{ uri: stateInputs.inputValues.application.avatar }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>}
+      )}
 
       <View />
       <ScrollView>
-      
         <View style={styles.container}>
-       
           <View style={styles.card}>
             <TextModal
               title="Application"
               text={stateInputs.inputValues.application.value}
               type="Application"
             />
-          
 
             <TextModal
               title="Date"
@@ -229,7 +230,6 @@ const EditScreen = (props) => {
                   stateInputs.inputValues.date,
                   "DD/MM/YYYY"
                 ).toDate()}
-              
                 newDate={(value) =>
                   dispatchInputs({
                     type: DATE,
@@ -241,14 +241,14 @@ const EditScreen = (props) => {
             <View style={styles.spendContain}>
               <Text style={styles.title}>Spend</Text>
               <NumberFormat
-             caretHidden={false}
-            style={{ fontFamily: "SpartanBold", fontSize: 15 }}
-           type='decimal'
-          decimalPlaces={2}
-          value={stateInputs.inputValues.spend.value}
-          onUpdate={text=>currencyInput(text)}
-          maxLength={11}
-          /> 
+                caretHidden={false}
+                style={{ fontFamily: "SpartanBold", fontSize: 15 }}
+                type="decimal"
+                decimalPlaces={2}
+                value={stateInputs.inputValues.spend.value}
+                onUpdate={(text) => currencyInput(text)}
+                maxLength={11}
+              />
               {/* <TextInput
                 style={{ fontFamily: "SpartanBold", fontSize: 15 }}
                 onChangeText={text=>currencyInput(text)}
@@ -308,33 +308,27 @@ const EditScreen = (props) => {
                 style={{ ...styles.title, fontSize: 15 }}
                 onChangeText={inputTextHolder.bind(this, "observation")}
                 value={stateInputs.inputValues.observation}
-            
               />
             </Observation>
           </View>
         </View>
       </ScrollView>
-    
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-
     justifyContent: "center",
     alignItems: "center",
     height: Dimensions.get("window").height,
- 
   },
   svg: {
-    
-      position: "absolute",
-      left: 0,
-      top: 120,
-      width: Dimensions.get("screen").width,
-      height: Dimensions.get("screen").height,
-    
+    position: "absolute",
+    left: 0,
+    top: 120,
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height,
   },
   card: {
     width: "80%",
@@ -345,7 +339,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
     marginVertical: 10,
-
   },
   card2: {
     width: "80%",
@@ -399,6 +392,5 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomWidth: 1,
   },
-  
 });
 export default EditScreen;

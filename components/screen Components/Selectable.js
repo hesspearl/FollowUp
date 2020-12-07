@@ -27,7 +27,7 @@ const Selectable = (props) => {
   useFirestoreConnect({
     collection: `users/${uid}/Cards`,
     storeAs: "Cards",
-    orderBy:"createdAt"
+    orderBy:"date"
   });
   const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
 
@@ -62,7 +62,7 @@ store({
     }
 
 
-
+    dispatch(actions.selectedMonth(index))
     dispatch(actions.filterByMonths(items));
   };
 

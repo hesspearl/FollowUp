@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect , useCallback} from "react";
 import {
   View,
   FlatList,
@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import BSH from "../components/customComp/bottomSheetHeader";
 import { MyContext } from "../context";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Spartan_300Light } from "@expo-google-fonts/spartan";
 
 const ListScreen = (props) => {
   // const { position, index } = props.route.params;
@@ -58,7 +59,9 @@ const ListScreen = (props) => {
       }, 200);
       return () => clearTimeout(time);
     }
+  
   }, [refScroll]);
+
 
   //handle back button to return to top stack
   useEffect(() => {
@@ -125,9 +128,19 @@ const ListScreen = (props) => {
         // />}
         style={{ flex: 1 }}
         data={filter ? filterState.filter.data : filterState.months}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={(item, index) => index.toString()}
         ListEmptyComponent={<EmptyImage />}
-        renderItem={(itemData) => (
+        renderItem={(itemData) => {
+          if(itemData.item.year){
+            return( 
+              <View style={{ width:"100%", justifyContent:"center", alignItems:"center", backgroundColor:"#EFEFEF", marginVertical:5}}>
+                <Text style={{fontFamily:"SpartanBold"}}>{itemData.item.year} </Text>
+              </View>
+            )
+          }
+        
+        return(
+          
           <>
             <TouchableOpacity onPress={() => pressed(itemData.item)}>
               <Card
@@ -137,7 +150,7 @@ const ListScreen = (props) => {
               />
             </TouchableOpacity>
           </>
-        )}
+        )}}
       />
       <ToolTip />
       {showToast.value && (

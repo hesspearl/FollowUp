@@ -23,7 +23,8 @@ const Loading = (props) => {
 
      const p=position[props.month] 
       const items = findMonth(cards, props.month);
-
+      
+      dispatch(actions.rawMonths(items));
       dispatch(actions.filterByMonths(items, p, props.month));
       props.setDone(false);
 

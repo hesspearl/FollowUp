@@ -5,13 +5,15 @@ import {
   DELETED_FILTER,
   DELETED_MONTHS,
   DELETED_ITEMS,
+  RAW_MONTHS
 } from "../actions/filter";
 import moment from "moment";
 
 //save filtered cards
 const initialState = {
+  rawMonths:[],
   months: [],
-  selectedMonth:"",
+  selectedMonth: "",
   filter: [],
   currentMonth: { position: "", index: "" },
   loaded: true,
@@ -20,12 +22,13 @@ const initialState = {
 export default filter = (state = initialState, action) => {
   switch (action.type) {
     case MONTHS:
-      const values = action.value.reverse();
+      const values = action.value
       const year = (index) => {
         return moment(values[index].format.date, "DD/MM/YYYY").year();
       };
       let y;
 
+      //loop
       var i = 0;
       while (i < values.length) {
         if (year(0) !== year(i) && year(i) != y) {
@@ -34,16 +37,10 @@ export default filter = (state = initialState, action) => {
           values.splice(i, 0, { year: y });
 
           i++;
-          // console.log(i)
         }
 
         i++;
       }
-
-      //  console.log(  values )
-      //   if(newValues)
-      // {values.splice(newValues.index +1, 0, {year:newValues.year});
-      //  newValues={}  }
 
       return {
         ...state,
@@ -55,6 +52,12 @@ export default filter = (state = initialState, action) => {
         loaded: false,
       };
 
+      case RAW_MONTHS:
+        
+        return{
+          ...state,
+          rawMonths:[...action.value.reverse()]
+        }
     case SELECTED_FILTER:
       return {
         ...state,
@@ -73,17 +76,17 @@ export default filter = (state = initialState, action) => {
         },
       };
 
-      case SELECTED_MONTH:
-
-      console.log(action.value)
-      return{
+    case SELECTED_MONTH:
+      console.log(action.value);
+      return {
         ...state,
-        selectedMonth:action.value
-      }
+        selectedMonth: action.value,
+      };
     case DELETED_MONTHS:
       return {
-selectedMonth:"",
+        selectedMonth: "",
         currentMonth: state.currentMonth,
+        rawMonths:[],
         months: [],
         filter: {},
         loaded: true,

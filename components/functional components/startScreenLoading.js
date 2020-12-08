@@ -7,7 +7,6 @@ import {
   isLoaded,
 } from "react-redux-firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { currentMonth, findMonth } from "./LoadingMonth";
 import Wallet from "../../assets/wallet.svg";
 import * as actions from "../../store/actions/filter";
 import Start from "../../screens/startScreen";

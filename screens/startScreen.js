@@ -8,7 +8,7 @@ import {
   currentMonth,
   findMonth,
 } from "../components/functional components/LoadingMonth";
-import { useFocusEffect } from "@react-navigation/native";
+
 import Cart from "../assets/cart.svg";
 import BSH from "../components/customComp/bottomSheetHeader";
 import BottomSheet from "reanimated-bottom-sheet";
@@ -50,6 +50,7 @@ const startScreen = (props) => {
       
       const items = findMonth(cards, cm.thisMonth);
 dispatch(actions.selectedMonth(cm.thisMonth))
+dispatch(actions.rawMonths(items));
       dispatch(actions.filterByMonths(items, cm.current, cm.thisMonth));
     }
   });
@@ -64,6 +65,7 @@ dispatch(actions.selectedMonth(cm.thisMonth))
 
   return (
     <View style={styles.contain}>
+ 
       <Text style={{ fontSize: 25, fontFamily: "Spartan" }}>
         Welcome Back
         <Text style={{ fontSize: 25, fontFamily: "SpartanBold" }}>

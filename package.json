@@ -12,6 +12,7 @@
     "@expo-google-fonts/spartan": "^0.1.0",
     "@expo/vector-icons": "^10.0.0",
     "@firebase/firestore": "^2.0.4",
+    "@hmscore/react-native-hms-ads": "^13.4.32-300-03",
     "@react-native-community/datetimepicker": "3.0.0",
     "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "0.1.10",

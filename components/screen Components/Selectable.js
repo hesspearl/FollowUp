@@ -23,7 +23,6 @@ const Selectable = (props) => {
   const { uid } = useSelector((state) => state.firebase.auth);
  
 
-
   useFirestoreConnect({
     collection: `users/${uid}/Cards`,
     storeAs: "Cards",
@@ -63,6 +62,7 @@ store({
 
 
     dispatch(actions.selectedMonth(index))
+    dispatch(actions.rawMonths(items));
     dispatch(actions.filterByMonths(items));
   };
 
@@ -89,14 +89,39 @@ store({
     }
   };
 
+  const filterLoop=(arr)=>{
+    const year = (index) => {
+      return moment(arr[index].format.date, "DD/MM/YYYY").year();
+    };
+    let y;
+
+    //loop
+    var i = 0;
+    while (i < arr.length) {
+      if (year(0) !== year(i) && year(i) != y) {
+        y = year(i);
+
+        arr.splice(i, 0, { year: y });
+
+        i++;
+      }
+
+      i++;
+    }
+  }
+
   const filtering = (item, index) => {
    
     setSelectedFilter(index)
     let f = [];
 
-    state.months
-      .filter((i) => i.format[item].value == filter.array[index])
+ 
+    state.rawMonths
+      .filter((i) =>i.format[item].value == filter.array[index])
       .map((i) => f.push(i));
+
+     filterLoop(f)
+
     if (!f.length) {
       dispatch(actions.deleteFilter());
     } else {
@@ -108,20 +133,24 @@ store({
     setSelectedFilter(index)
     
     let f = [];
+
+    
     // if filter array =1 (highest to lowest)
     if (index === 0) {
     
-      state.months
-        .sort((a, b) => b.format.spend.value - a.format.spend.value)
+      state.rawMonths
+        .sort((a, b) => b.format?.spend.value - a.format?.spend.value)
         .map((i) => f.push(i));
   
+        filterLoop(f)
       dispatch(actions.selectFilter(f, "price"));
     }
 
     if (index === 1) {
-      state.months
-        .sort((a, b) => a.format.spend.value - b.format.spend.value)
+      state.rawMonths
+        .sort((a, b) => a.format?.spend.value - b.format?.spend?.value)
         .map((i) => f.push(i));
+        filterLoop(f)
       dispatch(actions.selectFilter(f, "price"));
     }
     if (!f.length) {

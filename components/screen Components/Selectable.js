@@ -6,6 +6,7 @@ import { useFirestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import moment from "moment";
 import ListLayout from "../screen Components/listLyout";
 
+
 const Query = {
   collection:"Cards",
 
@@ -142,7 +143,7 @@ store({
         .sort((a, b) => b.format?.spend.value - a.format?.spend.value)
         .map((i) => f.push(i));
   
-        filterLoop(f)
+  
       dispatch(actions.selectFilter(f, "price"));
     }
 
@@ -150,7 +151,7 @@ store({
       state.rawMonths
         .sort((a, b) => a.format?.spend.value - b.format?.spend?.value)
         .map((i) => f.push(i));
-        filterLoop(f)
+   
       dispatch(actions.selectFilter(f, "price"));
     }
     if (!f.length) {

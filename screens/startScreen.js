@@ -8,7 +8,13 @@ import {
   currentMonth,
   findMonth,
 } from "../components/functional components/LoadingMonth";
-
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+} from 'expo-ads-admob';
 import Cart from "../assets/cart.svg";
 import BSH from "../components/customComp/bottomSheetHeader";
 import BottomSheet from "reanimated-bottom-sheet";

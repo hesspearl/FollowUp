@@ -242,7 +242,7 @@ const EditScreen = (props) => {
               <Text style={styles.title}>Spend</Text>
               <NumberFormat
                 caretHidden={false}
-                style={{ fontFamily: "SpartanBold", fontSize: 15 }}
+                style={{ fontFamily: "SpartanBold", fontSize: 15, width:"50%" }}
                 type="decimal"
                 decimalPlaces={2}
                 value={stateInputs.inputValues.spend.value}
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
   spendContain: {
     justifyContent: "space-between",
     flexDirection: "row",
-    width: "50%",
+    width: "100%",
     paddingVertical: 10,
     borderBottomWidth: 1,
   },

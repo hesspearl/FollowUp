@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect , useCallback} from "react";
 import {
   View,
   FlatList,
@@ -21,8 +21,7 @@ import { useSelector } from "react-redux";
 import BSH from "../components/customComp/bottomSheetHeader";
 import { MyContext } from "../context";
 import { MaterialIcons } from "@expo/vector-icons";
-import { AdMobBanner } from "expo-ads-admob";
-import { BANNER_AD} from "@env";
+import { Spartan_300Light } from "@expo-google-fonts/spartan";
 
 const ListScreen = (props) => {
   // const { position, index } = props.route.params;
@@ -39,6 +38,7 @@ const ListScreen = (props) => {
 
   //bottomSheet ref
   const ref = useRef();
+ 
 
   const pressed = (item) => {
     ref.current.snapTo(1);
@@ -49,6 +49,7 @@ const ListScreen = (props) => {
     });
   };
 
+
   //change scrollView position to current month
 
   useEffect(() => {
@@ -58,7 +59,9 @@ const ListScreen = (props) => {
       }, 200);
       return () => clearTimeout(time);
     }
+  
   }, [refScroll]);
+
 
   //handle back button to return to top stack
   useEffect(() => {
@@ -71,7 +74,8 @@ const ListScreen = (props) => {
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
   }, [BackHandler]);
 
-  //render if there is no items to filter
+
+  //render if there is no items to filter 
   const EmptyImage = () => (
     <View style={{ alignItems: "center", paddingTop: 100 }}>
       <Image
@@ -126,55 +130,27 @@ const ListScreen = (props) => {
         data={filter ? filterState.filter.data : filterState.months}
         keyExtractor={(item, index) => index.toString()}
         ListEmptyComponent={<EmptyImage />}
-        ListHeaderComponent={
-          <View style={{flex:1 , alignItems:"center"}}>
-             <AdMobBanner
-                  bannerSize="largeBanner"
-                  adUnitID={BANNER_AD} // Test ID, Replace with your-admob-unit-id
-                  servePersonalizedAds // true or false
-                 // onDidFailToReceiveAdWithError={this.bannerError}
-                />
-          </View>
-       }
         renderItem={(itemData) => {
-          if (itemData.item.year) {
-            return (
-              <View style={{flex:1 , alignItems:"center"}}>
-                <View
-                  style={{
-                    width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#EFEFEF",
-                    marginVertical: 5,
-                  }}
-                >
-                  <Text style={{ fontFamily: "SpartanBold" }}>
-                    {itemData.item.year}{" "}
-                  </Text>
-                </View>
-                <AdMobBanner
-                  bannerSize="largeBanner"
-                  adUnitID={BANNER_AD}// Test ID, Replace with your-admob-unit-id
-                  servePersonalizedAds // true or false
-                 // onDidFailToReceiveAdWithError={this.bannerError}
-                />
+          if(itemData.item.year){
+            return( 
+              <View style={{ width:"100%", justifyContent:"center", alignItems:"center", backgroundColor:"#EFEFEF", marginVertical:5}}>
+                <Text style={{fontFamily:"SpartanBold"}}>{itemData.item.year} </Text>
               </View>
-            );
+            )
           }
-
-          return (
-            <>
-              <TouchableOpacity onPress={() => pressed(itemData.item)}>
-                <Card
-                  product={itemData.item.format.productName}
-                  picture={itemData.item.format.application.avatar}
-                  price={itemData.item.format.spend}
-                />
-              </TouchableOpacity>
-            </>
-          );
-        }}
+        
+        return(
+          
+          <>
+            <TouchableOpacity onPress={() => pressed(itemData.item)}>
+              <Card
+                product={itemData.item.format.productName}
+                picture={itemData.item.format.application.avatar}
+                price={itemData.item.format.spend}
+              />
+            </TouchableOpacity>
+          </>
+        )}}
       />
       <ToolTip />
       {showToast.value && (

@@ -14,7 +14,7 @@ import {
   PublisherBanner,
   AdMobRewarded,
   setTestDeviceIDAsync,
-} from 'expo-ads-admob';
+} from "expo-ads-admob";
 import Cart from "../assets/cart.svg";
 import BSH from "../components/customComp/bottomSheetHeader";
 import BottomSheet from "reanimated-bottom-sheet";
@@ -27,8 +27,6 @@ import {
 
 import size from "../size";
 
-
-
 const startScreen = (props) => {
   const { navigation } = props;
   const dispatch = useDispatch();
@@ -37,7 +35,7 @@ const startScreen = (props) => {
   const filterState = useSelector((state) => state.filter);
   const cards = useSelector(({ fireStore: { ordered } }) => ordered.Cards);
   const auth = useSelector((state) => state.firebase.auth);
-  let snapPosition= size.height<550 ? 50:60
+  let snapPosition = size.height < 550 ? 50 : 60;
 
   useEffect(() => {
     // add a refresh token to profile
@@ -53,10 +51,10 @@ const startScreen = (props) => {
     //using the app so it only return the cards of current month
     if (filterState.loaded) {
       const cm = currentMonth();
-      
+
       const items = findMonth(cards, cm.thisMonth);
-dispatch(actions.selectedMonth(cm.thisMonth))
-dispatch(actions.rawMonths(items));
+      dispatch(actions.selectedMonth(cm.thisMonth));
+      dispatch(actions.rawMonths(items));
       dispatch(actions.filterByMonths(items, cm.current, cm.thisMonth));
     }
   });
@@ -71,14 +69,13 @@ dispatch(actions.rawMonths(items));
 
   return (
     <View style={styles.contain}>
- 
       <Text style={{ fontSize: 25, fontFamily: "Spartan" }}>
         Welcome Back
         <Text style={{ fontSize: 25, fontFamily: "SpartanBold" }}>
           {state.displayName ? state.displayName : state.username} !
         </Text>
       </Text>
-      <Cart width={size.height<550 ?"250":"300"} height="250" />
+      <Cart width={size.height < 550 ? "250" : "300"} height="250" />
       <TouchableOpacity onPress={navigateToCreate}>
         <View style={styles.button}>
           <FontAwesome5 name="wallet" size={40} color="black" />
@@ -86,7 +83,9 @@ dispatch(actions.rawMonths(items));
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => props.navigation.navigate("list")}>
-        <Fontisto name="arrow-swap" size={24} color="black" />
+        <View style={styles.arrows}>
+          <Fontisto name="arrow-swap" size={20} color="white" />
+        </View>
       </TouchableOpacity>
 
       <BottomSheet
@@ -123,7 +122,7 @@ dispatch(actions.rawMonths(items));
   );
 };
 
-// button component 
+// button component
 
 const Button = (props) => (
   <TouchableOpacity onPress={props.onPress} style={{ alignItems: "center" }}>
@@ -141,8 +140,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width:size.width<350 ? 100 :120,
-    height:size.height<550 ?85: 100,
+    width: size.width < 350 ? 100 : 120,
+    height: size.height < 550 ? 85 : 100,
     elevation: 3,
     borderTopLeftRadius: 40,
     borderBottomEndRadius: 40,
@@ -167,6 +166,13 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     marginBottom: 10,
   },
+  arrows: {
+    width: 50,
+    height: 50,
+    backgroundColor: "black",
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 export default startScreen;
-

@@ -132,7 +132,7 @@ const ListScreen = (props) => {
                   bannerSize="largeBanner"
                   adUnitID={BANNER_AD} // Test ID, Replace with your-admob-unit-id
                   servePersonalizedAds // true or false
-                 // onDidFailToReceiveAdWithError={this.bannerError}
+                 onDidFailToReceiveAdWithError={this.bannerError}
                 />
           </View>
        }
@@ -145,7 +145,7 @@ const ListScreen = (props) => {
                     width: "100%",
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "#EFEFEF",
+                    backgroundColor: "#DCDCDC",
                     marginVertical: 5,
                   }}
                 >

@@ -34,7 +34,11 @@
     "base-64": "^1.0.0",
     "country-json": "^1.1.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "expo-ads-admob": "~8.3.0",
+=======
+    "expo": "^39.0.5",
+>>>>>>> parent of a4ca695... add ads
 =======
     "expo": "^39.0.5",
 >>>>>>> parent of a4ca695... add ads

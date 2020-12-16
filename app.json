@@ -25,9 +25,9 @@
     "android":{
       "package":"com.hesspearl.followup",
       "versionCode":1,
-       "permissions":["ACCESS_FINE_LOCATION"],
-       "config":{
-      "googleMobileAdsAppId":"ca-app-pub-6131682069999134~8826014109"
+"permissions":["ACCESS_FINE_LOCATION"],
+"config":{
+  "googleMobileAdsAppId":"ca-app-pub-6131682069999134~8826014109"
 }
 
     },
